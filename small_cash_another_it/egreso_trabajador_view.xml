@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="it_desembolso_personal_form">
+            <field name="name">Desembolso Personal</field>
+            <field name="model">desembolso.personal</field>
+            <field name="inherit_id" ref="desembolso_personal_it.it_desembolso_personal_form"/>
+            <field name="arch" type="xml">
+				<field name="caja_banco" position="after">
+					<field name="hide" invisible="1"/>
+					<field name="small_cash_id" domain="[('state','=','done'),('journal_id','=',caja_banco)]" attrs="{'required':[('hide','=',True)], 'invisible':[('hide','=',False)]}" />
+				</field>
+			</field>
+		</record>
+		
+		<record model="ir.ui.view" id="it_desembolso_personal_wizard_form">
+            <field name="name">Desembolso Personal Pago</field>
+            <field name="model">desembolso.personal.wizard</field>
+            <field name="inherit_id" ref="desembolso_personal_it.it_desembolso_personal_wizard_form"/>
+            <field name="arch" type="xml">
+				<field name="metodo_pago" position="after">
+					<field name="hide" invisible="1"/>
+					<field name="small_cash_id" domain="[('state','=','done'),('journal_id','=',metodo_pago)]" attrs="{'required':[('hide','=',True)], 'invisible':[('hide','=',False)]}" />
+				</field>
+			</field>
+		</record>
+	</data>
+</openerp>

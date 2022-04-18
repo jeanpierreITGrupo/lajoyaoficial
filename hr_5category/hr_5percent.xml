@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data> 
+        <menuitem id="menu_hr_5category" parent="hr.menu_hr_configuration" name="Quinta categoría"/>
+        <record id="view_hr_5percent_form" model="ir.ui.view">
+            <field name="name">hr.5percent.form</field>
+            <field name="model">hr.5percent</field>
+            <field name="arch" type="xml">
+                <form string="5ta Categoría - Parámetros" version="8.0">
+                    <sheet>
+                        <h1>5ta Categoría - Parámetros</h1>
+                        <group>
+                            <field name="uit_id" string="UIT" required="1"/>
+                            <field name="type_element" string="Motivo" required="1"/>
+                            <field name="uit_qty" string="Cantidad de UIT" required="1"/>
+                            <field name="tasa" string="tasa" required="1"/>
+                            <field name="nodomicialiado" string="No domiciliado" required="0"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_hr_5percent_tree" model="ir.ui.view">
+            <field name="name">hr.5percent.tree</field>
+            <field name="model">hr.5percent</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="5ta Categoría - Parámetros">
+                    <field name="uit_id" string="UIT"/>
+                    <field name="type_element" string="Motivo"/>
+                    <field name="uit_qty" string="Cantidad de UIT"/>
+                    <field name="tasa" string="Tasa"/>
+                    <field name="nodomicialiado" string="No domiciliado"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_hr_5percent" model="ir.actions.act_window">
+            <field name="name">5ta Categoría - Parámetros</field>
+            <field name="res_model">hr.5percent</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem action="action_hr_5percent" id="menu_hr_5percent" parent="menu_hr_5category"/>
+    </data>
+</openerp>

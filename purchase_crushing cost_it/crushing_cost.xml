@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_crushing_cost_form" model="ir.ui.view">
+            <field name="name">crushing.cost.form</field>
+            <field name="model">crushing.cost</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button string="Actualizar" name="update" type="object" class="oe_highlight" states='draft,updated'/>
+                        <button string="Transferir" name="transfer" type="object" class="oe_highlight" states='updated'/>
+                        <button string="Asentar" class="oe_highlight" states='transfered'/>
+                        <button string="Cancelar Última" name="cancel_last" type="object" states='draft,updated,transfered,done'/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,updated,transfered,done"/>
+                    </header>
+                    <sheet>
+                        <h1>
+                            <label string="Costo Chancado" />
+                            <field name="name" class="oe_inline" readonly="1"/>
+                        </h1>
+                        <group>
+                			<group>
+                				<field name="period_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name="account_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                			</group>
+                			<group>
+                                <field name="total_cost" readonly="1"/>
+                                <field name="total_distribution" readonly="1"/>
+                			</group>
+                		</group>
+
+                    <group>
+                        <notebook>
+                            <page string="Detalle">
+                                <field name="lines"/>
+                            </page>
+                            <page string="Movimientos">
+                                <group>
+                                        <field name="picking_1" readonly="1" />
+                                        <field name="picking_2" readonly="1" />
+                                </group>
+                            </page>
+                        </notebook>
+                    </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_crushing_cost_tree" model="ir.ui.view">
+            <field name="name">crushing.cost.tree</field>
+            <field name="model">crushing.cost</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="period_id"/>
+                    <field name="total_cost"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_crushing_cost_line_tree" model="ir.ui.view">
+            <field name="name">crushing.cost.line.tree</field>
+            <field name="model">crushing.cost.line</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="lot_num"/>
+                    <field name="expedient_number" readonly="1"/>
+                    <field name="gold_expected" readonly="1"/>
+                    <field name="product" readonly="1"/>
+                    <field name="tn_amount" readonly="1"/>
+                    <field name="ponderation" />
+                    <field name="total_value" readonly="1"/>
+                    <field name="unit_cost" readonly="1"/>
+                    <field name="tn_distribution" readonly="1" sum="" />
+                    <field name="crushing_cost" readonly="1" sum=""/>
+                    <field name="new_total" readonly="1"/>
+                    <field name="new_cu" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+      
+        <record id="action_crushing_cost" model="ir.actions.act_window">
+            <field name="name">Gastos de Chancado</field>
+            <field name="res_model">crushing.cost</field>
+            <field name="view_type">form</field>
+        	<field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem 
+            id="submenu_crushing_cost" 
+            name="Gastos de Chancado" 
+            parent="previous_requirements_joya.submenu_production_joya"
+            action="action_crushing_cost" 
+            sequence="3"
+        />
+    </data>
+</openerp>

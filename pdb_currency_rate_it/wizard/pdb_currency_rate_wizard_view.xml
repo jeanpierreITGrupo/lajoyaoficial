@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="view_pdb_currency_rate_wizard_form">
+			<field name="name">pdb.currency.rate.wizard.form</field>
+			<field name="model">pdb.currency.rate.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Tipos de Cambio" version="8.0">
+						<group>
+							<group>
+								<field name="period_ini" required="1" />
+							</group>
+						</group>
+
+						<footer>
+							<button string="Mostrar" name="do_rebuild" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="pdb_currency_rate_wizard_action" model="ir.actions.act_window">
+			<field name="name">Tipos de Cambio</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">pdb.currency.rate.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+        <menuitem name="Tipos de Cambio"
+            action="pdb_currency_rate_wizard_action"
+            id="menu_pdb_currency_rate_report"
+            parent="pdb_it.menu_action_pdb_menu_it"
+            sequence="13"
+        />
+
+
+	</data>
+</openerp>

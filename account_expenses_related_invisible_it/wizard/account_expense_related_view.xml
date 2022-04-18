@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        
+        <menuitem name="Gastos Vinculados" id="account_expenses_related_it.account_expense_related_menu"  parent="account.menu_finance_payables"  sequence="30" />
+            
+
+    </data>
+</openerp>

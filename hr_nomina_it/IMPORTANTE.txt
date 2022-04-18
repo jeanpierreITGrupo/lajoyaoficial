@@ -1,0 +1,96 @@
+************************************************
+***************                  *************** 
+*************                      *************
+***********		----IPORTANTE----    ***********				
+*************                      *************
+***************                  ***************
+************************************************
+
+- Este módulo depende de los códigos asignados para los conceptos. Por lo tanto se debe asignar un código ESPECÍFICO para los siguientes conceptos:
+
+        Concepto 							Código
+    Básico								001
+    Asignación Familiar					002
+    1ro de Mayo							003
+    Vacaciones							004
+    Compensación Vacacional				005
+    Vacaciones Truncas					006
+    HE 25%								007
+    HE 35%								008
+    HE 100%								009
+    Bonificación						010
+    Comisión							011
+    Sueldo Practicante					012
+    Movilidad							013
+    Indemnización por Vacaciones		014
+    Canasta								015
+    Reintegro							016
+    CTS									017
+    Gratificación						018
+    Gratificación Truncas 				019
+    Bonificación Gratificación			020
+    Gratificación Extraordinaria		021
+    Subsidio Maternidad					022
+    Subsidio Incapacidad				023
+
+    Tardanzas							024
+    Inasistencias						025
+    Permisos Dscto Autorizado			026
+    Dscto Dominical						027
+
+    ONP									028
+    AFP JUB 							029
+    AFP PSI 							030
+    AFP COM 							031
+    SPP Voluntario 						032
+    5ta Cat. 							033
+    Essalud Vida 						034
+    Retención Judicial 					035
+    Fondo de Jubilación 				036
+    Otros dscts. EPS 					037
+    AFP 2%                              055
+
+    ESSALUD 							038
+    SCRT 								039
+    EPS / SCTR SALUD 					040
+    SENATI 								041
+    SCTR PENS 							042
+    SPP Aportación Voluntaria 			043
+    AFP 2% 								044
+
+    Adelantos Su./A Gratificaciones		045
+    Prestamos / Otros Dscts. 			046
+
+    RMB                                 047
+    Total Descuentos                    048
+    NETO                                049
+    NETO SUELDO                         050
+    NETO VACACIONES                     051
+    Neto Boleta                         052
+    OTROS INGRESOS                      053
+    APORTES EMPLEADO                    054
+
+
+- Este módulo depende de los códigos asignados para los Parámetros. Por lo tanto se debe asignar un código ESPECÍFICO para los siguientes parámetros:
+
+        Parámetro                      Código
+    RMV                             10000
+    % AF                            10001
+    Essalud Vida                    2
+    Fondo de Jubilación             3
+    ESSALUD                         4
+    EPS / SCTR SALUD                5
+    SCRT                            6
+    SENATI                          7
+    AFP %2                          8
+
+- Este módulo depende de los códigos asignados para la tabla adelantos. Por lo tanto se debe asignar un código ESPECÍFICO para los siguientes parámetros:
+
+        Nombre / Tipo                          Código
+    ADELANTO SUELDO / <cualquier tipo>           001
+
+- Este módulo depende de los códigos asignados para la tabla afiliaciones. Por lo tanto se debe asignar un código ESPECÍFICO para las siguientes afiliaciones:
+
+        Nombre / Tipo                          Código
+    ONP                                     ONP
+    SIN REGIMEN                             SIN REGIMEN

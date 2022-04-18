@@ -1,0 +1,3 @@
+name;partner_id;account_id;date_maturity;debit;credit;analytics_id;analytic_account_id;type_document_id;means_payment_id;fefectivo_id;tax_code_id;currency_rate_it
+Balance Suppliers;20439033272;121100;;5000,00;0,00;asfasf;1004;02;005;OP0001;Inafecta;3,124
+Balance Suppliers;20439033272;121100;;0,00;5000,00;asfasf;1004;02;005;OP0001;Inafecta;3,200

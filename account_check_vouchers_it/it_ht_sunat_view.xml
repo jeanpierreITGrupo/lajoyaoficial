@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		
+
+        <record id="view_main_parameter_form" model="ir.ui.view">
+            <field name="name">main.parameter.form</field>
+            <field name="model">main.parameter</field>
+            <field name="inherit_id" ref="account_parameter_it.view_main_parameter_form"/>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+
+                <group string="Secuencias para Asistentes" position="after">
+                    <group string="Pagos" >
+                            <field name="check_voucher_cambio" />
+                    </group>
+                </group>
+                
+
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>

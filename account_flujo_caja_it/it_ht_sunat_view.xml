@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- session form view -->
+        <record model="ir.ui.view" id="it_flujo_caja_form">
+            <field name="name">Flujo Caja</field>
+            <field name="model">it.flujo.caja</field>
+            <field name="arch" type="xml">
+                <form string="Flujo Caja" version="8.0">
+                    <group>
+                        <field name="name" />
+                        <field name="concepto" />
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="it_flujo_caja_tree_view" model="ir.ui.view">
+            <field name="name">Flujo Caja</field>
+            <field name="model">it.flujo.caja</field>
+            <field name="arch" type="xml">
+                <tree string="Flujo Caja" editable="bottom">
+                    <field name="name" />
+                    <field name="concepto" />
+                </tree>
+
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="it_flujo_caja_action">
+            <field name="name">Flujo Caja</field>
+            <field name="res_model">it.flujo.caja</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="it_flujo_caja_sunat_menu" name="Flujo Caja"
+                  parent="account_tables_it.it_table_sunat"
+                  action="it_flujo_caja_action"/>
+
+
+        <record id="view_move_form" model="ir.ui.view">
+            <field name="name">account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account_means_payment_it.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/notebook/page[@string='Journal Items']/field[@name='line_id']/tree/field[@name='means_payment_id']" position="after">
+                    
+                        <field name="flujo_caja_id"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_vendor_receipt_form" model="ir.ui.view">
+            <field name="name">account.voucher.form</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_receipt_form"/>
+            <field name="arch" type="xml">
+                <field name="journal_id" position="after">
+                    <label for="flujo_caja_id" string="Flujo Caja"/>
+                    <field name="flujo_caja_id" required="1" context="{'show_concepto':'1'}" nolabel="1" options="{'no_create': True}"/>
+                </field>
+
+            </field>
+        </record>
+
+
+        <record id="view_vendor_payment_form" model="ir.ui.view">
+            <field name="name">account.voucher.form</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_payment_form"/>
+            <field name="arch" type="xml">
+
+                <field name="journal_id" position="after">
+                    <field name="rendicion_bool" invisible="1"/>
+                    <label for="flujo_caja_id" string="Flujo Caja"/>
+                    <field name="flujo_caja_id" attrs="{'required':[('rendicion_bool','=',False)]}" context="{'show_concepto':'1'}" nolabel="1" options="{'no_create': True}"/>
+                </field>
+
+            </field>
+        </record>
+
+
+        <record id="view_vendor_receipt_dialog_form" model="ir.ui.view">
+            <field name="name">account.voucher.form</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_receipt_dialog_form"/>
+            <field name="arch" type="xml">
+                
+
+
+                <field name="journal_id" position="after">
+                    <field name="rendicion_bool" invisible="1"/>
+                    <label for="flujo_caja_id" string="Flujo Caja"/>
+                    <field name="flujo_caja_id"  attrs="{'required':[('rendicion_bool','=',False)]}"  context="{'show_concepto':'1'}" nolabel="1" options="{'no_create': True}"/>
+                </field>
+                
+            </field>
+        </record>
+
+
+
+
+
+
+        <record id="view_move_line_book_tree" model="ir.ui.view">
+            <field name="name">account.move.line.book.tree</field>
+            <field name="model">account.move.line.book</field>
+            <field name="inherit_id" ref="account_contable_book_it.view_move_line_book_tree"/>
+            <field name="arch" type="xml">
+                    <field name="state" position="before">
+                        <field name="flujo_caja_id" />
+                    </field>
+            </field>
+        </record>
+
+
+        
+        <record id="view_move_line_book_report_tree" model="ir.ui.view">
+            <field name="name">account.move.line.book.report.tree</field>
+            <field name="model">account.move.line.book.report</field>
+            <field name="inherit_id" ref="account_contable_book_it.view_move_line_book_report_tree"/>
+            <field name="arch" type="xml">
+                    <field name="state" position="before">
+                        <field name="flujo_caja_id" />
+                    </field>
+            </field>
+        </record>
+
+
+
+
+
+
+
+        <record model="ir.ui.view" id="view_deliveries_to_pay_form">
+            <field name="name">deliveries.to.pay.form</field>
+            <field name="model">deliveries.to.pay</field>
+            <field name="inherit_id" ref="deliveries_to_pay_it.view_deliveries_to_pay_form"/>
+            <field name="arch" type="xml">
+                <field name="means_payment_id" position="after" >
+                    <field name="flujo_caja_id_deliver" required="1" attrs="{'readonly':[('state','not in',['draft'])]}" />
+                </field>           
+                               
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="view_account_transfer_form">
+            <field name="name">account.transfer.form</field>
+            <field name="model">account.transfer</field>
+            <field name="inherit_id" ref="account_transfer_it.view_account_transfer_form"/>
+            <field name="arch" type="xml">
+                <field name="origen_amount" position="after">
+                    <field name="flujo_caja_id_origen" attrs="{'readonly':[('state','not in',['draft'])]}" />
+                </field>
+
+
+                <field name="destiny_amount" position="after">
+                    <field name="flujo_caja_id_destino" attrs="{'readonly':[('state','not in',['draft'])]}" />
+                </field>
+                
+            </field>
+        </record>
+
+
+
+
+    <record model="ir.ui.view" id="view_account_asset_asset_tree">
+        <field name="name">account.asset.asset.tree</field>
+        <field name="model">account.asset.asset</field>
+        <field name="field_parent">child_ids</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_asset_tree"/>
+        <field name="arch" type="xml">
+        
+        <xpath expr="//tree" position="replace">
+
+            <tree string="Assets" colors="blue:(state == 'draft');grey:(state == 'close')">
+                <field name="codigo"/>
+                <field name="name"/>
+                <field name='parent_id'/>
+                <field name="category_id"/>
+                <field name="purchase_date"/>
+                <field name="date_start"/>
+                <field name="f_baja"/>
+                <field name="partner_id"/>
+                <field name="purchase_value"/>
+                <field name="value_residual"/>
+                <field name="currency_id" groups="base.group_multi_currency" invisible="1"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="state" invisible="1"/>
+                <field name="cta_activo" />
+                <field name="ubicacion" />
+                <field name='state' />
+            </tree>
+
+        </xpath>
+
+        </field>
+    </record>
+
+
+    </data>
+</openerp>

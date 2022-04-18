@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_purchase_liquidation_form" model="ir.ui.view">
+            <field name="name">purchase.liquidation.form</field>
+            <field name="model">purchase.liquidation</field>
+            <field name="inherit_id" ref="purchase_liquidation_it.view_purchase_liquidation_form"/>
+            <field name="arch" type="xml">
+              <!--  <button name="update" position="after">
+                        <button string="Reasignar Nro. Lote" type="object" name="reasignar_name" />
+                </button>    -->
+                <field name="in_date" position="before">
+                    <field name="anterior_nombre" invisible="1"/>
+                    <field name="padre_id" string="Lote padre" attrs="{'readonly':['|',('state','!=','draft'),('check_balanza','=',True)]}"/>
+                </field>                        
+            </field>
+        </record>
+
+
+
+
+        <record id="view_purchase_liquidation_tree" model="ir.ui.view">
+            <field name="name">purchase.liquidation.tree</field>
+            <field name="model">purchase.liquidation</field>
+            <field name="inherit_id" ref="purchase_liquidation_it.view_purchase_liquidation_tree"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="anterior_nombre"/>
+                    <field name="padre_id" />
+                </field>                
+            </field>
+        </record>
+
+        
+    </data>
+</openerp>

@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+
+<template id="assets_backend" name="account_purchase_compare_it assets" inherit_id="web.assets_backend">
+    <xpath expr="." position="inside">
+        
+    <link rel="stylesheet" type="text/css" href="/account_purchase_compare_it/static/src/js/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="/account_purchase_compare_it/static/src/js/animate.css"/>
+      <script type="text/javascript" src="/account_purchase_compare_it/static/src/js/jquery.noty.packaged.js"></script> 
+      <script type="text/javascript" src="/account_purchase_compare_it/static/src/js/notify.js"></script> 
+      <script type="text/javascript" src="/account_purchase_compare_it/static/src/js/mywidget.js"></script>
+    </xpath>
+  </template>
+
+
+        <record id="invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="period_id" position="before">
+                    <field name="sale_id" />
+                </field>            
+            </field>
+        </record>
+
+        <record id="invoice_supplier_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <field name="period_id" position="before">
+                    <field name="po_id" />
+                </field>
+                <field name="origin" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </field>
+            </field>
+        </record>
+
+
+
+        <record id="view_picking_inherit_form2" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock_account.view_picking_inherit_form2"/>
+            <field name="arch" type="xml">
+                <field name="date_done" position="before">
+                    <field name="so_id" />
+                    <field name="po_id" />
+                    <field name="invoice_id" domain="[('partner_id','=',partner_id)]"/>
+                </field>
+                <field name="invoice_state" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                </field>
+            </field>
+        </record>
+
+
+
+        <record id="purchase_order_form" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+
+            <field name="partner_ref" position="after">
+                 <field name="temporal" invisible="1" widget="mywidget_purchase_order_notify" />
+                 <field name="temporal2" invisible="1" />
+                </field>
+<!--
+
+                    <button name="view_picking" position="attributes" >
+                        <attribute name="invisible">1</attribute>
+                    </button>
+
+                    <button name="view_invoice" position="attributes" >
+                        <attribute name="invisible">1</attribute>
+                    </button>
+
+                    <button name="view_picking" position="after" >
+
+                        <button name="my_almacen" attrs="{'invisible': [('state','=','draft')]}" string="Recibir Productos" type="object" class="oe_highlight"/>
+                    </button>
+
+                    <button name="view_invoice" position="after" >
+
+                        <button name="my_factura" attrs="{'invisible': ['|',('state','=','draft'),('invoice_method','=','picking')]}" string="Recibir Factura" type="object" class="oe_highlight"/>
+                    
+                    </button>
+                    -->
+                    <button name="picking_ok" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </button>
+                    <button name="invoice_ok" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </button>
+                    <button name="action_cancel" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </button>
+                    
+
+                    <button name="view_invoice" position="after" >
+
+                        <button name="cancelar_it" string="Cancelar" type="object" class="oe_highlight"/>
+                    
+                    </button>
+            </field>
+        </record>
+    
+
+        <record id="sale_license_more_item_action" model="ir.actions.server">
+            <field name="name">Regenerar Recibir Productos</field>
+            <field name="model_id" ref='purchase.model_purchase_order'/>
+            <field name="state">code</field>
+            <field name="code">action=self.my_almacen(cr, uid, context.get('active_ids', []), context=context)</field>
+        </record>
+
+        <record model="ir.values" id="test_more_item">
+            <field eval="'client_action_multi'" name="key2"/>
+            <field eval="'purchase.order'" name="model"/>
+            <field name="name">Test Item</field>
+            <field name="value" eval="'ir.actions.server,%d'%sale_license_more_item_action" />
+            <field name="object" eval="True"/>
+        </record>
+
+        <record id="sale_license_more_item_action2" model="ir.actions.server">
+            <field name="name">Regenerar Recibir Factura</field>
+            <field name="model_id" ref='purchase.model_purchase_order'/>
+            <field name="state">code</field>
+            <field name="code">action=self.my_factura(cr, uid, context.get('active_ids', []), context=context)</field>
+        </record>
+
+        <record model="ir.values" id="test_more_item2">
+            <field eval="'client_action_multi'" name="key2"/>
+            <field eval="'purchase.order'" name="model"/>
+            <field name="name">Test Item2</field>
+            <field name="value" eval="'ir.actions.server,%d'%sale_license_more_item_action2" />
+        </record>
+
+        <record id="view_account_purchase_compare_form" model="ir.ui.view">
+            <field name="name">account.purchase.compare.form</field>
+            <field name="model">account.purchase.compare</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Trazabilidad">
+                    <header>
+                        <button name="actualizar" string="Comparar" type="object" class="oe_highlight"/>
+                    </header>
+                    <group>
+                        <group>                                    
+                            <field name="partner_id" required="1"/>
+                            <field name="purchase_id"  required="1" domain="[('partner_id','=',partner_id)]"/>
+                            <field name="borradores" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <group>
+                        <notebook>
+                            <page string="Facturas">                                        
+                                <field name="fac_line" readonly="1">
+                                    <tree>
+                                        <field name="producto" />
+                                        <field name="cantidad" />
+                                        <field name="valor" />
+                                        <field name="factura_can" />
+                                        <field name="dif_cantidad" />
+                                        <field name="factura_val" />
+                                        <field name="dif_valor" />
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Albaranes">
+
+
+                                <field name="alb_line" readonly="1">
+                                    <tree>                 
+                                        <field name="producto" />
+                                        <field name="cantidad" />
+                                        <field name="factura_can" />
+                                        <field name="dif_cantidad" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_account_purchase_compare_tree" model="ir.ui.view">
+            <field name="name">account.purchase.compare.tree</field>
+            <field name="model">account.purchase.compare</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Trazabilidad">
+                    <field name="partner_id" />
+                    <field name="purchase_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_account_purchase_compare_search" model="ir.ui.view">
+        <field name="name">account.purchase.compare.search</field>
+        <field name="model">account.purchase.compare</field>
+        <field name="arch" type="xml">
+            <search string="Trazabilidad">
+                <field name="partner_id"/>
+                <field name="purchase_id"/>
+
+                <group expand="1" string="Group By">
+                    <filter string="Partner" name="partner_id" context="{'group_by':'partner_id'}"/>                    
+                </group>
+            </search>
+        </field>
+    </record>
+
+        <record id="account_purchase_compare_action" model="ir.actions.act_window">
+            <field name="name">Análisis Pedidos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.purchase.compare</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Análisis Pedidos" action="account_purchase_compare_action" id="menu_config_purchase_compare_it" parent="purchase.menu_procurement_management"/>
+
+
+
+
+        <record id="view_account_sale_compare_form" model="ir.ui.view">
+            <field name="name">account.sale.compare.form</field>
+            <field name="model">account.sale.compare</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Trazabilidad">
+                    <header>
+                        <button name="actualizar" string="Comparar" type="object" class="oe_highlight"/>
+                    </header>
+                    <group>
+                        <group>                                    
+                            <field name="partner_id" required="1"/>
+                            <field name="sale_id"  required="1" domain="[('partner_id','=',partner_id)]"/>
+                            <field name="borradores" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <group>
+                        <notebook>
+                            <page string="Facturas">                                        
+                                <field name="fac_line" readonly="1">
+                                    <tree>
+                                        <field name="producto" />
+                                        <field name="cantidad" />
+                                        <field name="valor" />
+                                        <field name="factura_can" />
+                                        <field name="dif_cantidad" />
+                                        <field name="factura_val" />
+                                        <field name="dif_valor" />
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Albaranes">
+
+
+                                <field name="alb_line" readonly="1">
+                                    <tree>                 
+                                        <field name="producto" />
+                                        <field name="cantidad" />
+                                        <field name="factura_can" />
+                                        <field name="dif_cantidad" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_account_sale_compare_tree" model="ir.ui.view">
+            <field name="name">account.sale.compare.tree</field>
+            <field name="model">account.sale.compare</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Trazabilidad">
+                    <field name="partner_id" />
+                    <field name="sale_id" />
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_account_sale_compare_search" model="ir.ui.view">
+        <field name="name">account.sale.compare.search</field>
+        <field name="model">account.sale.compare</field>
+        <field name="arch" type="xml">
+            <search string="Trazabilidad">
+                <field name="partner_id"/>
+                <field name="sale_id"/>
+
+                <group expand="1" string="Group By">
+                    <filter string="Partner" name="partner_id" context="{'group_by':'partner_id'}"/>                    
+                </group>
+            </search>
+        </field>
+    </record>
+
+        <record id="account_sale_compare_action2" model="ir.actions.act_window">
+            <field name="name">Análisis Pedidos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.sale.compare</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Análisis Pedidos" action="account_sale_compare_action2" id="menu_config_sale_compare_it" parent="base.menu_sales"/>
+
+
+
+    </data>
+</openerp>

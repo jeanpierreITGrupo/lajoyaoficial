@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_pdb_currency_rate_tree" model="ir.ui.view">
+            <field name="name">pdb.currency.rate.tree</field>
+            <field name="model">pdb.currency.rate</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Tipo de Cambio" create="false" edit="false">
+                    <field name="periodo" />
+                    <field name="tipo" />
+                    <field name="fecha" />
+                    <field name="compra" />
+                    <field name="venta" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="pdb_currency_rate_search" model="ir.ui.view">
+            <field name="name">pdb.currency.rate.search</field>
+            <field name="model">pdb.currency.rate</field>
+            <field name="arch" type="xml">
+                <search string="Retenciones">
+                    <separator/>
+                    <group expand="1" string="Group By...">
+                        <filter string="Periodo" name="periodo" icon="terp-partner" context="{'group_by':'periodo'}"/>
+                        <filter string="Tipo" name="tipo" icon="terp-partner" context="{'group_by':'tipo'}"/>
+                        <filter string="Fecha" name="fecha" icon="terp-partner" context="{'group_by':'fecha'}"/>
+					</group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_pdb_currency_rate" model="ir.actions.act_window">
+            <field name="name">Tipos de Cambio</field>
+            <field name="res_model">pdb_currency_rate</field>
+            <field name="view_id" ref="view_pdb_currency_rate_tree"/>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="search_view_id" ref="pdb_currency_rate_search"/>
+        </record>
+
+    </data>
+</openerp>

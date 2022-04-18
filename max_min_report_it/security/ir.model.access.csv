@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_min_max_view,min.max.view,model_min_max_view,max_min_report_it.group_min_max,1,1,1,1
+access_max_min_report,max.min.report,model_max_min_report,max_min_report_it.group_min_max,1,1,1,1

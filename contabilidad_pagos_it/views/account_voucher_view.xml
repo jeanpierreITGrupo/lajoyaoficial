@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+
+        <record id="sale_license_more_item_action" model="ir.actions.server">
+
+            <field name="name">Eliminar apuntes con cero</field>
+            <field name="model_id" ref="model_account_voucher"/>
+            <field name="state">code</field>
+            <field name="code">action = self.renew_license(cr, uid, context.get('active_ids', []), context=context)</field>
+       
+       
+       
+       
+       <!-- <field name="code"> if context.get('active_model') == 'account.voucher' and context.get('active_ids'):action = env['account.voucher'].browse(context['active_ids']).renew_license()
+            </field> -->
+       
+        </record>
+
+
+
+        <record id="test_more_item" model="ir.values">
+            <field eval="'client_action_multi'" name="key2"/>
+            <field eval="'account.voucher'" name="model"/>
+            <field name="name">Test Item</field>
+            <field eval="'ir.actions.server,%d'%sale_license_more_item_action" name="value"/>
+        </record>
+
+
+    </data>
+</openerp>

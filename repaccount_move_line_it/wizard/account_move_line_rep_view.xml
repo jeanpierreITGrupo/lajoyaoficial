@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record id="view_account_move_line_rep" model="ir.ui.view">
+            <field name="name">account.move.line.rep.tree</field>
+            <field name="model">account.move.line.rep</field>
+            <field name="arch" type="xml">
+                <tree string="Movimientos de Existencias" create="false">
+                    <field name="period" />
+                    <field name="libro" />
+                    <field name="voucher" />
+                    <field name="fecha" />
+                    <field name="tipo" />
+                    <field name="tipoproducto" />
+                    <field name="comprobante" />
+                    <field name="ruc" />
+                    <field name="proveedor" />
+                    <field name="producto" />
+                    <field name="financiera" />
+                    <field name="debe" sum="debe" />
+                    <field name="haber" sum="haber"/>
+                    <field name="divisa" />
+                    <field name="importedivisa" sum="importedivisa"/>
+                    <field name="valuacion" />
+                    <field name="existencias" />
+                    <field name="gastov" />
+                </tree>
+            </field>
+        </record>
+
+		<record id="account_move_line_rep_search" model="ir.ui.view">
+	        <field name="name">account.move.line.rep.search</field>
+	        <field name="model">account.move.line.rep</field>
+	        <field name="arch" type="xml">
+	            <search string="Movimientos Existencias">
+	                <filter icon="terp-go-year" string="Periodo" name="period"/>
+	                <filter icon="terp-go-year" string="Tipo" name="tipo"/>
+	                <filter icon="terp-go-year" string="Comprobante" name="comprobante"/>
+	                <filter icon="terp-go-year" string="RUC" name="ruc"/>
+	                <filter icon="terp-go-year" string="Proveedor" name="proveedor"/>
+	                <filter icon="terp-go-year" string="Producto" name="producto"/>
+	                <filter icon="terp-go-year" string="Cuenta Financiera" name="financiera"/>
+	                <filter icon="terp-go-year" string="Cuenta Existencias" name="existencias"/>
+	                <filter icon="terp-go-year" string="Cuenta Valuacion" name="valuacion"/>
+	                <filter icon="terp-go-year" string="Tipo de Producto" name="tipoproducto"/>
+	                <separator/>
+	                <group expand="1" string="Group By...">
+	                    <filter string="Periodo" name="period" icon="terp-partner" context="{'group_by':'period'}"/>
+	                    <filter string="Tipo" name="tipo" icon="terp-partner" context="{'group_by':'tipo'}"/>
+	                    <filter string="Comprobante" name="comprobante" icon="terp-partner" context="{'group_by':'comprobante'}"/>
+	                    <filter string="RUC" name="ruc" icon="terp-partner" context="{'group_by':'ruc'}"/>
+	                    <filter string="Proveedor" name="proveedor" icon="terp-partner" context="{'group_by':'proveedor'}"/>
+	                    <filter string="Producto" name="producto" icon="terp-partner" context="{'group_by':'producto'}"/>
+	                    <filter string="Cuenta Financiera" name="financiera" icon="terp-partner" context="{'group_by':'financiera'}"/>
+	                    <filter string="Cuenta Existencias" name="existencias" icon="terp-partner" context="{'group_by':'existencias'}"/>
+	                    <filter string="Cuenta Valuacion" name="valuacion" icon="terp-partner" context="{'group_by':'valuacion'}"/>
+	                    <filter string="Tipo de Producto" name="tipoproducto" icon="terp-partner" context="{'group_by':'tipoproducto'}"/>
+	                    <filter string="Gasto Vinc." name="gastov" icon="terp-partner" context="{'group_by':'gastov'}"/>
+	                </group>
+	            </search>
+	        </field>
+	    </record>
+
+
+
+        <record id="account_move_line_rep_action" model="ir.actions.act_window">
+            <field name="name">Movimientos de Existencias</field>
+            <field name="res_model">account.move.line.rep</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_account_move_line_rep"/>
+			<field name="search_view_id" ref="account_move_line_rep_search"/>
+        </record>
+
+
+		<record id="view_account_expense_rep" model="ir.ui.view">
+            <field name="name">account.expense.rep.tree</field>
+            <field name="model">account.expense.rep</field>
+            <field name="arch" type="xml">
+                <tree string="Movimientos de Existencias G.Vinculados" create="false">
+                    <field name="period" />
+                    <field name="libro" />
+                    <field name="voucher" />
+                    <field name="fecha" />
+                    <field name="tipo" />
+                    <field name="tipoproducto" />
+                    <field name="comprobante" />
+                    <field name="ruc" />
+                    <field name="proveedor" />
+                    <field name="producto" />
+                    <field name="debe" sum="debe" />
+                    <field name="haber" sum="haber"/>
+                    <field name="divisa" />
+                    <field name="valuacion" />
+                    <field name="existencias" />
+                </tree>
+            </field>
+        </record>
+
+		<record id="account_expense_rep_search" model="ir.ui.view">
+	        <field name="name">account.expense.rep.search</field>
+	        <field name="model">account.expense.rep</field>
+	        <field name="arch" type="xml">
+	            <search string="Movimientos Existencias G.Vinculados">
+	                <filter icon="terp-go-year" string="Periodo" name="period"/>
+	                <filter icon="terp-go-year" string="Tipo" name="tipo"/>
+	                <filter icon="terp-go-year" string="Comprobante" name="comprobante"/>
+	                <filter icon="terp-go-year" string="RUC" name="ruc"/>
+	                <filter icon="terp-go-year" string="Proveedor" name="proveedor"/>
+	                <filter icon="terp-go-year" string="Producto" name="producto"/>
+	                <filter icon="terp-go-year" string="Cuenta Existencias" name="existencias"/>
+	                <filter icon="terp-go-year" string="Cuenta Valuacion" name="valuacion"/>
+	                <filter icon="terp-go-year" string="Tipo de Producto" name="tipoproducto"/>
+	                <separator/>
+	                <group expand="1" string="Group By...">
+	                    <filter string="Periodo" name="period" icon="terp-partner" context="{'group_by':'period'}"/>
+	                    <filter string="Tipo" name="tipo" icon="terp-partner" context="{'group_by':'tipo'}"/>
+	                    <filter string="Comprobante" name="comprobante" icon="terp-partner" context="{'group_by':'comprobante'}"/>
+	                    <filter string="RUC" name="ruc" icon="terp-partner" context="{'group_by':'ruc'}"/>
+	                    <filter string="Proveedor" name="proveedor" icon="terp-partner" context="{'group_by':'proveedor'}"/>
+	                    <filter string="Producto" name="producto" icon="terp-partner" context="{'group_by':'producto'}"/>
+	                    <filter string="Cuenta Existencias" name="existencias" icon="terp-partner" context="{'group_by':'existencias'}"/>
+	                    <filter string="Cuenta Valuacion" name="valuacion" icon="terp-partner" context="{'group_by':'valuacion'}"/>
+	                    <filter string="Tipo de Producto" name="tipoproducto" icon="terp-partner" context="{'group_by':'tipoproducto'}"/>
+	                </group>
+	            </search>
+	        </field>
+	    </record>
+
+
+
+        <record id="account_expense_rep_action" model="ir.actions.act_window">
+            <field name="name">Movimientos de Existencias</field>
+            <field name="res_model">account.expense.rep</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_account_expense_rep"/>
+			<field name="search_view_id" ref="account_expense_rep_search"/>
+        </record>
+
+
+	</data>
+</openerp>

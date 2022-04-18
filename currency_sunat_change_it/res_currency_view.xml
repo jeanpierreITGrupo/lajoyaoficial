@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_currency_form" model="ir.ui.view">
+            <field name="name">res.currency.form</field>
+            <field name="model">res.currency</field>
+            <field name="inherit_id" ref="base.view_currency_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='rate_ids']/tree/field[@name='rate']" position="before">
+                    <field name="type_purchase" />
+                    <field name="type_sale" />
+                </xpath>
+                <xpath expr="//field[@name='rate_ids']/tree/field[@name='name']" position="attributes">
+                    <attribute name="string">Fecha SBS</attribute>
+                </xpath>
+                <xpath expr="//field[@name='rate_ids']/tree/field[@name='name']" position="before">
+                    <field name="date_sunat" />
+                </xpath>
+                <field name="rate" position="attributes">
+                    <attribute name="readonly">False</attribute>
+                </field>
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>

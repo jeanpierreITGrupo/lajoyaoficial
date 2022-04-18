@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_cts_wizard_form">
+            <field name="name">cts.wizard.form</field>
+            <field name="model">cts.wizard</field>
+            <field name="arch" type="xml">
+                <form string="CTS" version="8.0">
+                    <group>
+                        <group>
+                            <field name="in_charge"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Generar Reporte" type="object" name="get_pdf" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_cts_wizard" model="ir.actions.act_window">
+            <field name="name">Reporte CTS</field>
+            <field name="res_model">cts.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</openerp>

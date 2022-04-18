@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_employee_tree" model="ir.ui.view">
+            <field name="name">hr.employee.tree</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr_nomina_it.view_employee_tree"/>
+            <field name="arch" type="xml">
+
+                <field name="name" position="replace"></field>
+                <field name="work_phone" position="replace"></field>
+                <field name="work_email" position="replace"></field>
+
+                <field name="department_id" position="before">
+                    <field name="name_upper"/>
+                    <field name="last_name_full"/>
+                </field>
+
+                <field name="parent_id" position="replace">
+                    <field name="gender"/>
+                    <field name="afiliacion"/>
+                    <field name="cta_cts"/>
+                    <field name="banco_cts"/>
+                </field>
+
+            </field>
+        </record>
+
+	</data>
+</openerp>

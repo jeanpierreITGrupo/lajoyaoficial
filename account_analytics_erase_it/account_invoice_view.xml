@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="invoice_supplier_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/header/button[@name='invoice_cancel']" position="after">
+                    <button 
+                        name="button_borrar_analytic_lines" 
+                        string="Borrar Ctas Analíticas"
+                        type="object"
+                        confirm="¿Desea eliminar las cuentas analíticas de esta factura?" 
+                        attrs="{'invisible':[('state','in',('open','paid','cancel'))]}"
+                    />
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

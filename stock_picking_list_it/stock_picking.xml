@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record id="view_stock_picking_list_tree" model="ir.ui.view">
+            <field name="name">stock.picking.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="location_dest_id"/>
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="origin"/>
+                    <field name="invoice_state"/>
+                    <field name="motivo_guia"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="stock_picking_list_search" model="ir.ui.view">
+            <field name="name">stock.picking.search</field>
+            <field name="model">stock.picking</field>
+            <field name="arch" type="xml">
+                <search string="Albaranes">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="origin"/>
+                    <group expand="1" string="Group By...">
+                        <filter string="Tipo Operación" name="motivo_guia" icon="terp-partner" context="{'group_by':'motivo_guia'}"/>
+                        <filter string="Partner" name="partner_id" icon="terp-partner" context="{'group_by':'partner_id'}"/>
+                        <filter string="Control Facturas" name="invoice_state" icon="terp-partner" context="{'group_by':'invoice_state'}"/>
+                        <filter string="Estado" name="state" icon="terp-partner" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_stock_picking_view2" model="ir.actions.act_window">
+            <field name="name">Movimientos de almacén</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_stock_picking_list_tree"/>
+            <field name="search_view_id" ref="stock_picking_list_search"/>
+        </record>
+
+        <menuitem 
+            name="Movimientos de almacén"
+            action="action_stock_picking_view2" 
+            id="menu_stock_picking_list" 
+            parent="stock.menu_stock_warehouse_mgmt"
+        />
+	</data>
+</openerp>

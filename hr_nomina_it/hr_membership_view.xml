@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record model="ir.ui.view" id="view_hr_membership_tree">
+            <field name="name">hr.membership.tree</field>
+            <field name="model">hr.membership</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <tree string="Afiliación" delete="0" create="0">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_membership_form">
+            <field name="name">hr.membership.form</field>
+            <field name="model">hr.membership</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <form string="Afiliación" delete="0" create="0">
+                    <header>
+                        <button name="duplicar_periodo" string="Duplicar Periodo" type="object" class="oe_highlight"/>                        
+                    </header>
+                    <group col="4">
+                        <field name="line_id" nolabel="1">
+                            <tree string="Afiliación" editable="bottom">
+                                <field name="periodo"/>
+                                <field name="membership"/>
+                                <field name="tasa_pensiones"/>
+                                <field name="prima"/>
+                                <field name="c_variable"/>
+                                <field name="c_mixta"/>
+                                <field name="rma"/>                   
+                            </tree>
+                        </field>
+                    </group>
+                </form>
+
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="view_hr_membership_wizard_form">
+            <field name="name">hr.membership.wizard.form</field>
+            <field name="model">hr.membership.wizard</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <form string="Duplicar Tasas" >
+                    <group col="4">
+                        <field name="period_ini"/>
+                        <field name="period_end"/>                           
+                    </group>
+                    <footer>
+                        <button name="do_rebuild" string="Procesar" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancelar" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+	</data>
+</openerp>

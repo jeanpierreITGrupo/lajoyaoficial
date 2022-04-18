@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="view_kardex_saldos_tree">
+			<field name="name">kardex.saldos.tree</field>
+			<field name="model">kardex.saldos</field>
+			<field name="arch" type="xml">
+				<tree string="kardex_saldos">
+					<field name="codigo"/>
+					<field name="producto"/>
+					<field name="entrada"/>
+					<field name="salida"/>
+					<field name="saldo"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="kardex_saldos_action" model="ir.actions.act_window">
+			<field name="name">Saldos</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">kardex.saldos</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+	</data>
+</openerp>

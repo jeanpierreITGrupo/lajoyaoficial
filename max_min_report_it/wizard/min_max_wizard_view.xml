@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="min_max_wizard_form_view">
+			<field name="name">min.max.wizard.form</field>
+			<field name="model">min.max.wizard</field>
+			<field name="arch" type="xml">
+				<form string="layout wizard">
+					<group>
+						<group string="Ingresar Días de Rotación">
+	                        <field name="rotation"/>
+	                        <field name="warehouse_id"/>
+	                        <field name="evaluation"/>
+	                        <field name="show_in"/>
+	                    </group>
+	                    <group>
+	                    </group>
+	                </group>
+
+                    <footer>
+                        <button string="Generar" name="do_rebuild" type="object" class="oe_highlight"/>
+                        o
+                        <button string="Cancelar" class="oe_link" special="cancel"/>
+                    </footer>
+
+				</form>
+			</field>
+		</record>
+
+	</data>
+</openerp>

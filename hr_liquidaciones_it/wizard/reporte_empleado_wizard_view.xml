@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_reporte_empleado_wizard_form">
+            <field name="name">reporte.empleado.wizard.form</field>
+            <field name="model">reporte.empleado.wizard</field>
+            <field name="arch" type="xml">
+                <form string="trabajador">
+                    <group>
+                        <group>
+                            <field name="forma"/>
+                            <field name="employee_id" domain="[('id','in',context['employees'])]" attrs="{'invisible':[('forma','=','1')]}"/>
+                        </group>
+                        <group></group>
+                    </group>
+                    <footer>
+                        <button string="Generar" name="do_rebuild" type="object" class="oe_highlight"/>
+                        o
+                        <button string="Cancelar" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>

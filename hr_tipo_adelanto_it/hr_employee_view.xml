@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record id="view_employee_form" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr_nomina_it.view_employee_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//notebook" position="inside">
+                    <page string="Datos Familiares">
+                        <group string="Datos Familiares">
+                            <field name="familiar_id" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="relative"/>
+                                    <field name="birth_date"/>
+                                    <field name="age"/>
+                                    <field name="documento"/>
+                                    <field name="estudiante"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group string="En Caso de Emergencia LLamar a">
+                            <field name="emergency_id" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="phone"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="action_menores_edad" model="ir.actions.server">
+            <field name="name">Consultar hijos menores de 18</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="state">code</field>
+            <field name="code">action = self.excel_menores_edad(cr,uid,context.get('active_ids'),context=context)</field>
+        </record>
+
+        <record model="ir.values" id="menores_edad_more">
+            <field name="name">Consultar hijos menores de 18</field>
+            <field name="key2">client_action_multi</field>
+            <field name="action_id" ref="action_menores_edad"/>
+            <field name="value" eval="'ir.actions.server,' + str(ref('action_menores_edad'))" />
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="key">action</field>
+            <field name="model">hr.employee</field>
+        </record>
+
+        <record id="hr_vinculo_familiar_tree_view" model="ir.ui.view">
+            <field name="name">hr.vinculo.familiar.tree</field>
+            <field name="model">hr.vinculo.familiar</field>
+            <field name="arch" type="xml">
+                <tree string="Vínculos Familiares">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_vinculo_familiar_form_view" model="ir.ui.view">
+            <field name="name">hr.vinculo.familiar.form</field>
+            <field name="model">hr.vinculo.familiar</field>
+            <field name="arch" type="xml">
+                <form string="Vínculos Familiares">
+                    <group>
+                        <group>                                                        
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="code"/>
+                        </group>
+                        <group></group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="hr_vinculo_familiar_action">
+            <field name="name">Vínculos Familiares</field>
+            <field name="res_model">hr.vinculo.familiar</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="hr_vinculo_familiar_action" id="menu_hr_distribucion_gastos" parent="hr.menu_hr_configuration" sequence="13"/>
+	</data>
+</openerp>

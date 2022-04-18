@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record id="view_armado_ruma_tree" model="ir.ui.view">
+            <field name="name">armado.ruma.tree</field>
+            <field name="model">armado.ruma</field>
+            <field name="inherit_id" ref="build_ruma_joya.view_armado_ruma_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//tree/field[@name='name']" position="after">
+                    <field name="categoria_id"/>
+                </xpath>
+
+            </field>
+        </record>
+		
+		<record model="ir.ui.view" id="view_armado_ruma_form">
+			<field name="name">armado.ruma.form</field>
+			<field name="model">armado.ruma</field>
+			<field name="inherit_id" ref="build_ruma_joya.view_armado_ruma_form"/>
+			<field name="arch" type="xml">
+
+				<xpath expr="//form/group[1]/group[1]/field[@name='name']" position="after">
+					<field name="categoria_id"/>
+				</xpath>
+
+			</field>
+		</record>
+
+		<record id="armado_ruma_search" model="ir.ui.view">
+            <field name="name">armado.ruma.search</field>
+            <field name="model">armado.ruma</field>
+            <field name="arch" type="xml">
+                <search string="Armado Ruma">
+                    <field name="name"/>
+                    <field name="categoria_id"/>
+                    <field name="period_id"/>
+                    <separator/>
+                    <group expand="1" string="Group By...">
+                        <filter string="Número" name="g_name" icon="terp-partner" context="{'group_by':'name'}"/>
+                        <filter string="Categoría" name="g_categoria_id" icon="terp-partner" context="{'group_by':'categoria_id'}"/>
+                        <filter string="Periodo" name="g_period_id" icon="terp-partner" context="{'group_by':'period_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+
+	</data>
+</openerp>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="1">
+    <record id="group_weighing_scales" model="res.groups">
+        <field name="name">Balanza</field>
+        <field name="category_id" ref="base.module_category_purchase_management"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+    </record>
+
+    <record id="group_weighing_columnas_scales" model="res.groups">
+        <field name="name">Balanza Columnas</field>
+        <field name="category_id" ref="base.module_category_purchase_management"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+    </record>
+
+    <record id="group_info_lab" model="res.groups">
+        <field name="name">Informacion Laboratorio</field>
+        <field name="category_id" ref="base.module_category_purchase_management"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+    </record>
+
+    <record id="group_laboratory" model="res.groups">
+        <field name="name">Laboratorio</field>
+        <field name="category_id" ref="base.module_category_purchase_management"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+    </record>  
+
+    <record id="group_account" model="res.groups">
+        <field name="name">Contabilidad</field>
+        <field name="category_id" ref="base.module_category_purchase_management"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+    </record>
+
+    <record id="group_trade" model="res.groups">
+        <field name="name">Comercial</field>
+        <field name="category_id" ref="base.module_category_purchase_management"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+    </record>
+
+    <record id="group_trade_manager" model="res.groups">
+        <field name="name">Jefe Comercial</field>
+        <field name="category_id" ref="base.module_category_purchase_management"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+    </record>
+
+    <record id="group_asignar_lot" model="res.groups">
+        <field name="name">Asignar lote</field>
+        <field name="category_id" ref="base.module_category_purchase_management"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+    </record>
+</data>
+</openerp>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+
+        <record model="ir.ui.view" id="view_hr_table_adelanto_form">
+            <field name="name">hr.table.adelanto.form</field>
+            <field name="model">hr.table.adelanto</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <form string="Adelanto">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" required="1" />
+                                <field name="code"/>
+                                <field name="tipo_trabajador"/>
+                                <field name="account_id" required="1" />
+                                <field name="is_basket"/>
+                                <field name="reward_dicount_type"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!--Vista Form-->
+
+
+
+        <!--Vista Tree-->
+        <record model="ir.ui.view" id="view_hr_table_adelanto_tree">
+            <field name="name">hr.table.adelanto.tree</field>
+            <field name="model">hr.table.adelanto</field>
+            <field name="arch" type="xml">
+                <tree string="Adelanto" >
+                    <field name="name"/>
+                    <field name="tipo_trabajador"/>
+                    <field name="account_id"/>
+                </tree>
+            </field>
+        </record> 
+
+        <record id="view_hr_table_adelanto_filter" model="ir.ui.view">
+            <field name="name">hr.table.adelanto.select</field>
+            <field name="model">hr.table.adelanto</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Adelantos">
+                    <field name="name"/>
+                    <field name="account_id"/>
+                    <field name="tipo_trabajador"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Nombre" domain="[]" context="{'group_by':'name'}"/>
+                        <filter string="Tipo Trabajador" domain="[]" context="{'group_by':'tipo_trabajador'}"/>
+                        <filter string="Cuenta" domain="[]" context="{'group_by':'account_id'}"/>
+                    </group>
+
+               </search>
+            </field>
+        </record>
+
+
+
+       
+
+
+	</data>
+</openerp>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+    	<record id="seq_purchase_liquidation_type" model="ir.sequence.type">
+            <field name="name">Liquidation Sequence type</field>
+            <field name="code">purchase.liquidation</field>
+        </record>
+
+        <record id="seq_purchase_liquidation" model="ir.sequence">
+            <field name="name">Liquidation</field>
+            <field name="code">purchase.liquidation</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+</openerp>

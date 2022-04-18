@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="conciliacion_especial_x_more_item_action" model="ir.actions.server">
+            <field name="name">Conciliacion Especial</field>
+            <field name="model_id" ref='model_account_move'/>
+            <field name="state">code</field>
+            <field name="code">action=self.conciliacion_especial_x(cr, uid, context.get('active_ids', []), context=context)</field>
+        </record>
+
+        <record model="ir.values" id="conciliacion_especial_x_more_item">
+            <field eval="'client_action_multi'" name="key2"/>
+            <field eval="'account.move'" name="model"/>
+            <field name="name">Conciliacion Especial</field>
+            <field name="value" eval="'ir.actions.server,%d'%conciliacion_especial_x_more_item_action" />
+            <field name="object" eval="True"/>
+        </record>
+
+
+
+	</data>
+</openerp>

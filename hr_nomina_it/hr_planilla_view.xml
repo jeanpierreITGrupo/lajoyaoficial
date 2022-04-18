@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_hr_planilla_wizard_form">
+            <field name="name">hr.planilla.wizard.form</field>
+            <field name="model">hr.planilla.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Planilla" version="8.0">
+                    <group>
+                        <group>
+                            <field name="period_id" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Mostrar" name="do_rebuild" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_hr_planilla1_tree" model="ir.ui.view">
+            <field name="name">hr.planilla1.tree</field>
+            <field name="model">hr.planilla1</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Planilla" create="false">
+                    <field name="employee_id" invisible="1"/>
+                    <field name="periodo"/>
+                    <field name="type_doc"/>
+                    <field name="dni" />
+                    <field name="codigo_trabajador"/>
+                    <field name="first_name_complete"/>
+					<field name="last_name_father"/>
+					<field name="last_name_mother"/>
+                    <field name="department_id" />
+                    <field name="ubicacion_id" />
+                    <field name="cargo" />
+                    <field name="afiliacion" />
+                    <field name="tipo_comision" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_planilla1_filter" model="ir.ui.view">
+            <field name="name">hr.planilla1.search</field>
+            <field name="model">hr.planilla1</field>
+            <field name="arch" type="xml">
+                <search string="Search planilla">
+                    <field name="first_name_complete"/>
+					<field name="last_name_father"/>
+					<field name="last_name_mother"/>
+                    <field name="afiliacion"/>
+                    <field name="cargo"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="AFP" icon="terp-partner" domain="[]" context="{'group_by':'afiliacion'}"/>
+                        <filter string="Cargo" icon="terp-folder-orange" domain="[]" context="{'group_by':'cargo'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>        
+
+    </data>
+</openerp>

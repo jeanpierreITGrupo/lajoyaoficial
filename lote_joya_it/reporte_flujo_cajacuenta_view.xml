@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+            <record model="ir.ui.view" id="view_order_form">
+                  <field name="name">sale.order.form</field>
+                  <field name="model">sale.order</field>
+                  <field name="inherit_id" ref="sale.view_order_form"/>
+                  <field name="arch" type="xml">
+                    <label for="product_uom_qty" position="before">
+
+                        <field name="lote_terminado_tabla_id" />
+                        </label>
+
+
+
+                    <xpath expr="//tree[@string='Sales Order Lines']/field[@name='state']" position="before">
+                        <field name="lote_terminado_tabla_id" />
+                    </xpath>
+
+                  </field>
+            </record>
+
+        <record id="view_move_picking_tree" model="ir.ui.view">
+            <field name="name">stock.move.tree</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree"/>
+            <field eval="4" name="priority"/>
+            <field name="arch" type="xml">
+                <field name="product_id" position="before">
+                    <field name="lote_terminado_tabla_id" />
+                </field>                
+            </field>
+        </record>
+
+
+        <record id="view_move_picking_form" model="ir.ui.view">
+            <field name="name">stock.move.form</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="product_id" position="before">
+                    <field name="lote_terminado_tabla_id" />
+                </field>                
+            </field>
+        </record>
+
+
+
+		<record id="view_lote_terminado_tabla" model="ir.ui.view">
+            <field name="name">lote.terminado.tabla.tree</field>
+            <field name="model">lote.terminado.tabla</field>
+            <field name="arch" type="xml">
+                <tree string="Lote Terminado">
+                    <field name="name" readonly="1"/>
+                                        <field name="period_id"  required="1"/>
+                                        <field name="fecha" required="1"/>
+                                        <field name="escoria" />
+                                        <field name="amalgama" />
+                                        <field name="campana" />
+                                        <field name="barra" />
+                                        <field name="peso_barra" sum="peso_barra"/>
+                                        <field name="au" />
+                                        <field name="ag" />
+                                        <field name="au_fino" sum="au_fino"/>
+                                        <field name="ag_fino" sum="ag_fino"/>
+                                        <field name="costo_und" />
+                                        <field name="costo_total" sum="costo_total"/>
+                </tree>
+            </field>
+        </record>
+
+		<record model="ir.ui.view" id="view_lote_terminado_tabla_form">
+			<field name="name">lote.terminado.tabla.form</field>
+			<field name="model">lote.terminado.tabla</field>
+			<field name="arch" type="xml">
+				<form string="Lote Terminado" >
+
+                    <header>
+                        <button name="actualizar" string="Actualizar" type="object" class="oe_highlight"/>
+                        <button name="valor_ventac" string="Calcular Valor Venta" type="object" class="oe_highlight"/>
+                        
+                    </header>
+                    <sheet>
+					
+                    <div class="oe_title">
+                        <h1>
+                            <label string="Lote Terminado" />
+                            <field name="name" class="oe_inline" readonly="1" />
+                        </h1>
+                                 
+                    </div>
+                    <notebook>
+                        <page string="Generales" >
+
+                            <group>
+                                <group>
+                                                <field name="period_id"  required="1"/>
+                                                <field name="fecha" required="1"/>
+                                                <field name="escoria" />
+                                                <field name="amalgama" />
+                                                <field name="campana" />
+                                                <field name="barra" />
+                                                <field name="peso_barra" />
+                                </group>
+                                <group>
+                                                <field name="au" />
+                                                <field name="ag" />
+                                                <field name="au_fino" />
+                                                <field name="ag_fino" />
+                                                <field name="costo_und" />
+                                                <field name="costo_total" />
+
+                                                <field name="factura" domain="[('type','=','out_invoice')]" />
+                                                <field name="albaran" />
+                                                <field name="valor_venta" />
+                                                <field name="diferencia_v_venta" />
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Costo Mineral" >
+                            <group>
+                                <group>
+                                    <field name="costo_oro" />
+                                    <field name="costo_plata" />
+                                    <field name="costo_chancado" />
+                                    <field name="costo_zona" />
+                                </group>
+                                <group>
+                                    <field name="costo_expediente" />
+                                    <field name="gastos_generales" />
+                                    <field name="total_mineral" />
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Gasto Indirectos" >
+                            <field name="grilla_id" >
+                                <tree>
+                                    <field name="rubro"/>
+                                    <field name="monto"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    </sheet>
+				</form>
+			</field>
+		</record>
+
+
+        <record id="lote_terminadotabla_search" model="ir.ui.view">
+            <field name="name">lote.terminado.tabla.search</field>
+            <field name="model">lote.terminado.tabla</field>
+            <field name="arch" type="xml">
+                <search string="Lote Terminado">
+                    <field name="period_id" />
+                    <field name="campana" />
+                    <field name="fecha" />
+                    <separator/>
+                    <group expand="1" string="Group By...">
+                        <filter string="Periodo" name="" icon="terp-partner" context="{'group_by':'period_id'}"/>
+                        <filter string="Campaña" name="" icon="terp-partner" context="{'group_by':'campana'}"/>
+                        <filter string="Fecha" name="" icon="terp-partner" context="{'group_by':'fecha'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+		<record id="lote_terminado_action" model="ir.actions.act_window">
+			<field name="name">Lote Terminado</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">lote.terminado.tabla</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+        <menuitem 
+            id="menu_prod_terminado" 
+            name="Producto Terminado" 
+            sequence="1" 
+            parent="purchase_parameters_it.menu_trade"
+            />
+
+
+        <menuitem 
+            id="menu_lote_terminado" 
+            name="Lote Terminado" 
+            sequence="1" 
+            action="lote_terminado_action" 
+            parent="menu_prod_terminado"
+            />
+
+        <record id="invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+
+                
+                <field name="product_id" position="before">
+                    <field name="nro_lote_terminado" />
+                </field>
+            </field>
+        </record>
+
+
+	</data>
+</openerp>

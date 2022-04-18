@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<!--						PLANILLA DE LIQUIDACION							-->
+		<record model="ir.ui.view" id="view_hr_liquidaciones_tree">
+            <field name="name">hr.liquidaciones.tree</field>
+            <field name="model">hr.liquidaciones</field>
+            <field name="arch" type="xml">
+                <tree string="Liquidacion">
+                    <field name="period_id"/>
+                    <field name="check_bonus"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="liquidaciones_wizard_action" model="ir.actions.act_window">
+			<field name="name">Liquidacion</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.liquidations.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<record model="ir.ui.view" id="view_hr_liquidaciones_form">
+			<field name="name">hr.liquidaciones.form</field>
+			<field name="model">hr.liquidaciones</field>
+			<field name="arch" type="xml">
+				<form string="Liquidación">
+					<header>
+						<button string="Actualizar" name="calculate" type="object" class="oe_highlight"/>
+						<button string="Exportar" name="export" type="object"/>
+						<button string="Generar Reportes" name="open_reporte_empleado_wizard" type="object"/>
+						<button string="Liquidar CTS" name="%(liquidaciones_wizard_action)d" type="action" invisible="1"/>
+						<button string="Generar Certificado de Trabajo" name="open_cert_wizard" type="object" invisible="1"/>
+					</header>
+					<group string="Liquidacion">
+						<group>
+							<field name="period_id" required="1" />
+							<field name="check_bonus" />
+							<field name="change_type" />
+							<field name="sixth_gratification" />
+							<field name="familiar_assignation" invisible="1"/>
+						</group>
+						<group>
+							<field name="cts_concept" domain="[('check_liquida','=',True)]"/>
+							<field name="grati_concept" domain="[('check_liquida','=',True)]"/>
+							<field name="bono_concept" domain="[('check_liquida','=',True)]"/>
+							<field name="vacacion_concept" domain="[('check_liquida','=',True)]"/>
+							<field name="indem_concept" domain="[('check_liquida','=',True)]"/>
+						</group>			
+					</group>
+
+					<notebook>
+						<page string="CTS">
+							<field name="lines_cts">
+								<tree create="false" editable="bottom">
+									<field name="code" readonly="1" />
+									<field name="employee_id" readonly="1" />
+									<field name="start_date" readonly="1" />
+									<field name="comp_date" readonly="0" />
+									<field name="cese_date" readonly="1" />
+									<field name="absences" readonly="0" />
+									<field name="basic_remuneration" readonly="1" />
+									<field name="nocturnal_surcharge_mean" readonly="0" />
+									<field name="sixth_gratification"/>
+									<field name="computable_remuneration" readonly="1" />
+									<field name="computable_months" readonly="0" />
+									<field name="computable_days" readonly="0" />
+									<field name="for_months" readonly="1" />
+									<field name="for_days" readonly="1" />
+									<!-- <field name="absences_discount" readonly="1" /> -->
+									<field name="total_payment" readonly="1" />
+									<field name="interes"/>
+									<field name="total_actualizado"/>
+									<field name="issue_date" readonly="0" />
+									<field name="cese_reason" readonly="0" />
+								</tree>
+							</field>
+						</page>
+						<page string="Gratificación">
+							<field name="lines_grat">
+								<tree create="false" editable="bottom">
+									<field name="code" readonly="1" />
+									<field name="employee_id" readonly="1" />
+									<field name="start_date" readonly="1" />
+									<field name="comp_date" readonly="0" />
+									<field name="cese_date" readonly="1" />
+									<field name="absences" readonly="0" />
+									<field name="basic_remuneration" readonly="1" />
+									<field name="nocturnal_surcharge_mean" readonly="0" />
+									<field name="computable_remuneration" readonly="1" />
+									<field name="computable_months" readonly="0" />
+									<field name="computable_days" readonly="0" />
+									<field name="for_months" readonly="1" />
+									<field name="for_days" readonly="1" />
+									<!-- <field name="absences_discount" readonly="1" /> -->
+									<field name="total_months" readonly="1" />
+									<field name="bonus" readonly="1" />
+									<field name="total_gratification_bonus" readonly="1" />
+									<field name="ONP" readonly="1" />
+									<field name="AFP_JUB" readonly="1" />
+									<field name="AFP_SI" readonly="1" />
+									<field name="AFP_COM" readonly="1" />
+									<field name="total_net" readonly="1" />
+									<field name="adelanto"/>
+									<field name="saldo"/>
+									<field name="interes"/>
+									<field name="total_actualizado"/>
+									<field name="issue_date" />
+									<field name="cese_reason" readonly="0" />
+								</tree>
+							</field>
+						</page>		
+						<page string="Vacación">
+							<field name="lines_vac">
+								<tree create="false" editable="bottom">
+									<field name="code" readonly="1" />
+									<field name="employee_id" readonly="1" />
+									<field name="start_date" readonly="1" />
+									<field name="comp_date" readonly="0" />
+									<field name="cese_date" readonly="1" />
+									<field name="absences" readonly="0" />
+									<field name="basic_remuneration" readonly="1" />
+									<field name="nocturnal_surcharge_mean" readonly="0" />
+									<field name="computable_remuneration" readonly="1" />
+									<field name="computable_months" readonly="0" />
+									<field name="computable_days" readonly="0" />
+									<field name="for_months" readonly="1" />
+									<field name="for_days" readonly="1" />
+									<!-- <field name="absences_discount" readonly="1" /> -->
+									<field name="total_holidays_sinva" readonly="1" />
+									<field name="fall_due_holidays" readonly="0" />
+									<field name="total_holidays" readonly="1" />
+									<field name="ONP" readonly="1" />
+									<field name="AFP_JUB" readonly="1" />
+									<field name="AFP_SI" readonly="0" />
+									<field name="AFP_COM" readonly="1" />
+									<field name="afp_2p" readonly="1" />
+									<field name="fondo_jub" readonly="1" />
+									<field name="compensation" readonly="0" />
+									<field name="total_net" readonly="1" />
+									<field name="interes"/>
+									<field name="total_actualizado"/>
+									<field name="issue_date" />
+									<field name="cese_reason" readonly="0" />
+									<button name="open_incomes" type="object" string="Ingresos" icon="gtk-edit"/>
+								</tree>
+							</field>
+						</page>
+					</notebook>
+				</form>
+			</field>
+		</record>
+
+		<record id="hr_liquidaciones_action" model="ir.actions.act_window">
+			<field name="name">Liquidacion</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.liquidaciones</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<menuitem name="Planilla" id="hr_planilla_liquidacioonn_menu" parent="hr.menu_hr_root" sequence="2"/>
+		<menuitem name="Liquidación" id="hr_liquidacion_menu" parent="hr_planilla_liquidacioonn_menu" sequence="0"/>
+		<menuitem name="Planilla Liquidación" id="hr_planilla_liquidacion_menumenu" parent="hr_liquidacion_menu" sequence="0" action="hr_liquidaciones_action"/>
+
+		<!--						DETALLES DE LIQUIDACION							-->
+		<record model="ir.ui.view" id="view_hr_liquidaciones_view_tree">
+            <field name="name">hr.liquidaciones.view.tree</field>
+            <field name="model">hr.liquidaciones.view</field>
+            <field name="arch" type="xml">
+                <tree string="Liquidacion">
+                	<field name="code" readonly="1" />
+                    <field name="padre" string="Periodo"/>
+                    <field name="cel"/>
+                    <field name="trabajador" />
+                    <field name="start_date"/>
+                    <field name="comp_date"/>
+                    <field name="cese_date"/>
+                    <field name="absences" sum="absences" />
+                    <field name="fall_due_holidays" sum="fall_due_holidays"/>
+                    <field name="basic_remuneration" sum="basic_remuneration"/>
+                    <field name="nocturnal_surcharge_mean" sum="nocturnal_surcharge_mean"/>
+                    <field name="sixth_gratification" sum="sixth_gratification"/>
+                    <field name="computable_remuneration" sum="computable_remuneration"/>
+                    <field name="computable_months" sum="computable_months"/>
+                    <field name="computable_days" sum="computable_days"/>
+                    <field name="for_months" sum="for_months"/>
+                    <field name="for_days" sum="for_days"/>
+                    <field name="total_months" sum="total_months"/>
+                    <field name="bonus" sum="bonus"/>
+                    <field name="total_gratification_bonus" sum="total_gratification_bonus"/>
+                    <field name="total_holidays" sum="total_holidays"/>
+                    <field name="ONP" sum="ONP"/>
+                    <field name="AFP_JUB" sum="AFP_JUB"/>
+                    <field name="AFP_SI" sum="AFP_SI"/>
+                    <field name="AFP_COM" sum="AFP_COM"/>
+                    <field name="total_payment" sum="total_payment"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_liquidaciones_view_search" model="ir.ui.view">
+			<field name="name">hr.liquidaciones.view.search</field>
+			<field name="model">hr.liquidaciones.view</field>
+			<field name="arch" type="xml">
+				<search string="buscar">
+					<field name="cel"/>
+					<field name="padre" string="Periodo"/>
+	                <separator/>
+
+	                <group expand="1" string="Group By...">
+	                    <filter string="Tipo" name="cel" icon="terp-partner" context="{'group_by':'cel'}"/>
+	                    <filter string="Periodo" name="padre" icon="terp-partner" context="{'group_by':'padre'}"/>
+	                    <filter string="Trabajador" name="trabajador" icon="terp-partner" context="{'group_by':'trabajador'}"/>
+	                </group>
+
+				</search>
+			</field>
+		</record>
+
+		<record id="hr_liquidaciones_detalle_action" model="ir.actions.act_window">
+			<field name="name">Detalle Liquidaciones</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.liquidaciones.view</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+		<menuitem name="Detalle Liquidaciones" id="hr_liquidaciondes_detalle_menu" parent="hr_liquidacion_menu" action="hr_liquidaciones_detalle_action" sequence="0" />
+
+		<record model="ir.ui.view" id="view_hr_liquidaciones_parametros_tree">
+            <field name="name">hr.liquidaciones.parametros.tree</field>
+            <field name="model">hr.liquidaciones.parametros</field>
+            <field name="arch" type="xml">
+                <tree string="Liquidacion" create="0" delete="0">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_liquidaciones_parametros_form">
+            <field name="name">hr.liquidaciones.parametros.form</field>
+            <field name="model">hr.liquidaciones.parametros</field>
+            <field name="arch" type="xml">
+                <form string="Liquidacion" create="0" delete="0">
+                	<group>                		
+                		<group>                			
+                    		<field name="faltas_gratificaciones"/>
+                		</group>
+                		<group></group>
+                	</group>
+                </form>
+            </field>
+        </record>
+	
+		<record id="hr_liquidaciones_parametros_action" model="ir.actions.act_window">
+			<field name="name">Parámetros</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.liquidaciones.parametros</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem id="menu_hr_liquidaciones" name="Liquidaciones" parent="hr.menu_hr_configuration" sequence="16"/>
+		<menuitem action="hr_liquidaciones_parametros_action" id="menu_hr_liquidaciones_parametros" parent="hr_liquidaciones_it.menu_hr_liquidaciones" sequence="0"/>
+
+		<record model="ir.ui.view" id="view_hr_liquidaciones_faltas_tree">
+            <field name="name">hr.liquidaciones.faltas.tree</field>
+            <field name="model">hr.liquidaciones.faltas</field>
+            <field name="arch" type="xml">
+                <tree string="Liquidacion" editable="bottom">
+                    <field name="period_id"/>
+                    <field name="employee_id"/>
+                    <field name="cts"/>
+                    <field name="gratificaciones"/>
+                    <field name="vacaciones"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_liquidaciones_faltas_action" model="ir.actions.act_window">
+			<field name="name">Faltas de Empleados</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.liquidaciones.faltas</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+		<menuitem action="hr_liquidaciones_faltas_action" id="menu_hr_liquidaciones_faltas" parent="hr_liquidaciones_it.menu_hr_liquidaciones" sequence="1"/>
+	</data>
+</openerp>

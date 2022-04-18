@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record id="view_picking_form" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field eval="12" name="priority"/>
+            <field name="arch" type="xml">
+                <field name="picking_type_id" position="after">
+                	<field name="is_req"/>
+                	<field name="check_req" invisible="1"/>
+                	<field name="check_mark_as_todo" invisible="1"/>
+                </field>
+
+                <xpath expr="//form/header/button[@name='action_confirm']" position="replace">
+                	<button name="action_confirm" string="Mark as Todo" type="object" class="oe_highlight" attrs="{'invisible':[('check_mark_as_todo','=',True)]}" groups="base.group_user"/>
+                </xpath>
+            </field>
+        </record>
+
+		<record model="ir.ui.view" id="vpicktree_req">
+			<field name="name">stock.picking.tree</field>
+			<field name="model">stock.picking</field>
+			<field name="arch" type="xml">
+				<tree string="Albaranes">
+					<field name="name"/>
+                    <field name="location_dest_id"/>
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="origin"/>
+                    <field name="backorder_id"/>
+                    <field name="invoice_state" groups="account.group_account_invoice"/>
+                    <field name="motivo_guia" string="Tipo de Operación"/>
+                    <field name="state"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="vpicktree_req_action" model="ir.actions.act_window">
+            <field name="name">Requerimientos a Almacenero</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_id" ref="vpicktree_req"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_req','=',True)]</field>
+            <field name="context">{'req_action':'req_act'}</field>
+        </record>
+
+        <menuitem 
+            id="vpicktree_req_menu" 
+            action="vpicktree_req_action"
+            parent="previous_requirements_joya.submenu_production_joya" 
+            sequence="9"
+            groups="stock_requerimiento_almacen_it.group_stock_picking_req"
+        />
+
+	</data>
+</openerp>

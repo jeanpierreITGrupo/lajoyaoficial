@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data noupdate="1">
+		<record id="seq_account_transfer" model="ir.sequence.type">
+            <field name="name">account.transfer</field>
+            <field name="code">account.transfer</field>
+        </record>
+        <record id="seq_account_transfer_1" model="ir.sequence">
+            <field name="name">account.transfer</field>
+            <field name="code">account.transfer</field>
+            <field name="prefix">Transferencia </field>
+            <field name="padding">7</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+	<data>
+		<record model="ir.ui.view" id="view_account_transfer_form">
+			<field name="name">account.transfer.form</field>
+			<field name="model">account.transfer</field>
+			<field name="arch" type="xml">
+				<form string="account_transfer" version="7.0">
+					<header>
+						<button name="aprove" type="object" states="draft" string="Ejecutar" class="oe_highlight"/>
+						<button name="action_cancel" states="done" string="Cancelar" type="object" />
+						<!-- <button name="action_cancel_draft" states="cancel,sent,confirmed" string="Set to Draft" type="object" /> -->
+						<!-- <button name="update_number" string="Actualizar Numero" type="object" /> -->
+						<field name="state" widget="statusbar" statusbar_visible="draft,done,cancel" statusbar_colors='{"draft":"red","done":"red","cancel":"blue"}' readonly="1"/>
+					</header>
+					<sheet>
+						<div class="oe_title">
+							<h1>
+								<!-- <label string="Cuenta por rendir "/> -->
+								<field name="name" class="oe_inline" readonly="1"/>
+							</h1>
+						</div>
+						<group>
+							<group>
+								<field name="date" attrs="{'readonly':[('state','not in',['draft'])]}" required="1"/>
+							</group>
+							<group>
+								<!-- <field name="company_id" attrs="{'readonly':[('state','not in',['draft'])]}" required="1" /> -->
+								<field name="doc_origen" attrs="{'readonly':[('state','not in',['draft'])]}" required="1" />
+								<field name="doc_destiny" attrs="{'readonly':[('state','not in',['draft'])]}" required="1" />
+								<field name="glosa" attrs="{'readonly':[('state','not in',['draft'])]}" required="1" />
+							</group>
+						</group>
+						<notebook>
+							<page string="Detalles">
+								<group>
+									<group>
+										<field name="origen_journal_id" domain="['|',('type','=','cash'),('type','=','bank')]" attrs="{'readonly':[('state','not in',['draft'])]}" required="1"/>
+										<field name="origen_amount" attrs="{'readonly':[('state','not in',['draft'])]}" required="1"/>
+										<field name="origen_exchange" readonly="1"/>
+									</group>
+									<group>
+										<field name="destiny_journal_id" domain="['|',('type','=','cash'),('type','=','bank')]" attrs="{'readonly':[('state','not in',['draft'])]}" required="1"/>
+										<field name="destiny_amount" readonly="1"/>
+										<field name="destiny_exchange" attrs="{'readonly':[('state','not in',['draft'])]}" />
+									</group>
+								</group>
+							</page>
+							<page string="Asientos">
+								<field name="done_move" />
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+            </field>
+        </record>
+		
+		<record model="ir.ui.view" id="view_account_transfer_tree">
+			<field name="name">account.transfer.tree</field>
+			<field name="model">account.transfer</field>
+			<field name="arch" type="xml">
+				<tree string="account_transfer" fonts="bold:state=='done'" colors="red:state=='cancel';blue:state=='draft';">
+					<field name="name" string="Transferencia"/>
+                    <field name="date" />
+                    <field name="origen_journal_id" />
+                    <field name="destiny_journal_id"/>
+                    <field name="origen_amount" />
+                    <field name="destiny_exchange" />
+                    <field name="state"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id='account_transfer_action' model='ir.actions.act_window'>
+			<field name='name'>Transferencias</field>
+			<field name='res_model'>account.transfer</field>
+			<field name='view_type'>form</field>
+			<field name='view_mode'>tree,form</field>
+		</record>
+
+		<menuitem id='account_transfer_menu' parent='account.menu_finance_bank_and_cash' action="account_transfer_action" />
+
+		<record id="view_account_journal_form" model="ir.ui.view">
+            <field name="name">account.journal.form</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <field name="sequence_id" position="after">
+                 <field name="sequence_transference" />
+                </field>
+            </field>
+        </record>
+
+
+	</data>
+</openerp>

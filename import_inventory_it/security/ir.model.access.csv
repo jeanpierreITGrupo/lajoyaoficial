@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_import_inventory,import.inventory,model_import_inventory,,1,1,1,1
+access_import_inventory_line,import.inventory.line,model_import_inventory_line,,1,1,1,1

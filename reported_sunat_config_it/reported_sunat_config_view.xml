@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+		<record id="view_reported_sunat_config" model="ir.ui.view">
+            <field name="name">reported.sunat.config.tree</field>
+            <field name="model">reported.sunat.config</field>
+            <field name="arch" type="xml">
+                <tree string="Reporte Sunat Configuración">
+                    <field name="name" />
+                    <field name="function" />
+                    <field name="company" />
+                    <field name="description" />
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="account_contable_period_action" model="ir.actions.act_window">
+            <field name="name">Reportes Sunat Configuración</field>
+            <field name="res_model">reported.sunat.config</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="it_reported_sunat_config_menu" name="Reportes Sunat Config."
+                  parent="base.menu_config" action="account_contable_period_action"/>
+
+    </data>
+</openerp>

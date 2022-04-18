@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+            <record id="action_payroll_export" model="ir.actions.server">
+                  <field name="name">Exportar Excel</field>
+                  <field name="type">ir.actions.server</field>
+                  <field name="model_id" ref="model_hr_planilla1"/>
+                  <field name="state">code</field>
+                  <field name="code">action = self.export_plame(cr,uid,context.get('active_ids'),context=context)</field>
+            </record>
+
+            <record model="ir.values" id="payroll_plame_more">
+                  <field name="name">Exportar Excel</field>
+                  <field name="key2">client_action_multi</field>
+                  <field name="action_id" ref="action_payroll_export"/>
+                  <field name="value" eval="'ir.actions.server,' + str(ref('action_payroll_export'))" />
+                  <field name="model_id" ref="model_hr_planilla1"/>
+                  <field name="key">action</field>
+                  <field name="model">hr.planilla1</field>
+            </record>
+
+            <record id="action_payroll_export_afp" model="ir.actions.server">
+                  <field name="name">Exportar AFPNET</field>
+                  <field name="type">ir.actions.server</field>
+                  <field name="model_id" ref="model_hr_planilla1"/>
+                  <field name="state">code</field>
+                  <field name="code">action = self.export_afp_net(cr,uid,context.get('active_ids'),context=context)</field>
+            </record>
+
+            <record model="ir.values" id="payroll_afpnet_more">
+                  <field name="name">Exportar AFPNET</field>
+                  <field name="key2">client_action_multi</field>
+                  <field name="action_id" ref="action_payroll_export_afp"/>
+                  <field name="value" eval="'ir.actions.server,' + str(ref('action_payroll_export_afp'))" />
+                  <field name="model_id" ref="model_hr_planilla1"/>
+                  <field name="key">action</field>
+                  <field name="model">hr.planilla1</field>
+            </record>
+	</data>
+</openerp>

@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+<data noupdate="0">
+
+<record id="group_licitacionmensual" model="res.groups">
+        <field name="name">Aprobar Licitacion Mensual</field>
+        <field name="category_id" ref="base.module_category_accounting_and_finance"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    
+    <record id="group_licitacionmensualgenerar" model="res.groups">
+        <field name="name">Generar Licitacion Mensual</field>
+        <field name="category_id" ref="base.module_category_accounting_and_finance"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    
+    <record id="group_licitacionmensualmodificar" model="res.groups">
+        <field name="name">Modificar Licitacion Mensual</field>
+        <field name="category_id" ref="base.module_category_accounting_and_finance"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+</data>
+	<data>
+
+
+        <record id="licitacion_advancee_search" model="ir.ui.view">
+            <field name="name">licitacion.advance.search</field>
+            <field name="model">licitacion.advance</field>
+            <field name="arch" type="xml">
+                <search string="Requisición de Compra">
+                    <field name="number" />
+                    <field name="fecha" />
+                    <field name="solicitante" />
+                    <field name="area" />
+                    <separator/>
+                    <group expand="1" string="Group By...">
+                        <filter string="Estado" name="state" icon="terp-partner" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+		<record id="view_licitacion_advance_tree" model="ir.ui.view">
+            <field name="name">licitacion.advance.tree</field>
+            <field name="model">licitacion.advance</field>
+            <field name="arch" type="xml">
+                <tree string="Requisición de Compra">
+                    <field name="number" />
+                    <field name="fecha" />
+                    <field name="solicitante" />
+                    <field name="area" />
+                    <field name="lineaporconsumir" string="Por Consumir" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+		<record model="ir.ui.view" id="view_licitacion_advance_form">
+			<field name="name">licitacion.advance.form</field>
+			<field name="model">licitacion.advance</field>
+			<field name="arch" type="xml">
+				<form string="Requisición de Compra" >
+                    <header>
+                        <button string="Generar Pedido" name="generar" type="object" class="oe_highlight" states="aprobado" />
+					    <button string="Aprobar" name="verificar_validador" type="object" class="oe_highlight" states="draft" />
+						<field name="state" widget="statusbar"  />
+                    </header>
+                    <sheet>
+					
+                     <div class=" oe_right oe_button_box">
+                        <button class="oe_inline oe_stat_button" type="object" icon="fa-list" name="ver_todo">
+                            <field string="Total Lineas" name="totallinea" widget="statinfo"/>
+                        </button>
+
+                        <button class="oe_inline oe_stat_button" type="object" icon="fa-book" name="ver_consumidos">
+                            <field string="Consumidas" name="lineaconsumida" widget="statinfo"/>
+                        </button>
+
+                        <button class="oe_inline oe_stat_button" type="object" icon="fa-clipboard" name="ver_restantes">
+                            <field string="Por Consumir" name="lineaporconsumir" widget="statinfo"/>
+                        </button>
+
+                        <button class="oe_inline oe_stat_button" type="object" icon="fa-book" name="ver_solicitudes">
+                            <field string="Solicitudes" name="solicitudnro" widget="statinfo"/>
+                        </button>
+
+                        <button class="oe_inline oe_stat_button" type="object" icon="fa-book" name="ver_pedidos">
+                            <field string="Pedidos" name="pedidosnro" widget="statinfo"/>
+                        </button>
+
+                                  </div>
+                    <div class="oe_title">
+                        <h1>
+                            <label string="Licitación Mensual" />
+                            <field name="number" class="oe_inline" readonly="1" />
+                        </h1>
+                                 
+                    </div>
+                        <group>
+							<group>
+			                    <field name="fecha" required="1"  attrs="{'readonly':[('state','=','aprobado')]}" />
+			                    <field name="solicitante"  required="1"  attrs="{'readonly':[('state','=','aprobado')]}"/>
+							</group>
+							<group>
+			                    <field name="area"  required="1"  attrs="{'readonly':[('state','=','aprobado')]}"/>
+
+                                <button string="(Actualizar)" name="actualizar" type="object" class="oe_link"/>
+							</group>
+						</group>
+                        <notebook>
+                           <page string="Lineas">
+                                <field name="lineas" domain="[('oculto','!=',False)]"  attrs="{'readonly':[('state','=','aprobado')]}">
+                                    <tree colors="red:saldo_pedido &lt; 0.0;black:saldo_pedido &gt; 0;blue:saldo_pedido == 0" editable="bottom" create="1" >
+                                        <button name="ocultar" icon="gtk-remove" string="Ocultar" type="object"/>
+                                        <field name="oculto" invisible="0" />   
+                                        <field name="nro_item" readonly="1"/>
+                                        <field name="centro_costo" domain="[('type','!=','view'),('state','not in',('close','cancelled'))]" />
+                                        <field name="product_id"  required="1"/>
+                                        <field name="descripcion"  required="1"/>
+                                        <field name="unidad"  readonly="1"/>
+                                        <field name="cantidad" required="1"/>
+                                        <field name="justificacion" />
+                                        <field name="prioridad"  />
+                                        <field name="cantidad_pedido" readonly="1"/>
+                                        <field name="saldo_pedido"  readonly="1"/>
+                                        <field name="fecha_llegada" />
+                                        <field name="proveedor"  required="1"/>
+                                    </tree>
+                                </field>
+
+                            </page>
+
+                           <page string="Filtros">
+                                <group col="6">
+                                    <group col="3">
+                                        <label for='f_cantidad'/>
+                                        <field name="f_cantidad" nolabel="1" attrs="{'readonly':[('state','=','aprobado')]}"/>
+                                        <field name="c_cantidad" nolabel="1" attrs="{'readonly':[('state','=','aprobado')]}"/>
+
+                                        <label for='f_producto'/>
+                                        <field name="f_producto" nolabel="1" attrs="{'readonly':[('state','=','aprobado')]}"/>
+                                        <field name="c_producto" nolabel="1" attrs="{'readonly':[('state','=','aprobado')]}"/>
+
+                                        <label for='f_proveedor'/>
+                                        <field name="f_proveedor" nolabel="1" attrs="{'readonly':[('state','=','aprobado')]}"/>
+                                        <field name="c_proveedor" nolabel="1" attrs="{'readonly':[('state','=','aprobado')]}"/>
+
+                                        <label for='f_prioridad'/>
+                                        <field name="f_prioridad" nolabel="1" attrs="{'readonly':[('state','=','aprobado')]}"/>
+                                        <field name="c_prioridad" nolabel="1" attrs="{'readonly':[('state','=','aprobado')]}"/>
+
+                                        <label for='f_fecha'/>
+                                        <field name="f_fecha" nolabel="1" attrs="{'readonly':[('state','=','aprobado')]}"/>
+                                        <field name="c_fecha" nolabel="1" attrs="{'readonly':[('state','=','aprobado')]}"/>
+
+                                        <button string="(Filtrar)" name="filtrar" type="object" class="oe_link"/>
+                                    </group>       
+                                    <group col="3">
+                                    </group>                             
+                                </group>
+                           </page>
+                        </notebook>
+                    </sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="licitacion_advance_action" model="ir.actions.act_window">
+			<field name="name">Requisición de Compra</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">licitacion.advance</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem 
+			id="menu_licitacion_advance" 
+			name="Requisición de Compra" 
+			sequence="-1" 
+			action="licitacion_advance_action" 
+			parent="purchase.menu_procurement_management"
+			/>
+
+
+
+        <record id="view_purchase_parameter_form" model="ir.ui.view">
+            <field name="name">purchase.parameter.form</field>
+            <field name="model">purchase.parameter</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Compras Parameteros" version="8.0" create="false" delete="false">
+                    <notebook>
+                        <page string="Configuración">
+                            <group string="Almacen Defecto">
+                                <field name="picking_type_default" />
+                            </group>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_purchase_parameter_tree" model="ir.ui.view">
+            <field name="name">purchase.parameter.tree</field>
+            <field name="model">purchase.parameter</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Main Parameter" create="false" delete="false">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_purchase_parameter" model="ir.actions.act_window">
+            <field name="name">Parametros</field>
+            <field name="res_model">purchase.parameter</field>
+            <field name="view_id" ref="view_purchase_parameter_tree"/>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="search_view_id" ref="account_move_line_book_search"/> -->
+        </record>
+        
+        <menuitem action="action_purchase_parameter" sequence="258" id="menu_purchase_parameter" parent="purchase.menu_purchase_config_purchase"/>
+
+
+        <record id="view_area_advance_tree" model="ir.ui.view">
+            <field name="name">area.table.tree</field>
+            <field name="model">area.table</field>
+            <field name="arch" type="xml">
+                <tree string="Area" editable="bottom">
+                    <field name="name" required="1" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_area_table" model="ir.actions.act_window">
+            <field name="name">Areas</field>
+            <field name="res_model">area.table</field>
+            <field name="view_id" ref="view_area_advance_tree"/>
+            <field name="type">ir.actions.act_window</field>
+            <field name="sequence" eval="1"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <!-- <field name="search_view_id" ref="account_move_line_book_search"/> -->
+        </record>
+        
+        <menuitem action="action_area_table" id="menu_area_table" parent="purchase.menu_purchase_config_purchase"/>
+
+
+
+
+
+        <record id="purchase_order_form" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name="validator" position="before">
+                    <field name="licitacion_advance_id" />
+                </field>
+            </field>
+        </record>
+
+        <record id="view_purchase_order_filter" model="ir.ui.view">
+            <field name="name">purchase.order.list.select</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="arch" type="xml">
+                    <field name="name" position="after" >
+                        <field name="licitacion_advance_id" />
+                        <field name="name_descdetalle" />
+                    </field>
+
+                    <xpath expr="//group" position="inside">
+                        <filter string="Licitacion Mensual" icon="terp-go-month" domain="[]" context="{'group_by':'licitacion_advance_id'}"/>
+                    </xpath>
+            </field>
+        </record>
+
+
+        <record id="purchase_order_tree" model="ir.ui.view">
+            <field name="name">purchase.order.tree</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+            <field name="arch" type="xml">
+                   <field name="name" position="after">
+                        <field name="licitacion_advance_id" />
+                   </field>
+            </field>
+        </record>
+
+	</data>
+</openerp>

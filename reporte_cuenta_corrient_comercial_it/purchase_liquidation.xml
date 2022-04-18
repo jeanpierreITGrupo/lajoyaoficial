@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="comercial_report_cuentas_corrienteit_form">
+            <field name="name">comercial.report.cuentas.corrienteit.form</field>
+            <field name="model">comercial.report.cuentas.corrienteit</field>
+            <field name="arch" type="xml">
+                <form string="Reporte Cuentas Corriente">
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button string="Imprimir" name="do_rebuild" type="object" class="oe_highlight"/>
+                        o
+                        <button string="Cancelar" class="oe_link" special="cancel"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_comercial_reporte_cuentas_corrienteit_tree" model="ir.ui.view">
+            <field name="name">comercial.report.cuentas.corrienteit.tree</field>
+            <field name="model">comercial.report.cuentas.corrienteit</field>
+            <field name="arch" type="xml">
+                <tree create="0" delete="0">
+                    <field name="partner_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_reportecuentacorrienteit" model="ir.actions.act_window">
+            <field name="name">Detalle</field>
+            <field name="res_model">comercial.report.cuentas.corrienteit</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+            id="menu_reporte_cuenta_corriente_comercialit"
+            name="Reporte Cuenta Corriente"
+            parent="purchase_parameters_it.menu_trade"
+            sequence="1"
+        />
+        <menuitem
+            id="submenu_reporte_cuenta_corriente_comercialit"
+            name="Detalle"
+            parent="menu_reporte_cuenta_corriente_comercialit"
+            action="action_reportecuentacorrienteit"
+        />
+
+
+        
+        <record model="ir.ui.view" id="comercial_report_cuentas_corrienteit_saldo_form">
+            <field name="name">comercial.report.cuentas.corrienteit.saldo.form</field>
+            <field name="model">comercial.report.cuentas.corrienteit.saldo</field>
+            <field name="arch" type="xml">
+                <form string="Reporte Cuentas Corriente">
+                    <group>
+                        <group>
+                            <field name="empresa"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button string="Imprimir" name="do_rebuild" type="object" class="oe_highlight"/>
+                        o
+                        <button string="Cancelar" class="oe_link" special="cancel"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_comercial_reporte_cuentas_corrienteit_saldo_tree" model="ir.ui.view">
+            <field name="name">comercial.report.cuentas.corrienteit.saldo.tree</field>
+            <field name="model">comercial.report.cuentas.corrienteit.saldo</field>
+            <field name="arch" type="xml">
+                <tree create="0" delete="0">
+                    <field name="empresa"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_saldo_reportecuentacorrienteit" model="ir.actions.act_window">
+            <field name="name">Saldo</field>
+            <field name="res_model">comercial.report.cuentas.corrienteit.saldo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem
+            id="submenu_reporte_cuenta_corriente_comercialit_saldo"
+            name="Saldo"
+            parent="menu_reporte_cuenta_corriente_comercialit"
+            action="action_saldo_reportecuentacorrienteit"
+        />
+
+
+
+    </data>
+</openerp>

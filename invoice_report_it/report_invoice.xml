@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_invoice_document" inherit_id="account.report_invoice_document">
+            <xpath expr="//div[@class='page']/div[@class='row mt32 mb32']/div[@class='col-xs-2'][1]" position="after">
+                <div class="col-xs-2" t-if="o.period_id">
+                    <strong>Periodo:</strong>
+                    <p t-field="o.period_id.name"/>
+                </div>
+            </xpath>
+        </template>
+
+        <report 
+            id="account.account_invoices"
+            model="account.invoice"
+            string="Facturas"
+            report_type="qweb-pdf"
+            name="account.report_invoice"
+            file="account.report_invoice"
+        />
+
+    </data>
+</openerp>

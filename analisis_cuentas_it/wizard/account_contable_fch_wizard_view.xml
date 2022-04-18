@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="view_analisis_cuenta_wizard_form">
+			<field name="name">analisis.cuenta.wizard.form</field>
+			<field name="model">analisis.cuenta.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Análisis Cuenta" version="7.0">
+						<group>
+							<group>
+								<field name="fiscalyear_id" />
+								<field name="period_ini" />
+								<field name="period_fin" />
+							</group>
+							<group>
+								<field name="type_show" />
+							</group>
+						</group>
+						<footer>
+							<button string="Mostrar" name="do_rebuild" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="analisis_cuenta_wizard_action" model="ir.actions.act_window">
+			<field name="name">Análisis Cuenta</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">analisis.cuenta.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+		
+		<menuitem name="Análisis Cuenta" id="analisis_cuenta_wizard_menu"  parent="account_sheet_work.account_finance_state_it" action="analisis_cuenta_wizard_action" sequence="7" />
+
+
+
+
+	</data>
+</openerp>

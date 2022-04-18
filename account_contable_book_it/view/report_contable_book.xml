@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<template id="report_contable_book_report">
+        <div class="page">
+            <div class="row">
+                <div class="col-xs-5 col-xs-offset-7">
+                    Hola
+                </div>
+            </div>
+
+        </div>
+</template>
+
+<template id="report_contable_book">
+	<t t-call="report.html_container">
+		<t t-foreach="doc_ids" t-as="doc_id">
+			<div class="page">
+            <div class="row">
+                <div class="col-xs-5 col-xs-offset-7">
+                    Hola
+                    <span t-if="docs[0].debe">VAT: <span t-field="docs[0].debe"/></span>
+                </div>
+            </div>
+
+       		 </div>
+		</t>
+	</t>
+</template>
+
+</data>
+</openerp>

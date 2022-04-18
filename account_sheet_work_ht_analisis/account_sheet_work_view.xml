@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_account_sheet_work_analisis_ht_tree" model="ir.ui.view">
+            <field name="name">account.sheet.work.analisis.ht.tree</field>
+            <field name="model">account.sheet.work.analisis.ht</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Hoja de Trabajo" create="false">
+
+                    <field name="ee_ff_peru" />
+                    <field name="nivel1" invisible="1" />
+                    <field name="nivel2" invisible="1" />
+                    <field name="nivel3" invisible="1" />
+                    <field name="nivel4" invisible="1" />
+
+                    <field name="cuenta" />
+                    <field name="descripcion" />
+                    <field name="debe" />
+                    <field name="haber" />
+                    <field name="saldodeudor" />
+                    <field name="saldoacredor" />
+                    <field name="activo" />
+                    <field name="pasivo" />
+                    <field name="perdidasnat" />
+                    <field name="ganancianat" />
+                    <field name="perdidasfun" />
+                    <field name="gananciafun" />
+
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_account_sheet_work_analisis_ht_search" model="ir.ui.view">
+            <field name="name">account.sheet.work.analisis.ht.search</field>
+            <field name="model">account.sheet.work.analisis.ht</field>
+            <field name="arch" type="xml">
+               <search string="Analisis HT">
+                    <field name="ee_ff_peru" />
+                    <field name="nivel1" />
+                    <field name="nivel2" />
+                    <field name="nivel3" />
+                    <field name="nivel4" />
+                    <group expand="0" string="Group By">
+                        <filter string="EE FF PERU" icon="terp-accessories-archiver"  context="{'group_by':'ee_ff_peru'}" />
+                        <filter string="Nivel 1" icon="terp-accessories-archiver"  context="{'group_by':'nivel1'}" />
+                        <filter string="Nivel 2" icon="terp-accessories-archiver"  context="{'group_by':'nivel2'}" />
+                        <filter string="Nivel 3" icon="terp-accessories-archiver"  context="{'group_by':'nivel3'}" />
+                        <filter string="Nivel 4" icon="terp-accessories-archiver"  context="{'group_by':'nivel4'}" />
+                        
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>

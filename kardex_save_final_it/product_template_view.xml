@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record id="view_kardex_save_tree2" model="ir.ui.view">
+            <field name="name">kardex.save.tree</field>
+            <field name="model">kardex.save</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Kardex Guardado" create="1" editable="bottom" delete="1">
+                    <field name="fiscal_id" required="1"/>
+                    <field name="period_id" domain="[('fiscalyear_id','=',fiscal_id)]" required="1"/>
+                    <field name="usuario" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record id="kardex_save_action2" model="ir.actions.act_window">
+            <field name="name">Kardex Guardado</field>
+            <field name="res_model">kardex.save</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+
+        <menuitem parent="account.menu_finance_reports" name="Kardex Guardado" id="save_kardexnuevo_menu" action="kardex_save_action2"/>
+
+        <record id="crear_save_kardex_action" model="ir.actions.server">
+            <field name="name">Guardar Kardex</field>
+            <field name="model_id" ref='kardex_save_final_it.model_kardex_save'/>
+            <field name="state">code</field>
+            <field name="code">action=self.update_or_create_table(cr, uid, context.get('active_ids', []), context=context)</field>
+        </record>
+
+        <record model="ir.values" id="crear_save_kardex_item">
+            <field eval="'client_action_multi'" name="key2"/>
+            <field eval="'kardex.save'" name="model"/>
+            <field name="name">Guardar Kardex</field>
+            <field name="value" eval="'ir.actions.server,%d'%crear_save_kardex_action" />
+            <field name="object" eval="True"/>
+        </record>
+
+
+        <record id="exportar_save_kardex_action" model="ir.actions.server">
+            <field name="name">Exportar Kardex Guardado</field>
+            <field name="model_id" ref='kardex_save_final_it.model_kardex_save'/>
+            <field name="state">code</field>
+            <field name="code">action=self.exportar_kardex_almacenado(cr, uid, context.get('active_ids', []), context=context)</field>
+        </record>
+
+        <record model="ir.values" id="exportar_save_kardex_item">
+            <field eval="'client_action_multi'" name="key2"/>
+            <field eval="'kardex.save'" name="model"/>
+            <field name="name">Exportar Kardex Guardado</field>
+            <field name="value" eval="'ir.actions.server,%d'%exportar_save_kardex_action" />
+            <field name="object" eval="True"/>
+        </record>
+
+
+        <record id="exportar_difGuardado_save_kardex_action" model="ir.actions.server">
+            <field name="name">Exportar Diferencia Kardex Guardado</field>
+            <field name="model_id" ref='kardex_save_final_it.model_kardex_save'/>
+            <field name="state">code</field>
+            <field name="code">action=self.exportar_kardex_guardado_diferencia(cr, uid, context.get('active_ids', []), context=context)</field>
+        </record>
+
+        <record model="ir.values" id="exportar_difGuardado_save_kardex_item">
+            <field eval="'client_action_multi'" name="key2"/>
+            <field eval="'kardex.save'" name="model"/>
+            <field name="name">Exportar Diferencia Kardex Guardado</field>
+            <field name="value" eval="'ir.actions.server,%d'%exportar_difGuardado_save_kardex_action" />
+            <field name="object" eval="True"/>
+        </record>
+
+
+
+        <record id="exportar_difNuevo_save_kardex_action" model="ir.actions.server">
+            <field name="name">Exportar Diferencia Kardex Nuevo</field>
+            <field name="model_id" ref='kardex_save_final_it.model_kardex_save'/>
+            <field name="state">code</field>
+            <field name="code">action=self.exportar_kardex_nuevo_diferencia(cr, uid, context.get('active_ids', []), context=context)</field>
+        </record>
+
+        <record model="ir.values" id="exportar_difNuevo_save_kardex_item">
+            <field eval="'client_action_multi'" name="key2"/>
+            <field eval="'kardex.save'" name="model"/>
+            <field name="name">Exportar Diferencia Kardex Nuevo</field>
+            <field name="value" eval="'ir.actions.server,%d'%exportar_difNuevo_save_kardex_action" />
+            <field name="object" eval="True"/>
+        </record>
+
+
+    </data>
+</openerp>

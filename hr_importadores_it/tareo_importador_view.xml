@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="tareo_importador_tree_view">
+			<field name="name">tareo.importador.tree</field>
+			<field name="model">tareo.importador</field>
+			<field name="arch" type="xml">
+				<tree string="Parametros">
+					<field name="period_id"/>
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="tareo_importador_form_view">
+			<field name="name">tareo.importador.form</field>
+			<field name="model">tareo.importador</field>
+			<field name="arch" type="xml">
+				<form string="Parametros">
+					<header>
+						<button 
+							string="Archivo" 
+							name="show_file_fields"
+							type="object" 
+							attrs="{'invisible': [('state','not in',('draft'))]}"
+						/>
+						<button 
+							string="Importar Archivo" 
+							name="import_tareo" 
+							type="object" 
+							attrs="{'invisible': ['|',('imported','=',False),('state','in',('draft'))]}" 
+							confirm="Ya se realizó una importación para este periodo. ¿Desea volver a importar?"
+						/>
+						<button 
+							string="Importar Archivo" 
+							name="import_tareo" 
+							type="object" 
+							attrs="{'invisible': ['|',('imported','=',True),('state','in',('draft'))]}"
+						/>
+						<button 
+							string="Importar Errores" 
+							name="procesar" 
+							type="object" 
+							attrs="{'invisible': [('state','in',('draft'))]}"
+						/>
+						<button string="Limpiar Errores" name="clean" type="object" attrs="{'invisible': [('state','in',('draft'))]}" invisible="1"/>
+						<field name="state" widget="statusbar"/>
+					</header>
+					<sheet>
+						<group>
+							<group string="Importación">
+								<field name="name" invisible="1"/>
+								<field name="period_id"/>
+								<field name="product_file" attrs="{'invisible':[('state','in','draft')]}"/>
+								<field name="delimiter" attrs="{'invisible':[('state','in','draft')]}"/>
+								<field name="imported" invisible="1"/>
+				            </group>
+			                <group>
+			                </group>
+						</group>
+						<group>
+							<notebook string="param">
+								<page string="Errores">
+									<group>
+										<field name="noimp_lines" nolabel="1">
+											<tree editable="bottom">
+												<field name="periodo"/>
+												<field name="dni"/>
+												<field name="he_25"/>
+												<field name="he_35"/>
+												<field name="he_100"/>
+												<field name="he_fer_duir"/>
+												<field name="he_fer_noct"/>
+												<field name="he_fer"/>
+												<field name="he_desc_diur"/>
+												<field name="he_desc_noct"/>
+												<field name="dias_faltas"/>
+												<field name="dias_sus_per"/>
+												<field name="tardanzas"/>
+												<field name="rem_perm"/>
+												<field name="asig_fam"/>
+												<field name="vaca_trun"/>
+												<field name="cond_trab"/>
+												<field name="grati_prop"/>
+												<field name="boni_grat"/>
+												<field name="cts_trun"/>
+												<field name="rmb"/>
+												<field name="impo_apor"/>
+												<field name="impo_prim"/>
+												<field name="impo_comi"/>
+												<field name="renta_5c"/>
+												<field name="adelanto"/>
+												<field name="tot_desc"/>
+												<field name="neto"/>
+												<field name="essalud"/>
+												<field name="tot_apor"/>
+												<field name="he25"/>
+												<field name="he35"/>
+												<field name="he100"/>
+												<field name="comision"/>
+												<field name="vacacion"/>
+												<field name="movilidad"/>
+												<field name="reembolso_mov"/>
+												<field name="onp"/>
+												<field name="alimetacion"/>
+												<field name="indem_vaca"/>
+												<field name="subsid_mat"/>
+												<field name="subsid_inca"/>
+												<field name="grati"/>
+												<field name="bono_grati"/>
+												<field name="cts"/>
+												<field name="neto_sueldo"/>
+												<field name="neto_vaca"/>
+												<field name="bon_regular"/>
+												<field name="primero_mayo"/>
+												<field name="comp_vaca"/>
+												<field name="rem_practica"/>
+												<field name="canasta"/>
+												<field name="reintegro"/>
+												<field name="grati_extra"/>
+												<field name="part_utilidad"/>
+												<field name="tardanza"/>
+												<field name="inasistencia"/>
+												<field name="dsto_auto"/>
+												<field name="dsto_dominic"/>
+												<field name="spp_volunt"/>
+												<field name="essalud_vida"/>
+												<field name="ret_judicial"/>
+												<field name="fondo_jubi"/>
+												<field name="dsto_eps"/>
+												<field name="sctr_pension"/>
+												<field name="eps"/>
+												<field name="senati"/>
+												<field name="spp_aporta"/>
+												<field name="afp_2p_emp"/>
+												<field name="prestamos"/>
+												<field name="afp_2p_trab"/>
+												<field name="dias_labor"/>
+												<field name="dias_subs"/>
+												<field name="horas_efect"/>
+												<field name="dias_vaca"/>
+												<field name="boni_mudanza"/>
+												<field name="otros_descu"/>
+												<field name="feriados_trab"/>
+												<field name="detalle"/>
+											</tree>
+										</field>
+									</group>
+								</page>
+							</notebook>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="tareo_importador_action" model="ir.actions.act_window">
+			<field name="name">Importar Tareo</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">tareo.importador</field>
+			<!--<field name="groups_id" eval="[(6,0,[ref('group_parametros_menu')])]"/>-->
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+	
+		<menuitem id="menu_hr_importaciones" name="Importaciones" parent="hr.menu_hr_configuration" sequence="17"/>
+		<menuitem action="tareo_importador_action" id="menu_tareo_importador" parent="hr_importadores_it.menu_hr_importaciones" sequence="0"/>
+
+	</data>
+</openerp>

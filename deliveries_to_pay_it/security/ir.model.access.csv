@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_deliveries_to_pay,deliveries.to.pay,deliveries_to_pay_it.model_deliveries_to_pay,deliveries_to_pay_group,1,1,1,1
+access_account_transfer,account.transfer.group,account_transfer_it.model_account_transfer,account_transfer_group,1,1,1,1
+,,,,,,,
+,,,,,,,
+,,,,,,,

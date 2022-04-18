@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record id="view_stock_reajuste_form" model="ir.ui.view">
+            <field name="name">stock.reajuste.form</field>
+            <field name="model">stock.reajuste</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="procesar" string="Procesar" type="object" states="draft,not_imported"/>
+                        <button name="importar" string="Importar" type="object" states="not_imported"/>
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="file" filename="file_text" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="file_text" invisible="1"/>
+                                <field name="delimitador" attrs="{'readonly': [('state','=','imported')]}"/>
+                                <field name="picking_type_id" attrs="{'readonly': [('state','=','imported')]}"/>
+                                <field name="nro_lineas" attrs="{'readonly': [('state','=','imported')]}"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <group>
+                            <notebook>
+                                <page string="Errores">
+                                    <group>                                        
+                                        <field name="errores" nolabel="1"/>                                       
+                                    </group>
+                                </page>
+                                <page string="Importa">
+                                    <group>
+                                        <field name="reajuste_lines" nolabel="1">
+                                            <tree create="0" edit="0" delete="0">
+                                                <field name="codigo"/>
+                                                <field name="producto"/>
+                                                <field name="almacen"/>
+                                                <field name="saldo"/>
+                                                <field name="inventario"/>
+                                                <field name="diferencia"/>
+                                                <field name="observ"/>
+                                            </tree>
+                                        </field>
+                                    </group>
+                                </page>
+                                <page string="Ignora">
+                                    <group>
+                                        <field name="reajuste_lines2" nolabel="1">
+                                            <tree create="0" edit="0" delete="0">
+                                                <field name="codigo"/>
+                                                <field name="producto"/>
+                                                <field name="almacen"/>
+                                                <field name="saldo"/>
+                                                <field name="inventario"/>
+                                                <field name="diferencia"/>
+                                                <field name="observ"/>
+                                            </tree>
+                                        </field>
+                                    </group>
+                                </page>
+                            </notebook>
+                        </group>
+                    </sheet>
+                </form> 
+            </field>
+        </record>
+
+        <record id="view_stock_reajuste_tree" model="ir.ui.view">
+            <field name="name">stock.reajuste.tree</field>
+            <field name="model">stock.reajuste</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="file_text"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_stock_reajuste_view" model="ir.actions.act_window">
+            <field name="name">Reajuste de Albaránes</field>
+            <field name="res_model">stock.reajuste</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            action="action_stock_reajuste_view"
+            id="menu_stock_reajuste"
+            parent="stock.menu_stock_warehouse_mgmt"
+        />
+    </data>
+</openerp>

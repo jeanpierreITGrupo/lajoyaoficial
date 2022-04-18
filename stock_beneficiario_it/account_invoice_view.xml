@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="invoice_supplier_form" model="ir.ui.view">
+            <field name="name">account.invoice.form.beneficio</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account_invoice_reference_it.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <field name="r_reference" position="after">
+                    <field name="is_employee"/>
+                    <field name="b_employee_id" attrs="{'invisible':[('is_employee','=',False)]}" context="{'tree_view_ref':'stock_beneficiario_it.view_employee_buscar_mas_tree'}"/>
+                    <field name="department_he" attrs="{'invisible':[('is_employee','=',False)]}"/>
+                    <field name="b_partner_id" attrs="{'invisible':[('is_employee','=',True)]}"/>
+                    <field name="department_rp" attrs="{'invisible':[('is_employee','=',True)]}"/>
+                </field>            
+            </field>
+        </record>
+    </data>
+</openerp>

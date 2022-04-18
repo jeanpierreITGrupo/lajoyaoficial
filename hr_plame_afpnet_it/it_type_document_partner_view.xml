@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+            <record model="ir.ui.view" id="it_type_document_partner_form_view">
+                  <field name="name">Tipo de Documento</field>
+                  <field name="model">it.type.document.partner</field>
+                  <field name="inherit_id" ref="account_tables_it.it_type_document_partner_form_view"/>
+                  <field name="arch" type="xml">
+                        <field name="code" position="after">
+                              <field name="afpnet_code"/>                              
+                        </field>
+                  </field>
+            </record>
+	</data>
+</openerp>

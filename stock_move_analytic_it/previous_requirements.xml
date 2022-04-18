@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_move_picking_tree" model="ir.ui.view">
+            <field name="name">stock.move.tree</field>
+            <field name="model">stock.move</field>
+            <field name='inherit_id' ref='stock.view_move_picking_tree'/>
+            <field eval="4" name="priority"/>
+            <field name="arch" type="xml">
+                <field name="location_id" position="before">
+                    <field name="tipo_destino_analytic" invisible="1" />
+                    <field name="analitic_id" attrs="{'required':[('tipo_destino_analytic','=','production')]}"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_move_picking_form" model="ir.ui.view">
+            <field name="name">stock.move.form</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="tipo_destino_analytic" invisible="1" />
+                    <field name="analitic_id" attrs="{'required':[('tipo_destino_analytic','=','production')]}"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

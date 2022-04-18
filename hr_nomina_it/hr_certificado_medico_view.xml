@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record id="action_certificado_medico" model="ir.actions.server">
+            <field name="name">Generar Record de Certificados Médicos</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_hr_certificado_medico"/>
+            <field name="state">code</field>
+            <field name="code">action = self.excel_certificado_medico(cr,uid,context.get('active_ids'),context=context)</field>
+        </record>
+
+        <record model="ir.values" id="certificado_medico_more">
+            <field name="name">Generar Record de Certificados Médicos</field>
+            <field name="key2">client_action_multi</field>
+            <field name="action_id" ref="action_certificado_medico"/>
+            <field name="value" eval="'ir.actions.server,' + str(ref('action_certificado_medico'))" />
+            <field name="model_id" ref="model_hr_certificado_medico"/>
+            <field name="key">action</field>
+            <field name="model">hr.certificado.medico</field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_certificado_medico_form">
+            <field name="name">hr.certificado.medico.form</field>
+            <field name="model">hr.certificado.medico</field>
+            <field name="arch" type="xml">
+                <form string="Certificado Médico">
+                    <sheet string="Certificado Médico">
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="codigo_trabajador"/>
+                                <field name="cargo"/>
+                                <field name="birth_date"/>
+                                <field name="start_date"/>
+                                <field name="basico"/>
+                            </group>
+                            <group></group>
+                        </group>
+                        <group>
+                            <field name="certificado_lines" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="sctr"/>
+                                    <field name="particular"/>
+                                    <field name="accident_date"/>
+                                    <field name="reason"/>
+                                    <field name="nro_cert"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                    <field name="cubre"/>
+                                    <field name="cubre_nro_dias"/>
+                                    <field name="subsidio"/>
+                                    <field name="subsidio_nro_days"/>
+                                    <field name="cobro_subsidio"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_certificado_medico_tree">
+            <field name="name">hr.certificado.medico.tree</field>
+            <field name="model">hr.certificado.medico</field>
+            <field name="arch" type="xml">
+                <tree string="Certificado Médico">
+                    <field name="name"/>
+                    <field name="codigo_trabajador"/>
+                    <field name="cargo"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_certificado_medico_search" model="ir.ui.view">
+            <field name="name">hr.certificado.medico.search</field>
+            <field name="model">hr.certificado.medico</field>
+            <field name="arch" type="xml">
+                <search string="buscar">
+                    <field name="name"/>
+                    <field name="codigo_trabajador" string="Periodo"/>
+                    <separator/>
+
+                    <group expand="1" string="Group By...">
+                        <filter string="Nombre" name="name" icon="terp-partner" context="{'group_by':'name'}"/>
+                        <filter string="Código Trabajador" name="codigo_trabajador" icon="terp-partner" context="{'group_by':'codigo_trabajador'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+	</data>
+</openerp>

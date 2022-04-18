@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_production_cost_journal_wizard_form">
+            <field name="name">production.cost.journal.wizard.form</field>
+            <field name="model">production.cost.journal.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group string="Generar Asiento de Costo Producción">
+                        <group>
+                            <field name="period_id"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="get_lines" string="Mostrar" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_production_journal_cost_wizard" model="ir.actions.act_window">
+            <field name="name">Generar Asiento</field>
+            <field name="res_model">production.cost.journal.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem 
+            action="action_production_journal_cost_wizard"
+            name="Asiento Costo de Producción" 
+            id="menu_production_journal_cost" 
+            parent="kardex.kardex_main_menu"/>
+    </data>
+</openerp>

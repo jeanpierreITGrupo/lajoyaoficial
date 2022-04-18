@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_bank_statement_form" model="ir.ui.view">
+            <field name="name">account.bank.statement.form</field>
+            <field name="model">account.bank.statement</field>
+            <field name="inherit_id" ref="account_means_payment_it.view_bank_statement_form"/>
+            <field name="arch" type="xml">
+                <field name="means_payment_id" position="after">
+                    <label for="fefectivo_id" string="F. Efectivo"/>
+                    <field name="fefectivo_id" nolabel="1"/>
+                </field>
+            </field>
+        </record>
+
+
+
+
+    </data>
+</openerp>

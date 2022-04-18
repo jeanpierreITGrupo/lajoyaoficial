@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[@string='Payments']" position="after">
+                    <page string="Sunat">
+                            <group>
+                                <group string="Detracción">
+                                    <!--
+                                    <field name="date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="code_operation" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="voucher_number" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="amount" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                -->
+                                    <field name="date"/>
+                                    <field name="code_operation" />
+                                    <field name="voucher_number" />
+                                    <field name="amount" />
+                                </group>
+                                <group string="Percepción">
+                                    <field name="tipo_tasa_percepcion" />
+                                    <field name="numero_serie" />                                    
+                                    <field name="vacio" invisible="1" />
+                                </group>
+                            </group>
+                        <label for="account_ids"/>
+                        <!-- <field name="account_ids" context="{'compro_name': '1'}" attrs="{'readonly':[('state','!=','draft')]}"> -->
+
+                        <field name="account_ids" context="{'compro_name': '1'}">
+                            <tree editable="bottom" string="Documentos Que Modifica" >
+
+                                            <field name="tipo_doc"  readonly="0"/>
+                                            <field name="fecha"  readonly="0"/>
+                                            <field name="comprobante"  readonly="0"/>
+                                            <field name="perception"/>
+                                            <field name="base_imponible"/>
+                                            <field name="igv"/>
+                                            
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="invoice_supplier_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[@string='Payments']" position="after">
+                    <page string="Sunat">
+                            <group>
+                                <group string="Detracción">
+                                    <!--
+                                    <field name="date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="code_operation" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="voucher_number" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                    <field name="amount" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                -->
+                                    <field name="date"/>
+                                    <field name="code_operation" />
+                                    <field name="voucher_number" />
+                                    <field name="amount" />
+                                </group>
+                                <group string="Percepción">
+                                    <field name="tipo_tasa_percepcion" />
+                                    <field name="numero_serie" />                                    
+                                    <field name="vacio" invisible="1" />
+                                </group>
+                            </group>
+                        <label for="account_ids"/>
+                        <field name="account_ids" context="{'compro_name': '1'}" >
+                            <tree editable="bottom" string="Documentos Que Modifica">
+                                            <field name="tipo_doc"  readonly="0"/>
+                                            <field name="fecha"  readonly="0"/>
+                                            <field name="comprobante"  readonly="0"/>
+                                            <field name="perception"/>  
+                                            <field name="base_imponible"/>
+                                            <field name="igv"/>                                          
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>

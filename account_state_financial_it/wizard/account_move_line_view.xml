@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<record id="view_account_move_line_patrimony" model="ir.ui.view">
+            <field name="name">account.move.line.tree</field>
+            <field name="model">account.move.line</field>
+            <field name="arch" type="xml">
+                <tree string="Configurar Patrimonio Neto" create="0">
+                    <field name="period_id" />
+                    <field name="name" />
+                    <field name="date" />
+                    <field name="nro_comprobante" />
+                    <field name="account_id" />
+                    <field name="currency_id" />
+                    <field name="debit" />
+                    <field name="credit" />
+                    <field name="grupo_p_neto" />
+                    <field name="columna_p_neto" />
+                </tree>
+            </field>
+        </record>
+
+
+		<record model="ir.ui.view" id="view_account_move_line_patrimony_form">
+			<field name="name">account.move.line.form</field>
+			<field name="model">account.move.line</field>
+			<field name="arch" type="xml">
+				<form string="Configurar Patrimonio Neto" >
+						<group string="Datos Apunte Contable">
+							<group>
+								<group>
+									<field name="name" readonly="1" />
+									<field name="period_id" readonly="1" />
+									<field name="date" readonly="1" />
+								</group>
+								<group>
+									<field name="nro_comprobante" readonly="1" />
+									<field name="account_id" readonly="1" />
+									<field name="debit" readonly="1" />
+									<field name="credit" readonly="1" />
+								</group>
+							</group>
+						</group>
+
+						<group string="Configuración Patrimonio">
+							<group>
+				                <field name="grupo_p_neto" />
+							</group>
+							<group>
+				                <field name="columna_p_neto" />
+							</group>
+						</group>
+				</form>
+			</field>
+		</record>
+
+		<record id="account_move_line_patrimony_action" model="ir.actions.act_window">
+			<field name="context">{'form_view_ref' : 'account_state_financial_it.view_account_move_line_patrimony_form', 'tree_view_ref' : 'account_state_financial_it.view_account_move_line_patrimony'}</field>
+			<field name="domain">[('account_id.pat_n', '=', True)]</field>
+			<field name="name">Patrimonio Neto</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.move.line</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem id="menu_state_account_move_line_patrimony_mayor" name="Patrimonio Neto" parent="account_state_financial_it.menu_state_financial_it" sequence="155"  />
+
+        <menuitem id="menu_state_account_move_line patrimony" name="Clasificación" parent="menu_state_account_move_line_patrimony_mayor" sequence="105" action="account_move_line_patrimony_action" />
+
+
+	</data>
+</openerp>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_account_expense_related_tree" model="ir.ui.view">
+            <field name="name">account.expense.related.tree</field>
+            <field name="model">account.expense.related</field>
+            <field name="arch" type="xml">
+                <tree string="Gastos Vinculados" create="false">
+                    <field name="period_id"/>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="partner_id"/>
+                    <field name="currency_id"/>
+                    <field name="total_weight"/>
+                    <field name="amount_untaxed"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_account_expense_related_form">
+            <field name="name">account.expense.related.form</field>
+            <field name="model">account.expense.related</field>
+            <field name="arch" type="xml">
+                <form string="Gastos Vinculados">
+                <header>
+                        <button name="calculate" type="object" string="Calcular" class="oe_highlight oe_edit_only" />
+                </header>
+                <sheet string="Gastos Vinculados">
+                    <field name="invoice_id" invisible="1" />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" nolabel="1" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="period_id" readonly="1" required="1"/>
+                            <field name="date"  readonly="1" required="1"/>
+                            <field name="partner_id"  readonly="1" required="1"/>
+                            <field name="type_document_id"  readonly="1" required="1"/>
+                            <field name="nro_comprobante"  readonly="1" required="1"/>
+                        </group>
+                        <group>
+                            <field name="currency_id" readonly="1" required="1"/>
+                            <field name="total_weight"  required="1"/>
+                            <field name="amount_untaxed"  readonly="1" required="1"/>
+                            <button name="factura_show" type="object" class="oe_link" string="(Ver Factura)" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Facturas">
+                            
+                            <field name="lines_id" required="1" >
+                                <tree string="Facturas" editable="bottom">
+                                    <field name="invoice_id"/>
+                                    <field name="partner_id"/>
+                                    <field name="location_id"/>
+                                    <field name="product_id" required="1"/>
+                                    <field name="amount" sum="amount"/>
+                                    <field name="prorrateo" sum="prorrateo"/>
+                                    <field name="equivalence" sum="equivalence"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="account_expense_related_action" model="ir.actions.act_window">
+            <field name="name">Gastos Vinculados</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.expense.related</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <menuitem name="Gastos Vinculados" id="account_expense_related_menu"  parent="account.menu_finance_payables" action="account_expense_related_action" sequence="30" />
+            
+
+        <record model="ir.ui.view" id="view_invoice_lading_line_form">
+            <field name="name">account.expense.related.line.form</field>
+            <field name="model">account.expense.related.line</field>
+            <field name="arch" type="xml">
+                <form string="invoice_lading_line" version="7.0">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="invoice_id" />
+                                <field name="partner_id" />
+                                <field name="location_id"  />
+                                <field name="product_id" />
+                                <field name="amount" />
+                                <field name="prorrateo" />
+                                <field name="equivalence" />
+                            </group>
+                        </group>
+                        
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>

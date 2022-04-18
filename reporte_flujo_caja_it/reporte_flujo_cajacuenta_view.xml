@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="view_reporte_flujo_cajacuenta_wizard_form">
+			<field name="name">reporte.flujo.cajacuenta.wizard.form</field>
+			<field name="model">reporte.flujo.cajacuenta.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Flujo Caja" >
+						<group>
+							<group>
+	                    		<field name="fiscalyear_id" />
+							</group>
+							<group>
+							</group>
+						</group>
+
+						<footer>
+							<button string="Mostrar" name="do_rebuild" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="reporte_flujo_cajacuenta_format_action" model="ir.actions.act_window">
+			<field name="name">Flujo Caja Detallado</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">reporte.flujo.cajacuenta.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<menuitem id="menu_reporte_flujo_cajacuenta_wizard" name="Flujo Caja Detallado" parent="account_sheet_work.account_finance_state_it" sequence="109" action="reporte_flujo_cajacuenta_format_action" />
+		
+
+
+
+
+
+	</data>
+</openerp>

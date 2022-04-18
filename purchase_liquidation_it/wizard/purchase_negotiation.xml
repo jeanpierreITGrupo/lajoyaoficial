@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="action_purchase_negotiation" model="ir.actions.act_window">
+            <field name="name">Negociacion</field>
+            <field name="res_model">purchase.negotiation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_purchase_negotiation_form" model="ir.ui.view">
+            <field name="name">purchase.negotiation.form</field>
+            <field name="model">purchase.negotiation</field>
+            <field name="arch" type="xml">
+                <form colors="blue:(old_cost_to_pay &gt; new_cost_to_pay);red:(old_cost_to_pay &lt; new_cost_to_pay)">
+                    <group string="Negociación">
+            			<group>
+                            <field name="line_id" invisible="1"/>
+            				<field name="lot" readonly="1"/>
+            				<field name="material" readonly="1"/>
+                            <field name="presentation" readonly="1"/>
+                            <field name="tmh" readonly="1"/>
+                            <field name="tms" readonly="1"/>
+                            <field name="percentage_param_ley" invisible="1"/>
+                            <field name="points_param" invisible="1"/>
+                            <field name="percentage_param" invisible="1"/>
+                            <field name="int_price" readonly="1"/>
+            			</group>
+            			<group>
+                            <field name="real_int_price" invisible="1"/>
+                            <field name="soda" readonly="1"/>
+                            <field name="cianuro" readonly="1"/>
+                            <field name="total_maquila" readonly="1"/>
+                            <field name="adjust_factor" readonly="1"/>
+                            <field name="cost" readonly="1"/>
+                            <field name="is_especial" invisible="1"/>
+            			</group>
+            		</group>
+                    <group>
+                        <group>
+                            <label for="h2o"/>
+                            <div>
+                                <field name="h2o" style="width: 50%"/>
+                                <field name="h2o_ref" readonly="1" style="width:50%; font-weight:bold;"/>
+                            </div>
+                            <label for="ley_oz"/>
+                            <div>
+                                <field name="ley_oz" style="width: 50%"/>
+                                <field name="ley_oz_ref" readonly="1" style="width:50%; font-weight:bold;"/>
+                            </div>
+                            <label for="percentage_recovery"/>
+                            <div>
+                                <field name="percentage_recovery" style="width: 50%"/>
+                                <field name="percentage_recovery_ref" readonly="1" style="width:50%; font-weight:bold;"/>
+                            </div>
+                            <label for="int_price_margin"/>
+                            <div>
+                                <field name="int_price_margin" style="width: 50%"/>
+                                <field name="int_price_margin_ref" readonly="1" style="width:50%; font-weight:bold;"/>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="maquila"/>
+                            <field name="value_consumed"/>
+                            <field name="g_adm"/>
+                        </group>
+                    </group>
+                    <group string="Resultados">
+                        <group>
+                            <field name="old_cost_to_pay" readonly="1"/>
+                            <field name="new_cost_to_pay" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="difference" readonly="1"/>
+                            <field name="dif_igv" readonly="1"/>
+                            <field name="sum_to_pay" readonly="1"/>
+                            <field name="porcentaje_diferencia" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <div>
+                            <field name="observations" placeholder="Observaciones..."/>
+                        </div>
+                    </group>
+                    <footer>
+                        <button name="save_negotiation" string="Guardar" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>

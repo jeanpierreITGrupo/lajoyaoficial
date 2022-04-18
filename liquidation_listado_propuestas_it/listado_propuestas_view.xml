@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_listado_propuestas_wizard_form">
+            <field name="name">listado.propuestas.wizard.form</field>
+            <field name="model">listado.propuestas.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Listado Propuestas">
+                    <group>
+                        <group string="Rango">
+                            <field name="start_date"/>
+                            <field name="end_date"/>                            
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button string="Generar" name="do_rebuild" type="object" class="oe_highlight"/>
+                        o
+                        <button string="Cancelar" class="oe_link" special="cancel"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_listado_propuestas_tree">
+            <field name="name">listado.propuestas.tree</field>
+            <field name="model">listado.propuestas</field>
+            <field name="arch" type="xml">
+                <tree create="0" edit="0" delete="0">
+                    <field name="name"/>
+                    <field name="fecha_rec"/>
+                    <field name="state"/>
+                    <field name="origen"/>
+                    <field name="ruc_proveedor"/>
+                    <field name="rs_proveedor"/>
+                    <field name="material"/>
+                    <field name="sacos"/>
+                    <field name="tmh"/>
+                    <field name="h2o"/>
+                    <field name="p_recup"/>
+                    <field name="ley_oz_oro"/>
+                    <field name="ley_oz_au_comer"/>
+                    <field name="ley_oz_plata"/>
+                    <field name="ley_oz_ag_comer"/>
+                    <field name="soda"/>
+                    <field name="cianuro"/>
+                    <field name="consumo_q_valorado"/>
+                    <field name="fecha_retiro"/>
+                    <field name="fletero"/>
+                    <field name="nro_placa"/>
+                    <field name="guia_t"/>
+                    <field name="guia_r"/>
+                    <field name="cod_comp"/>
+                    <field name="cod_conces"/>
+                    <field name="nom_conces"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="listado_propuestas_wizard_action" model="ir.actions.act_window">
+            <field name="name">Listado de Propuestas</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">listado.propuestas.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+            action="listado_propuestas_wizard_action"
+            id="menu_listado_propuestas_wizard"
+            parent="purchase_liquidation_it.menu_purchase_liquidation"
+            sequence="15"
+        />
+    </data>
+</openerp>

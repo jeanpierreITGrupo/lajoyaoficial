@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<!-- session form view -->
+        <record model="ir.ui.view" id="it_ht_sunat_form">
+            <field name="name">Medio Pago Usado</field>
+            <field name="model">it.ht.sunat</field>
+            <field name="arch" type="xml">
+                <form string="HT Sunat" version="8.0">
+					<group>
+						<field name="name" />
+					</group>
+                </form>
+            </field>
+        </record>
+
+
+		<record id="it_ht_sunat_view" model="ir.ui.view">
+            <field name="name">HT Sunat</field>
+            <field name="model">it.ht.sunat</field>
+            <field name="arch" type="xml">
+                <tree string="HT Sunat">
+                    <field name="name" />
+                </tree>
+
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="it_ht_sunat_action">
+            <field name="name">HT Sunat</field>
+            <field name="res_model">it.ht.sunat</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="it_ht_sunat_menu" name="HT Sunat"
+                  parent="it_table_sunat"
+                  action="it_ht_sunat_action"/>
+    </data>
+</openerp>

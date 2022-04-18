@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+
+		<record model="ir.ui.view" id="view_ple_mayor_wizard_form">
+			<field name="name">ple.mayor.wizard.form</field>
+			<field name="model">ple.mayor.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Ple Mayor" version="7.0">
+						<group>
+							<field name="period" required="1" />
+							<field name="check_wizard" />
+						</group>
+						<footer>
+							<button string="Generar" name="do_rebuild" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+		<record id="ple_mayor_wizard_action" model="ir.actions.act_window">
+			<field name="name">Ple Mayor</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">ple.mayor.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+
+		<menuitem name="Ple Mayor" id="ple_mayor_wizard_menu"  parent="libro_electronico_wizard_menu" sequence="2" />
+
+
+
+	</data>
+</openerp>

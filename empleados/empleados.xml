@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<!-- session form view -->
+        <record model="ir.ui.view" id="empleados_form_view">
+            <field name="name">empleados</field>
+            <field name="model">empleados</field>
+            <field name="arch" type="xml">
+                <form string="Empleados" version="8.0">
+					<group>
+						<field name="codigo" />
+						<field name="Nombres" />
+						<field name="Edad" />
+						<field name="Sueldo" />
+					</group>
+					
+                </form>
+            </field>
+        </record>
+
+
+		<record id="empleados_tree_view" model="ir.ui.view">
+            <field name="name">empleados</field>
+            <field name="model">empleados</field>
+            <field name="arch" type="xml">
+                <tree string="Empleados" class="col_ancho">
+						<field name="codigo" />
+						<field name="Nombres" />
+						<field name="Edad" />
+						<field name="Sueldo" />	
+                </tree>
+
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="empleados">
+            <field name="name">empleados</field>
+            <field name="res_model">empleados</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+		
+		
+				        
+    </data>
+</openerp>

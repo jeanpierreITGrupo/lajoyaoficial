@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record id="stock_import_rest_form" model="ir.ui.view">
+            <field name="name">stock.import.rest.form</field>
+            <field name="model">stock.import.rest</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button string="Importar" type="object" name="create_inv" class="oe_highlight"/>                       
+                    </header>
+                    <sheet>
+                        <group string="Datos de Importación">
+
+                            <group>
+                                <field name ="file_inv"/>
+                                <field name ="date_rest"/>
+                                <field name ="picking_type_id"/>
+                                <field name ="stock_location_origin"/>
+                                <field name ="stock_location_dest"/>
+                                <field name ="commet_sing"/>
+                                
+                            </group>
+                            <group></group>
+                        </group>
+                        <group> 
+                            <button string="Obtener líneas" type="object" name="loadlines" class="oe_highlight"/>
+                        </group>
+                        <notebook>
+                            <page string="Datos a importar">
+                                <field name="lines" readonly="0">
+                                    <tree string="valores">
+                                        <field name="product_id"/>
+                                        <field name="codprod"/>
+                                        <field name="product_name"/>
+                                        <field name="lot_num"/>
+                                        <field name="saldof"/>
+                                        <field name="saldov"/>
+                                        <field name="cprom"/>
+                                        <field name="imported"/>
+                                        <field name="problem"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_stock_import_rest" model="ir.actions.act_window">
+            <field name="name">Importar Inventario Inicial</field>
+            <field name="res_model">stock.import.rest</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem 
+            name="Importar Inventario Inicial222"
+            action="action_stock_import_rest" 
+            id="menu_stock_import_rest" 
+            parent="stock.menu_product_in_config_stock"
+        />
+	</data>
+</openerp>

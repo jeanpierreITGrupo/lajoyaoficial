@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record model="ir.ui.view" id="view_mrp_plantas_tree">
+            <field name="name">mrp.plantas.tree</field>
+            <field name="model">mrp.plantas</field>
+            <field name="arch" type="xml">
+                <tree string="Plantas">
+                    <field name="name"/>
+                    <field name="default_value"/>
+                    <field name="secuencia"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_mrp_plantas_form">
+            <field name="name">mrp.plantas.form</field>
+            <field name="model">mrp.plantas</field>
+            <field name="arch" type="xml">
+                <form string="Plantas">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="default_value"/>
+                            <field name="secuencia"/>
+                        </group>
+                        <group>                        
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="mrp_plantas_action" model="ir.actions.act_window">
+            <field name="name">Categoría de Ruma</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mrp.plantas</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem 
+            action="mrp_plantas_action"
+            id="menu_action_mrp_plantas"
+            parent="previous_requirements_joya.submenu_production_joya"
+            sequence="1"
+        />
+
+    </data>
+</openerp>

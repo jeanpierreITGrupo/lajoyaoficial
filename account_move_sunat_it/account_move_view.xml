@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_move_form" model="ir.ui.view">
+            <field name="name">account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="attributes">
+                    <attribute name="invisible">False</attribute>
+                </field>
+                <xpath expr="//form/notebook/page[@string='Journal Items']" position="after">
+                    
+                        <page string="Sunat">
+                            <field name="verify_account_invoice_exist" invisible="1"/>
+                            <group >
+                                <group string="Documento Registrado">
+                                    <!-- attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}" -->
+                                    <field name="dec_reg_type_document_id" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+                                    <!-- attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}" -->
+                                    <field name="dec_reg_nro_comprobante" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}" />
+
+                                    <field name="com_det_date_maturity" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+                                    <field name="com_det_type_change" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+                                    <field name="com_det_currency" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+                                </group>
+                                <group string="Documento Modifica">
+                                    <field name="dec_mod_type_document_id" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+                                    <field name="dec_mod_nro_comprobante" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+                                    <field name="dec_mod_fecha" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+                                    <field name="dec_mod_base_imponible" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+                                    <field name="dec_mod_igv" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+                                    <field name="dec_mod_total" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+                                </group>
+                            </group>
+                            <group >
+                                <group string="Comprobante Detracción"> 
+                                    <field name="com_det_code_operation" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+                                    <field name="com_det_date" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+                                    <field name="com_det_amount" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+                                    <field name="com_det_number" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+                                </group>
+                                <group string="Comprobante Percepción">
+                                    <field name="dec_percep_tipo_tasa_percepcion" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+                                    <field name="dec_percep_numero_serie" attrs="{'readonly': [('verify_account_invoice_exist', '=', True)]}"/>
+
+                                </group>
+                            </group>
+                        </page>
+                </xpath>
+                
+            </field>
+        </record>
+
+    </data>
+</openerp>

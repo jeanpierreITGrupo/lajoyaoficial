@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="view_account_payable_contable_vencimiento_tree" model="ir.ui.view">
+            <field name="name">account.payable.contable.vencimiento.tree</field>
+            <field name="model">account.payable.contable.vencimiento</field>
+            <field name="arch" type="xml">
+                <tree string="Análisis de Vencimientos" create="false">
+                    <field name="fecha_emision" />
+                    <field name="fecha_ven" />
+                    <field name="plazo" />
+                    <field name="empresa" />
+                    <field name="tipo" />
+                    <field name="nro_comprobante" />
+                    <field name="moneda" />
+					<field name="saldo_me" />
+                    <field name="cuenta" />
+                    <field name="por_vencer" />
+                    <field name="hasta_15" />
+                    <field name="hasta_30" />
+                    <field name="hasta_60" />
+                    <field name="hasta_90" />
+                    <field name="hasta_180" />
+                    <field name="mas_de_180" />
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record id="account_payable_contable_vencimiento_search" model="ir.ui.view">
+            <field name="name">account.payable.contable.vencimiento.search</field>
+            <field name="model">account.payable.contable.vencimiento</field>
+            <field name="arch" type="xml">
+                <search string="Análisis de Vencimiento">
+                    <separator/>
+                    <group expand="1" string="Group By...">
+                        <filter string="Empresa" name="empresa" icon="terp-partner" context="{'group_by':'empresa'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="view_account_receivable_contable_vencimiento_tree" model="ir.ui.view">
+            <field name="name">account.receivable.contable.vencimiento.tree</field>
+            <field name="model">account.receivable.contable.vencimiento</field>
+            <field name="arch" type="xml">
+                <tree string="Análisis de Vencimientos" create="false">
+                    <field name="fecha_emision" />
+                    <field name="fecha_ven" />
+                    <field name="plazo" />
+                    <field name="empresa" />
+                    <field name="tipo" />
+                    <field name="nro_comprobante" />
+                    <field name="moneda" />
+                    <field name="cuenta" />
+
+                    <field name="por_vencer" />
+                    <field name="hasta_15" />
+                    <field name="hasta_30" />
+                    <field name="hasta_60" />
+                    <field name="hasta_90" />
+                    <field name="hasta_180" />
+                    <field name="mas_de_180" />
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record id="account_receivable_contable_vencimiento_search" model="ir.ui.view">
+            <field name="name">account.receivable.contable.vencimiento.search</field>
+            <field name="model">account.receivable.contable.vencimiento</field>
+            <field name="arch" type="xml">
+                <search string="Análisis de Vencimiento">
+                    <separator/>
+                    <group expand="1" string="Group By...">
+                        <filter string="Empresa" name="empresa" icon="terp-partner" context="{'group_by':'empresa'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>

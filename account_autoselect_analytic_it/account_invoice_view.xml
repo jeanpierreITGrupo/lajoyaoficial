@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+
+        <record id="view_account_form" model="ir.ui.view">
+            <field name="name">account.account.form</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+                <field name="reconcile" position="after">
+                    <field name="analytic_account_id" />
+                    <field name="analytic_distribution_id" />
+                </field>
+            </field>
+        </record>
+
+
+
+        <record id="product_template_form_view" model="ir.ui.view">
+            <field name="name">product.template.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="priority">5</field>
+            <field name="inherit_id" ref="product_analytic_account_it.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <field name="analytic_account_id" position="after">
+                    <field name="analytic_distribution_id" />
+                </field>            
+            </field>
+        </record>
+
+    </data>
+</openerp>

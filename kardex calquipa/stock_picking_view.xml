@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<record id="vpicktree" model="ir.ui.view">
+			<field name="name">stock.picking.tree.kardex</field>
+			<field name="model">stock.picking</field>
+			<field name="inherit_id" ref="stock.vpicktree"/>
+			<field name="arch" type="xml">
+				<field name="state" position="before">
+					<field name="motivo_guia" string="Tipo de Operación"/>
+					<field name="invoice_id" string="Fact. Rel."/>
+					<field name="invoice_id_it" string="Factura it"/>
+				</field>
+			</field>
+		</record>
+
+		<record id="view_picking_form_kardex" model="ir.ui.view">
+            <field name="name">stock.picking.form.kardex</field>
+            <field name="model">stock.picking</field>
+            <field name='inherit_id' ref='stock.view_picking_form'/>
+            <field name="arch" type="xml">
+            	<field name="origin" position="after">
+            		<field name="invoice_id" string="Factura relacionada" domain="[('state','in',('open','paid')),('partner_id','=',partner_id),]"/>
+            		<field name="use_date" string="Usar fecha en kardex"/>
+            	</field>
+				<field name="date" position="attributes">
+					<attribute name="string">Fecha kardex</attribute>
+				</field>				 
+			</field>
+		</record>
+		
+		<record id="view_picking_internal_search" model="ir.ui.view">
+            <field name="name">stock.picking.internal.search</field>
+            <field name="model">stock.picking</field>
+			<field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+				<field name = "name" position="after">
+					<field name="invoice_id" string="Factura relacionada"/>
+					<field name="invoice_id_it" string="Factura it"/>
+				</field>
+            </field>
+        </record>
+		
+	</data>
+</openerp>

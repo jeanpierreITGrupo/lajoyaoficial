@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_kardex_account_purchase_tree" model="ir.ui.view">
+            <field name="name">kardex.account.purchase.tree</field>
+            <field name="model">kardex.account.purchase</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">        
+                <tree string="Kardex vs Compras" create="false" delete="false">
+                    <field name="periodo" string="Periodo"/>
+                    <field name="fecha" string="Fecha"/>
+                    <field name="libro" string="Libro"/>
+                    <field name="voucher" string="Voucher"/>
+                    <field name="td" string="TD"/>
+                    <field name="serie" string="Serie"/>
+                    <field name="numero" string="Número"/>
+                    <field name="proveedor" string="Proveedor"/>
+                    <field name="base" string="Monto Kardex"/>
+                    <field name="valor_factura" string="Monto Contabilidad"/>
+                    <field name="diferencia" string="Diferencia"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_kardex_account_purchase_filter" model="ir.ui.view">
+            <field name="name">kardex.account.purchase.search</field>
+            <field name="model">kardex.account.purchase</field>
+            <field name="arch" type="xml">
+                <search string="Search Kardex vs Compras">
+                    <field name="periodo" strng="Periodo"/>
+                    <field name="fecha" strng="Fecha"/>
+                    <field name="libro" strng="Libro"/>
+                    <field name="voucher" strng="Voucher"/>
+                    <field name="td" strng="TD"/>
+                    <field name="serie" strng="Serie"/>
+                    <field name="numero" strng="Número"/>
+                    <field name="proveedor" strng="Proveedor"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Periodo" icon="terp-partner" domain="[]" context="{'group_by':'periodo'}"/>
+                        <filter string="Libro" icon="terp-partner" domain="[]" context="{'group_by':'libro'}"/>
+                        <filter string="TD" icon="terp-partner" domain="[]" context="{'group_by':'td'}"/>
+                        <filter string="Proveedor" icon="terp-partner" domain="[]" context="{'group_by':'proveedor'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="kardex_account_purchase_tree_action" model="ir.actions.act_window">
+            <field name="name">Kardex vs Compras</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">kardex.account.purchase</field>
+            <field name="view_mode">form,tree</field>
+            <field name="view_type">tree</field>
+            <field name="multi">True</field>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+
+		<record id="view_producto_proceso_it" model="ir.ui.view">
+            <field name="name">producto.proceso.it.tree</field>
+            <field name="model">producto.proceso.it</field>
+            <field name="arch" type="xml">
+                <tree string="Producto en Proceso">
+                    <field name="lote_proceso" />
+                    <field name="periodo" />
+                    <field name="fecha" />
+                    <field name="producto" />
+                    <field name="nro_campana" />
+                    <field name="nro_barra_tanque" />
+                    <field name="unidad_medida" />
+                    <field name="peso_barra" />
+                    <field name="au" />
+                    <field name="ag" />
+                    <field name="au_gramo" />
+                    <field name="ag_gramo" />
+                    <field name="costo_gr" />
+                    <field name="costo_total" />
+                    <field name="lote" />                    
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record id="producto_proceso_it_search" model="ir.ui.view">
+            <field name="name">producto.proceso.it.search</field>
+            <field name="model">producto.proceso.it</field>
+            <field name="arch" type="xml">
+                <search string="Lote Terminado">
+                    <field name="periodo" />
+                    <separator/>
+                    <group expand="1" string="Group By...">
+                        <filter string="Periodo" name="" icon="terp-partner" context="{'group_by':'periodo'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+		<record model="ir.ui.view" id="view_producto_proceso_it_form">
+			<field name="name">producto.proceso.it.form</field>
+			<field name="model">producto.proceso.it</field>
+			<field name="arch" type="xml">
+				<form string="Producto en Proceso" >
+
+                    <header>
+                        <button name="actualizar" string="Actualizar" type="object" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+    					
+                        <div class="oe_title">
+                            <h1>
+                                <label string="Lote Proceso" />
+                                <field name="lote_proceso" class="oe_inline" />
+                            </h1>
+                                     
+                        </div>
+                        <notebook>
+                            <page string="Generales">
+                                <group>
+                                    <group>
+                                        <field name="periodo" />
+                                        <field name="fecha" />
+                                        <field name="producto" />
+                                        <field name="nro_campana" />
+                                        <field name="nro_barra_tanque" />
+                                        <field name="unidad_medida" />
+                                        <field name="peso_barra" />
+                                    </group>
+                                    <group>
+                                        <field name="au" />
+                                        <field name="ag" />
+                                        <field name="au_gramo" />
+                                        <field name="ag_gramo" />
+                                        <field name="costo_gr" />
+                                        <field name="costo_total" />
+                                        <field name="lote" />          
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Costo Mineral" >
+                                <group>
+                                    <group>
+                                        <field name="costo_oro" />
+                                        <field name="costo_plata" />
+                                        <field name="costo_chancado" />
+                                        <field name="costo_zona" />
+                                    </group>
+                                    <group>
+                                        <field name="costo_expediente" />
+                                        <field name="gastos_generales" />
+                                        <field name="total_mineral" />
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Gastos Indirectos">
+                                <field name="grilla_id" >
+                                    <tree editable="bottom">
+                                        <field name="rubro" />
+                                        <field name="monto" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+				</form>
+			</field>
+		</record>
+
+
+		<record id="producto_proceso_it_action" model="ir.actions.act_window">
+			<field name="name">Producto en Proceso</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">producto.proceso.it</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+        <menuitem 
+            id="menu_producto_proceso_it" 
+            name="Producto en Proceso" 
+            sequence="1" 
+            parent="purchase_parameters_it.menu_trade"
+            />
+
+
+        <menuitem 
+            id="menu_producto_proceso_op" 
+            name="Producto en Proceso" 
+            sequence="1" 
+            action="producto_proceso_it_action" 
+            parent="menu_producto_proceso_it"
+            />
+
+
+
+        <record id="view_move_picking_tree" model="ir.ui.view">
+            <field name="name">stock.move.tree</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree"/>
+            <field eval="4" name="priority"/>
+            <field name="arch" type="xml">
+                <field name="product_id" position="after">
+                    <field name="lote_producto_proceso_id" />
+                </field>                
+            </field>
+        </record>
+
+
+        <record id="view_move_picking_form" model="ir.ui.view">
+            <field name="name">stock.move.form</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="product_id" position="after">
+                    <field name="lote_producto_proceso_id" />
+                </field>                
+            </field>
+        </record>
+
+
+
+
+
+	</data>
+</openerp>

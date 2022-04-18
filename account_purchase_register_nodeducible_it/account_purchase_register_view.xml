@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_move_purchase_register_nodeducible_tree" model="ir.ui.view">
+            <field name="name">account.purchase.register.nodeducible.tree</field>
+            <field name="model">account.purchase.register.nodeducible</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Registro Compra No Deducible" create="false" edit="false">
+                    <field name="periodo" />
+                    <field name="libro" />
+                    <field name="voucher" />
+                    <field name="fecha" />
+                    <field name="type_number" />
+                    <field name="tdp" />
+                    <field name="empresa" />
+                    <field name="tc" />
+                    <field name="nro_comprobante" />
+                    <field name="base1" sum="base1"/>
+                    <field name="base2" sum="base2"/>
+                    <field name="base3" sum="base3"/>
+                    <field name="cng" sum="cng"/>
+                    <field name="isc" sum="isc"/>
+                    <field name="igv1" sum="igv1"/>
+                    <field name="igv2" sum="igv2"/>
+                    <field name="igv3" sum="igv3"/>
+                    <field name="otros" sum="otros"/>
+                    <field name="total" sum="total"/>
+					<field name="motivo_rep" />
+                </tree>
+            </field>
+        </record>
+    
+        <record id="account_move_purchase_register_nodeducible_search" model="ir.ui.view">
+            <field name="name">account.purchase.register.nodeducible.search</field>
+            <field name="model">account.purchase.register.nodeducible</field>
+            <field name="arch" type="xml">
+                <search string="Registro Compras No Deducible">
+                    <separator/>
+                    <group expand="1" string="Group By...">
+                        <filter string="Periodo" name="periodo" icon="terp-partner" context="{'group_by':'periodo'}"/>
+                        <filter string="Empresa" name="empresa" icon="terp-partner" context="{'group_by':'empresa'}"/>
+                        <filter string="Tipo de Documento" name="tc" icon="terp-partner" context="{'group_by':'tc'}"/>
+                        
+						<filter string="Voucher" name="voucher" icon="terp-partner" context="{'group_by':'voucher'}"/>
+                        <filter string="Fecha" name="fecha" icon="terp-partner" context="{'group_by':'fecha'}"/>
+                        <filter string="Numero Comprobante" name="nro_comprobante" icon="terp-partner" context="{'group_by':'nro_comprobante'}"/>
+                        <filter string="RUC" name="type_number" icon="terp-partner" context="{'group_by':'type_number'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="action_account_purchase_register_nodeducible_it" model="ir.actions.act_window">
+            <field name="name">Registro Compras No Deducible</field>
+            <field name="res_model">account.purchase.register.nodeducible</field>
+            <field name="view_id" ref="view_move_purchase_register_nodeducible_tree"/>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="search_view_id" ref="account_move_purchase_register_nodeducible_search"/>
+        </record>
+
+    </data>
+</openerp>

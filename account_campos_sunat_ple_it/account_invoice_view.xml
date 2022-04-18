@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record id="invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                        
+                </xpath>                
+            </field>
+        </record>
+
+
+        <record id="invoice_supplier_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    
+                        <page string="PLE">
+                            <group>
+                                <group>
+                                    <field name="ultimo_numero_consolidado" />
+                                    <field name="sujeto_a_retencion" />
+                                    <field name="tipo_adquisicion" />
+                                    <field name="contrato_o_proyecto" />
+                                    <field name="inconsistencia_tipo_cambio" />
+                                    <field name="proveedor_no_habido" />
+                                </group>
+                                <group>
+                                    <field name="renuncio_a_exoneracion_igv" />
+                                    <field name="inconsistencia_dni_liquidacion_comp" />
+                                    <field name="cancelado_medio_pago" />
+                                    <field name="estado_ple_compra" />
+                                    <field name="estado_ple" invisible="1"/>
+                                    <field name="periodo_ajuste_modificacion_ple_compra" invisible="1"/>
+                                    <field name="periodo_ajuste_modificacion_ple" invisible="1"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="PLE NO DOMIC.">
+                            <group>
+                                <group>
+                                    <field name="renta_bruta" />
+                                    <field name="deduccion_costo_enajenacion" />
+                                    <field name="renta_neta" />
+                                    <field name="tasa_de_retencion" />
+                                    <field name="impuesto_retenido" />
+                                </group>
+                                <group>
+                                    <field name="exoneracion_aplicada" />
+                                    <field name="tipo_de_renta" />
+                                    <field name="modalidad_servicio_prestada" />
+                                    <field name="aplica_art_del_impuesto" />
+                                    <field name="beneficiario_de_pagos" />
+                                </group>
+                            </group>
+                            
+                    <group string="Sustento Credito Fiscal">
+                        <group>
+                            <field name="tipo_sustento_credito_fiscasl" />
+                            <field name="serie_sustento_credito_fiscasl" />
+                        </group>
+                        <group>
+                            <field name="anio_sustento_credito_fiscasl" />
+                            <field name="nro_comp_sustento_credito_fiscasl" />
+                        </group>
+                    </group>
+                        </page>
+                </xpath>
+                
+            </field>
+        </record>
+
+
+
+
+        <record id="invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    
+                        <page string="PLE">
+                            <group>
+                                <group>
+                                    <field name="numero_final_consolidado_cliente" />
+                                    <field name="numero_contrato_cliente" />
+                                    <field name="inconsistencia_tipo_cambio_cliente" />
+                                </group>
+                                <group>
+                                    <field name="cancelado_medio_pago_cliente" />
+                                    <field name="estado_ple_venta" />
+                                    <field name="periodo_ajuste_modificacion_ple_venta" invisible="1" />
+                                </group>
+                            </group>
+                        </page>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                        
+                        <page string="Info. No Domiciliados">
+                            <group>
+                                <group>
+                                    <field name="pais_residencia_nd" />
+                                    <field name="domicilio_extranjero_nd" />
+                                    <field name="numero_identificacion_nd" />
+                                </group>
+                                <group>
+                                    <field name="vinculo_contribuyente_residente_extranjero" />
+                                    <field name="convenios_evitar_doble_imposicion" />
+                                </group>
+                            </group>
+                        </page>
+                </xpath>
+                
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data> 
+
+        <record id="view_vacation_role_form" model="ir.ui.view">
+            <field name="name">vacation.role.form</field>
+            <field name="model">vacation.role</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="get_excel" string="Exportar a Excel" type="object"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="Rol de Vacaciones">
+                                <field name="period_id" attrs="{'readonly': [('state','=', True)]}"/>
+                                <field name="total"/>
+                                <field name="state" invisible="1"/>
+                                <button string="Buscar" name="find_employees" type="object" attrs="{'invisible': [('state','!=', True)]}"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <field name="vacation_lines"/>
+                    </sheet>
+                </form> 
+            </field>
+        </record>
+
+        <record id="view_vacation_role_tree" model="ir.ui.view">
+            <field name="name">vacation.role.tree</field>
+            <field name="model">vacation.role</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="period_id"/>
+                    <field name="total"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_vacation_role_line_form" model="ir.ui.view">
+            <field name="name">vacation.role.line.form</field>
+            <field name="model">vacation.role.line</field>
+            <field name="arch" type="xml">
+                <form editable="false">
+                    <group>
+                        <group>
+                            <field name="employee_code"/>
+                            <field name="last_name"/>
+                            <field name="surname"/>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="in_date"/>
+                            <field name="period"/>
+                        </group>
+                    </group>
+                    <field name="lines">
+                        <tree editable="bottom">
+                            <field name="init_date"/>
+                            <field name="end_date"/>
+                            <field name="days"/>
+                        </tree>
+                    </field>
+                    <footer>
+	                    <button string="Guardar" name="save_data" type="object" class="oe_highlight"/>
+	                    or
+	                    <button string="Cancelar" special="cancel" class="oe_link"/>
+	                </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_vacation_role_line_tree" model="ir.ui.view">
+            <field name="name">vacation.role.line.tree</field>
+            <field name="model">vacation.role.line</field>
+            <field name="arch" type="xml">
+                <tree delete="0" create="0" editable="bottom">
+                    <field name="employee_code"/>
+                    <field name="last_name"/>
+                    <field name="surname"/>
+                    <field name="name"/>
+                    <field name="in_date"/>
+                    <field name="period"/>
+                    <field name="days"/>
+                    <button name="open_wizard" type="object" string="Icon" icon="gtk-edit"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_vacations_role" model="ir.actions.act_window">
+            <field name="name">Role de Vacaciones</field>
+            <field name="res_model">vacation.role</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_search_vacations" model="ir.actions.act_window">
+            <field name="name">Búsqueda de Vacaciones</field>
+            <field name="res_model">vacation.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!--Menú Lateral-->
+        <menuitem name="Vacaciones"
+            id="submenu_vacations"
+            parent="hr.menu_hr_root"
+        />
+        <!--Sub-menú Lateral-->
+        <menuitem name="Rol de Vacaciones"
+            action="action_vacations_role"
+            id="submenu_vacations_role"
+            sequence="1"
+            parent="submenu_vacations"
+        />
+        <menuitem name="Consulta de Vacaciones"
+            action="action_search_vacations"
+            id="submenu_vacations_consult"
+            sequence="2"
+            parent="submenu_vacations"
+        />
+    </data>
+</openerp>

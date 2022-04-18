@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="action_generar_ficha" model="ir.actions.server">
+            <field name="name">Generar Ficha Empleado</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="state">code</field>
+            <field name="code">action = self.make_pdf(cr,uid,context.get('active_ids'),context=context)</field>
+        </record>
+
+        <record model="ir.values" id="generar_ficha_more">
+            <field name="name">Generar Ficha Empleado</field>
+            <field name="key2">client_action_multi</field>
+            <field name="action_id" ref="action_generar_ficha"/>
+            <field name="value" eval="'ir.actions.server,' + str(ref('action_generar_ficha'))" />
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="key">action</field>
+            <field name="model">hr.employee</field>
+        </record>
+
+        <record id="view_employee_filter" model="ir.ui.view">
+            <field name="name">Employees</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+                <field name="department_id" position="after">
+                    <field name="ubicacion_id" />
+                    <field name="identification_id" />
+                    <field name="dist_c" />
+                    <field name="codigo_trabajador" />
+                </field>
+
+             </field>
+         </record>
+
+        <record id="view_employee_tree" model="ir.ui.view">
+            <field name="name">hr.employee.tree</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
+            <field name="arch" type="xml">
+                    <field name="name" position="before">
+                        <field name="dist_c" required="1"/>
+                        <field name="codigo_trabajador" />
+                        <field name="identification_id" />
+                    </field>
+
+                    <field name="job_id" position="attributes">
+                        <attribute name="string">Cárgo y Ocupación</attribute>
+                    </field> 
+                               
+                    <field name="job_id" position="after">
+                        <field name="fecha_ingreso" required="1"/>
+                        <field name="fecha_cese" />
+                        <field name="basica" />
+                        <field name="children_number" required="1"/>
+                    </field>
+
+
+
+            </field>
+        </record>
+
+        <record id="view_employee_form" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <field name="bank_account_id" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </field>
+                <field name="job_id" position="attributes">
+                    <attribute name="required">False</attribute>
+                    <attribute name="string">Cárgo y Ocupación</attribute>
+                </field>
+                <field name="department_id" position="attributes">
+                    <attribute name="required">"1"</attribute>
+                    <attribute name="string">Área</attribute>
+                </field>
+
+                <field name="department_id" position="after">
+                    <field name="ubicacion_id" />
+                </field>
+                <field name="job_id" position="after">
+                    <field name="tipo_trabajador" required="1"/>
+                    <field name="codigo_trabajador"  required="1"/>   
+                </field>
+                <field name="identification_id" position="attributes">
+                    <attribute name="required">"1"</attribute>
+                </field>
+                <field name="identification_id" position="before">
+                    <field name="type_document_id" required="0" />
+                    <field name="no_domiciliado"/>
+                </field>
+                <field name="passport_id" position="after">
+                    <field name="is_practicant"/>
+                </field>
+
+                <field name="parent_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="coach_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+
+                <field name="address_home_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+
+                <field name="address_home_id" position="after">
+                    <field name="direccion_text"/>
+                </field>
+                
+                <xpath expr="//notebook" position="inside">
+                    <page string="Nómina" >
+                        <group string="Remuneración">
+                            <group>
+                                <field name="basica"  required="1"/>
+                                <field name="cusspp" />
+                                <field name="c_mixta" />
+                                <field name="use_eps" />
+                                <field name="essalud_vida" />
+                                <field name="fondo_jub" />
+                                <field name="afp_2p" />
+                                <field name="movilidad" />
+                            </group>
+                            <group>
+                                <field name="fecha_ingreso" required="1"/>
+                                <field name="fecha_cese" />
+                                <field name="dist_c" required="0"/>
+                                <field name="situacion"/>
+                                <field name="condicion"/>
+                            </group>
+                        </group>
+                        <group string="Afiliación AFP">
+                            <group>
+                                <field name="afiliacion"  required="1"/>
+                            </group>
+                            <group>
+                                <field name="fecha_afiliacion" required="1" />
+                            </group>
+                        </group>
+                        <!-- <group string="Cuenta contable">
+                            <group>
+                                <field name="cuenta_adelanto" required="0"/>
+                            </group>
+                            <group>
+                                
+                            </group>
+                        </group> -->
+                        
+                        <group string="Cuenta Bancarias">
+                            <group>
+                                <field name="banco_cts" />
+                                <field name="cta_cts" />
+                            </group>
+                            <group>
+                                <field name="banco_rem" />
+                                <field name="cta_rem" />
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="tipo_trabajador_tree" model="ir.ui.view">
+            <field name="name">tipo.trabajador.tree</field>
+            <field name="model">tipo.trabajador</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="tipo_trabajador_form" model="ir.ui.view">
+            <field name="name">tipo.trabajador.form</field>
+            <field name="model">tipo.trabajador</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group></group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="hr_location_tree" model="ir.ui.view">
+            <field name="name">hr.location.tree</field>
+            <field name="model">hr.location</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_location_form" model="ir.ui.view">
+            <field name="name">hr.location.form</field>
+            <field name="model">hr.location</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group></group>
+                    </group>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>

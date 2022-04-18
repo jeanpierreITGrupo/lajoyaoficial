@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="purchase_order_form" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/notebook/page[@string='Products']/field[@name='order_line']/tree/field[@name='date_planned']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//form/sheet/notebook/page[@string='Products']/field[@name='order_line']/tree/field[@name='product_id']" position="before">
+                    <field name="lot_num"/>
+                </xpath>
+                <xpath expr="//form/sheet/notebook/page[@string='Products']/field[@name='order_line']/tree/field[@name='product_id']" position="after">
+                    <field name="gold_expected"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_order_line_form" model="ir.ui.view">
+            <field name="name">purchase.order.line.form</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase.purchase_order_line_form"/>
+            <field name="arch" type="xml">
+
+                <field name="product_id" position="before">
+                    <field name="lot_num" context="{'data_lote':lot_num}" on_change="onchange_lot_num_antigua(lot_num,context)"/>
+                </field>
+                <field name="price_unit" position="after">
+                    <field name="gold_expected"/>
+                </field>
+
+            </field>
+        </record>
+
+        <record id="view_move_picking_tree" model="ir.ui.view">
+            <field name="name">stock.move.tree</field>
+            <field name="model">stock.move</field>
+            <field name='inherit_id' ref='stock.view_move_picking_tree'/>
+            <field eval="4" name="priority"/>
+            <field name="arch" type="xml">
+                <field name="product_id" position="before">
+                    <field name="lot_num"/>
+                </field>
+                <field name="product_id" position="after">
+                    <field name="gold_expected"/>
+                    <field name="ponderation"/>
+                </field>
+                <field name="location_id" position="before">
+                    <field name="p_et2"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_move_picking_form" model="ir.ui.view">
+            <field name="name">stock.move.form</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="ponderation"/>
+                </field>
+                <field name="product_id" position="before">
+                    <field name="lot_num"/>
+                </field>
+            </field>
+        </record>
+
+        <menuitem
+            id="menu_production_joya"
+            name="Producción Joya Mining"
+        />
+        <menuitem
+            id="submenu_production_joya"
+            name="Producción"
+            parent="menu_production_joya"
+        />
+		<menuitem
+            id="submenu_configuration_joya"
+            name="Configuración"
+            parent="menu_production_joya"
+        />
+
+
+
+        <menuitem
+            id="submenu_expediente_joya"
+            name="Expediente"
+            parent="purchase_parameters_it.menu_trade"
+        />
+    </data>
+</openerp>

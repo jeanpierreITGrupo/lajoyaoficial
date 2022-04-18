@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data> 
+
+        <record id="view_hr_prestamo_header_tree" model="ir.ui.view">
+            <field name="name">hr.prestamo.header.tree</field>
+            <field name="model">hr.prestamo.header</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Prestamo">
+                    <field name="employee_id"/>
+                    <field name="codigo"/>
+                    <field name="departamento"/>
+                    <field name="monto"/>
+                    <field name="fecha_prestamo"/>
+                    <field name="state"/>
+
+                    <button string="Exportar excel" name="export_excel" icon="gtk-print" type="object"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_prestamo_header_form">
+            <field name="name">hr.prestamo.header.form</field>
+            <field name="model">hr.prestamo.header</field>
+            <field name="arch" type="xml">
+
+                <form string="Prestamo">
+
+                    <header>
+                        <button string="Calcular cuotas" states="draft" name="calculate" type="object" class="oe_highlight"/>
+                        <button string="Pagado" name="paid" states="draft" type="object"/>
+                        <button string="Volver Borrador" name="back_draft" states="done" type="object" />
+                        <button string="Exportar Excel" name="single_export_excel" type="object" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+
+                    <group>
+                        <group>
+                            <field name="employee_id" required="1" attrs="{'readonly':[('state', '=', 'done')]}"/>
+                            <field name="codigo" attrs="{'readonly':[('state', '=', 'done')]}"/>
+                            <field name="cargo" attrs="{'readonly':[('state', '=', 'done')]}" />
+                            <field name="fecha_prestamo" required="1" attrs="{'readonly':[('state', '=', 'done')]}"/>
+                        </group>
+                        <group>
+                            <field name="prestamo_id" required="1" attrs="{'readonly':[('state', '=', 'done')]}"/>
+                        </group>
+                        <group>
+                            <field name="monto" required="1" attrs="{'readonly':[('state', '=', 'done')]}"/>
+                        </group>
+                        <group>
+                            <field name="cuotas" required="1" attrs="{'readonly':[('state', '=', 'done')]}"/>
+                        </group>
+                    </group>
+
+                    <field name="prestamo_lines_ids" attrs="{'readonly':[('state', '=', 'done')]}">
+                        <tree create="false" editable="bottom">
+                            <field name="cuota" />
+                            <field name="monto" sum="monto"/>
+                            <field name="fecha_pago" />
+                            <field name="adelanto" sum="adelanto" />
+                            <field name="fecha_adelanto" />
+                            <field name="deuda_por_pagar" />
+                            <field name="validacion"/>
+                        </tree>
+                    </field>
+
+                    <group>
+                        <field name="texto" />
+                    </group>
+
+                </form>
+
+            </field>
+        </record>
+
+        <record id="hr_liquidacion_wizard_search" model = "ir.ui.view">
+            <field name="name">hr.prestamo.header.search</field>
+            <field name="model">hr.prestamo.header</field>
+            <field name="arch" type="xml">
+                <search string="buscar">
+                    <field name="employee_id"/>
+                    <field name="fecha_prestamo"/>
+                    <field name="state"/>
+                    <field name="departamento"/>
+
+                    <filter icon="terp-go-year" string="Empleado" name="employee_id"/>
+                    <filter icon="terp-go-year" string="Estado" name="state"/>
+                    <filter icon="terp-go-year" string="Departamento" name="departamento"/>
+
+                    <separator/>
+
+                    <group expand="1" string="Group By...">
+                        <filter string="Empleado" name="employee_id" icon="terp-partner" context="{'group_by':'employee_id'}"/>
+                        <filter string="Fecha prestamo" name="fecha_prestamo" icon="terp-partner" context="{'group_by':'fecha_prestamo'}"/>
+                        <filter string="Estado" name="state" icon="terp-partner" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_hr_prestamo_header" model="ir.actions.act_window">
+            <field name="name">Prestamo</field>
+            <field name="res_model">hr.prestamo.header</field>
+            <field name="view_id" ref="view_hr_prestamo_header_tree"/>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem 
+            name="Prestamos"
+            action="action_hr_prestamo_header"
+            id="menu_action_hr_prestamo_header"
+            parent="hr_liquidaciones_it.hr_planilla_liquidacioonn_menu"
+            sequence="1"
+        />
+
+    </data>
+</openerp>

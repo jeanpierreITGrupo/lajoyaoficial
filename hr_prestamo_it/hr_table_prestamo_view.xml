@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+
+        <record model="ir.ui.view" id="view_hr_table_prestamo_form">
+            <field name="name">hr.table.prestamo.form</field>
+            <field name="model">hr.table.prestamo</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <form string="prestamo">
+                    <group>
+                        <group>
+                            <field name="name" required="1" />
+                            <field name="account_id" required="1" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <!--Vista Form-->
+
+
+
+        <!--Vista Tree-->
+        <record model="ir.ui.view" id="view_hr_table_prestamo_tree">
+            <field name="name">hr.table.prestamo.tree</field>
+            <field name="model">hr.table.prestamo</field>
+            <field name="arch" type="xml">
+                <tree string="prestamo" >
+                    <field name="name"/>
+                    <field name="account_id"/>
+
+                </tree>
+            </field>
+        </record> 
+
+        <record id="view_hr_table_prestamo_filter" model="ir.ui.view">
+            <field name="name">hr.table.prestamo.select</field>
+            <field name="model">hr.table.prestamo</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Adelantos">
+                    <field name="name"/>
+                    <field name="account_id"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Nombre" domain="[]" context="{'group_by':'name'}"/>
+                        <filter string="Cuenta" domain="[]" context="{'group_by':'account_id'}"/>
+                    </group>
+
+               </search>
+            </field>
+        </record>
+
+        
+        <record id="human_resources_table_prestamo_action" model="ir.actions.act_window">
+            <field name="name">Prestamos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.table.prestamo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Tabla Préstamos"
+            action="human_resources_table_prestamo_action"
+            id="menu_hr_tabla_prestamos"
+            parent="hr.menu_hr_configuration"
+            sequence="5"
+        />
+
+	</data>
+</openerp>

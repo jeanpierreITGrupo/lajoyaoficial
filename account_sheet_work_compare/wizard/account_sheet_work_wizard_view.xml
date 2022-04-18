@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="view_account_sheet_work_wizard_form">
+			<field name="name">account.sheet.work.wizard.form</field>
+			<field name="model">account.sheet.work.wizard</field>
+			<field name="inherit_id" ref="account_sheet_work.view_account_sheet_work_wizard_form"/>
+			<field name="arch" type="xml">
+			<xpath expr="//form" position="replace">
+				<form string="Hoja de Trabajo" version="8.0">
+						<group>
+							<field name="check_comparative" />
+						</group>
+						<group>
+							<group>
+								<field name="moneda" />
+							</group>
+							<group>
+								<field name="wizrd_level_sheet" />
+							</group>
+						</group>
+						<group>
+							<group>
+								<notebook>
+			                        <page string="Año 1">
+			                        	<group>
+				                    		<field name="fiscalyear_id" />
+											<field name="period_ini" />
+											<field name="period_end" />        
+										</group>
+			                        </page>
+			                        <page string="Año 2" attrs="{'invisible': [('check_comparative','!=',True)] }">
+			                        	<group>
+				                    		<field name="fiscalyear_c_id" attrs="{'invisible': [('check_comparative','!=',True)],'required': [('check_comparative','=',True)] }"/>
+											<field name="period_ini_c" attrs="{'invisible': [('check_comparative','!=',True)] ,'required': [('check_comparative','=',True)] }"/>
+											<field name="period_end_c" attrs="{'invisible': [('check_comparative','!=',True)] ,'required': [('check_comparative','=',True)] }"/>
+										</group>
+			                        </page>
+			                    </notebook>
+							</group>
+						</group>
+						<footer>
+							<button string="Mostrar" name="do_rebuild" type="object" class="oe_highlight" attrs="{'invisible': [('check_comparative','=',True)] }"/>
+							<button string="Comparar" name="do_rebuild_C" type="object" class="oe_highlight" attrs="{'invisible': [('check_comparative','!=',True)] }"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</xpath>
+			</field>
+		</record>
+	
+
+	</data>
+</openerp>

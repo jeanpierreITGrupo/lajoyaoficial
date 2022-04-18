@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record model="ir.ui.view" id="view_move_line_tree">
+            <field name="name">account.move.line.tree.inherit.rendicion.ref</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_move_line_tree"/>
+            <field name="arch" type="xml">
+                <field name="date" position="after">
+                    <field name="rendicion_id" string="Rendicion Id" invisible="1"/>
+                    <field name="rendicion_name" string="Rendicion" invisible="1"/>
+                </field>
+            </field>
+        </record>
+		
+		<record model='ir.ui.view' id='view_account_move_line_filter'>
+			<field name='name'>Account Move Line Filter Rendicionr</field>
+			<field name='model'>account.move.line</field>
+			<field name='inherit_id' ref='account.view_account_move_line_filter'/>
+			<field name='type'>search</field>
+			<field name='arch' type='xml'>
+				<xpath expr="/search/group/filter[@string='Period']" position="after">
+					<separator orientation="vertical"/>
+                    <filter string="Rendicion" icon="terp-folder-green" domain="[]" context="{'group_by':'rendicion_name'}" />
+				</xpath>
+			</field>
+		</record>
+		
+
+		<template id="assets_backend" name="account_deliveries_to_pay_template" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/deliveries_to_pay_it/static/src/css/col_ancho.css"/>
+		
+            </xpath>
+        </template>
+
+
+	</data>
+</openerp>

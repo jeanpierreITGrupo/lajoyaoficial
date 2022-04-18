@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+
+        <record model="ir.ui.view" id="view_hr_adelanto_form">
+            <field name="name">hr.adelanto.form</field>
+            <field name="model">hr.adelanto</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <form string="Adelanto">
+                    <group>
+                        <group>
+                            <field name="codigo_trabajador" readonly="1"/>
+                            <field name="employee" required="1" />
+                            <field name="monto" required="1" />
+                            <field name="adelanto_id" required="1" />
+
+                        </group>
+                        <group>
+                            <field name="fecha" required="1" />
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <!--Vista Form-->
+
+
+
+        <!--Vista Tree-->
+        <record model="ir.ui.view" id="view_hr_adelanto_tree">
+            <field name="name">hr.adelanto.tree</field>
+            <field name="model">hr.adelanto</field>
+            <field name="arch" type="xml">
+                <tree string="Adelanto" >
+                    <field name="codigo_trabajador"/>
+                    <field name="employee"/>
+                    <field name="fecha"/>
+                    <field name="monto"/>
+                    <field name="adelanto_id"/>
+                </tree>
+            </field>
+        </record> 
+
+        <record id="view_hr_adelanto_filter" model="ir.ui.view">
+            <field name="name">hr.adelanto.select</field>
+            <field name="model">hr.adelanto</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Adelantos">
+                    <field name="codigo_trabajador"/>
+                    <field name="employee"/>
+                    <field name="fecha"/>
+                    <field name="adelanto_id"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Código" domain="[]" context="{'group_by':'codigo_trabajador'}"/>
+                        <filter string="Trabajador" domain="[]" context="{'group_by':'employee'}"/>
+                        <filter string="Fecha adelanto" domain="[]" context="{'group_by':'fecha'}"/>
+                        <filter string="Tipo adelanto" domain="[]" context="{'group_by':'adelanto_id'}"/>
+                    </group>
+
+               </search>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_hr_quincenales_form">
+            <field name="name">hr.quincenales.form</field>
+            <field name="model">hr.quincenales</field>
+            <field name="arch" type="xml">
+                <form string="Quincena">
+                    <group>
+                        <group>
+                            <field name="fecha"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Generar" name="do_rebuild" type="object" class="oe_highlight"/>
+                        o
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <!--Vista F-->
+       
+
+
+	</data>
+</openerp>

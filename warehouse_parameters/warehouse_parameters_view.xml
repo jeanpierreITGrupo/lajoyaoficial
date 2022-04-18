@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="warehouse_parameters_tree_view">
+            <field name="name">warehouse.parameters.tree</field>
+            <field name="model">warehouse.parameters</field>
+            <field name="arch" type="xml">
+                <tree string="Parametros" create="0">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="warehouse_parameters_form_view">
+            <field name="name">warehouse.parameters.form</field>
+            <field name="model">warehouse.parameters</field>
+            <field name="arch" type="xml">
+                <form string="Parametros" create="0">
+                    <sheet>
+                        <group>
+                            <field name="name" invisible="1"/>
+                            <notebook string="param">
+                                <page string="Configuración">
+                                    <group>
+                                    </group>
+                                </page>
+                            </notebook>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="warehouse_parameters_action" model="ir.actions.act_window">
+            <field name="name">Parámetros</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">warehouse.parameters</field>
+            <field name="groups_id" eval="[(6,0,[ref('group_parametros_menu')])]"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_parameters" name="Parámetros" parent="stock.menu_stock_configuration" sequence="36" groups="group_parametros_menu"/>
+        <menuitem action="warehouse_parameters_action" id="menu_parameters_property" parent="menu_parameters" sequence="0"/>
+
+    </data>
+</openerp>

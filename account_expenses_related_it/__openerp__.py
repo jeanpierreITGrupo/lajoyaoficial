@@ -1,0 +1,36 @@
+# -*- encoding: utf-8 -*-
+{
+	'name': 'Account Expenses Related IT',
+	'category': 'account',
+	'author': 'ITGrupo',
+	'depends': ['account','stock','base','account_improve_sunat_it','account_tables_it','account_parameter_it'],
+	'version': '1.0',
+	'description':"""
+	1.- CREAR UN MENU DENOMINADO
+GASTOS VINCULADOS EL CUAL LLAMARA
+A UN WIZARD QUE TENGA EL DISEÑO MOSTRADO EN LA FIGURA 
+
+CAMPO FACTURA ES EL NÚMERO DE LA FACTURA 
+AGREGAR ACMPO TIPO DE DOCUMENTO
+FECHA :  ES LA FECHA DE LA FACTURA DE PROVEEDOR
+PROVEEDOR :  ES EL NOMBRE DEL PROVEEDOR 
+MONEDA :  LA MONEDA QUE TENDRA L AFACTURA A ELEGIR 
+PESO TOTAL :  INGREO DEL PESO TOTAL A PRORRATEAR 
+MONTO A PRORRATEAR :  MONTO INGRESADO POR EL USUARIO 
+QUE SERÁ LO QUE SE PRORRATEE
+
+DIARIO :  DIARIO DONDE SE GUARDARÁ EL ASIENTO CONTABLE 
+
+AGREGAR TRES BOTONES : 
+CALCULAR : 
+GENERAR ENTRADA ALMACEN: POSTERIORMENTE VA A GENERAR EL KARDE
+GENERAR FACTURA : GENERA LA FACTURA COPIANDO LOS DATOS DE CABECERA Y EN EL DETALLE LOS PRODUCTOS CON CANTIDAD 1 Y MONTO
+PRORRATEADO.
+
+
+	""",
+	'auto_install': False,
+	'demo': [],
+	'data':	['wizard/account_expense_related_view.xml','account_invoice_view.xml'],
+	'installable': True
+}

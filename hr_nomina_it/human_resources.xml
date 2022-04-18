@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="human_resources_param_action" model="ir.actions.act_window">
+            <field name="name">Parametros</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.parameters</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="human_resources_param_tareo_action" model="ir.actions.act_window">
+            <field name="name">Parametros Tareo</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.tareo.parameters</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="human_resources_horas_extra_action" model="ir.actions.act_window">
+            <field name="name">Horas Extra</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.horas.extra</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="human_tareo_action" model="ir.actions.act_window">
+            <field name="name">Tareo</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.tareo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="human_resources_aplica_action" model="ir.actions.act_window">
+            <field name="name">Aplicaciones</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.table.membership</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <record id="human_resources_table_adelantos_action" model="ir.actions.act_window">
+            <field name="name">Adelantos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.table.adelanto</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="human_resources_member_action" model="ir.actions.act_window">
+            <field name="name">Member</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.membership</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="human_resources_concepto_action" model="ir.actions.act_window">
+            <field name="name">Conceptos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.lista.conceptos</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="human_resources_concepto_remunerativo_action" model="ir.actions.act_window">
+            <field name="name">Concepto Remunerativo</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.concepto.remunerativo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="human_resources_tipo_trabajador_action" model="ir.actions.act_window">
+            <field name="name">Tipo Trabajador</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tipo.trabajador</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <record id="human_resources_cargo_y_ocupacion_action" model="ir.actions.act_window">
+            <field name="name">Cargo y Ocupación</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.job</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="human_resources_ubicacion_action" model="ir.actions.act_window">
+            <field name="name">Ubicación</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.location</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="human_resources_quincenales_action" model="ir.actions.act_window">
+            <field name="name">Quincena</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.quincenales</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="human_resources_adelanto_action" model="ir.actions.act_window">
+            <field name="name">Adelantos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.adelanto</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_hr_adelanto_filter"/> 
+        </record>
+
+        <record id="human_resources_planilla_wizard_action" model="ir.actions.act_window">
+            <field name="name">Planilla</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.planilla.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem name="Parámetros"
+            action="human_resources_param_action"
+            id="menu_hr_parametros"
+            parent="hr.menu_hr_configuration"
+            sequence="1"
+        />
+        <menuitem name="Parámetros Tareo"
+            action="human_resources_param_tareo_action"
+            id="menu_hr_parametros_tareo"
+            parent="hr.menu_hr_configuration"
+            sequence="2"
+        />
+        <menuitem name="Horas Extra"
+            action="human_resources_horas_extra_action"
+            id="menu_hr_horas_extra"
+            parent="hr.menu_hr_configuration"
+            sequence="2"
+        />
+        <menuitem name="Tabla Afiliaciones"
+            action="human_resources_aplica_action"
+            id="menu_hr_tabla_afiliaciones"
+            parent="hr.menu_hr_configuration"
+            sequence="3"
+        />
+        <menuitem name="Tabla Adelantos"
+            action="human_resources_table_adelantos_action"
+            id="menu_hr_tabla_adelantos"
+            parent="hr.menu_hr_configuration"
+            sequence="4"
+        />
+        <menuitem name="Afiliaciones"
+            action="human_resources_member_action"
+            id="menu_hr_afiliaciones"
+            parent="hr.menu_hr_configuration"
+            sequence="6"
+        />
+        <menuitem
+            action="human_resources_concepto_action"
+            id="menu_hr_concepto"
+            parent="hr.menu_hr_configuration"
+            sequence="7"
+        />
+        <menuitem name="Concepto Remunerativo"
+            action="human_resources_concepto_remunerativo_action"
+            id="menu_hr_concepto_remunerativo"
+            parent="hr.menu_hr_configuration"
+            sequence="8"
+        />
+        <menuitem name="Tipo Trabajador"
+            action="human_resources_tipo_trabajador_action"
+            id="menu_tipo_trabajador"
+            parent="hr.menu_hr_configuration"
+            sequence="9"
+        />
+        <menuitem name="Cargo y Ocupación"
+            action="human_resources_cargo_y_ocupacion_action"
+            id="menu_cargo_y_ocupacion"
+            parent="hr.menu_hr_configuration"
+            sequence="10"
+        />
+        <menuitem name="Ubicación"
+            action="human_resources_ubicacion_action"
+            id="menu_ubicacion"
+            parent="hr.menu_hr_configuration"
+            sequence="11"
+        />
+        <menuitem name="Tareo"
+            action="human_tareo_action"
+            id="menu_hr_tareo"
+            parent="hr.menu_hr_main"
+            sequence="5"
+        />
+        <menuitem name="Planilla"
+            action="human_resources_planilla_wizard_action"
+            id="menu_hr_planilla_wizard"
+            parent="hr.menu_hr_main"
+            sequence="6"
+        />
+        <menuitem name="Quincena"
+            action="human_resources_quincenales_action"
+            id="menu_hr_quincenales_id"
+            parent="hr.menu_hr_main"
+            sequence="7"
+        />
+        <menuitem name="Adelantos"
+            action="human_resources_adelanto_action"
+            id="menu_hr_adelanto_id"
+            parent="hr.menu_hr_main"
+            sequence="8"
+        />
+    </data>
+</openerp>

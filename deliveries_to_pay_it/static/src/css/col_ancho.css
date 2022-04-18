@@ -1,0 +1,15 @@
+.col_ancho [data-field="periodo"]{width: 5%;}
+.col_ancho [data-field="diario"]{width: 5%;}
+.col_ancho [data-field="asiento"]{width: 5%;}
+.col_ancho [data-field="fecha"]{width: 7%;}
+.col_ancho [data-field="td"]{width: 2%;}
+.col_ancho [data-field="nro_comprobante"]{width: 8%;}
+.col_ancho [data-field="ruc_dni"]{width: 5%;}
+.col_ancho [data-field="partner"]{width: 30%;}
+.col_ancho [data-field="cuenta"]{width: 2%;}
+.col_ancho [data-field="ingreso"]{width: 2%;}
+.col_ancho [data-field="gasto"]{width: 2%;}
+.col_ancho [data-field="saldo_entregar"]{width: 2%;}
+.col_ancho [data-field="importe_me"]{width: 2%;}
+.col_ancho [data-field="tipo_camb"]{width: 3%;}
+.col_ancho [data-field="descripcion"]{width: 20%;}

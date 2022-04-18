@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_production_parameter_form" model="ir.ui.view">
+            <field name="name">production.parameter.form</field>
+            <field name="model">production.parameter</field>
+            <field name="arch" type="xml">
+                <form>
+                    <notebook>
+                        <page string="Parámetros">
+                            <group>
+                                <group>
+                                    <field name="journal_id" invisible="1"/>
+                                    <field name="top_origen_chancado" invisible="1"/>
+                                    <field name="top_destino_chancado" invisible="1"/>
+                                </group>
+                                <group>
+                                    <field name="ruma_product"/>
+                                    <field name="virtual_location_id"/>
+                                    <field name="top_origen_ruma"/>
+                                    <field name="top_destino_ruma"/>
+                                    <field name="top_consumo_ruma"/>
+                                    <field name="control_prod_proceso"/>
+                                    <field name="cuentas_analisis"/>
+                                    <field name="tipo_documentos"/>
+                                    
+                                </group>
+                            </group>
+                            <field name="product_ids">
+                                <tree editable="top">
+                                    <field name="product_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_production_parameter_tree" model="ir.ui.view">
+            <field name="name">production.parameter.tree</field>
+            <field name="model">production.parameter</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Production Parameter" create="false" delete="false">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_production_parameter" model="ir.actions.act_window">
+            <field name="name">Parametros</field>
+            <field name="res_model">production.parameter</field>
+            <field name="view_id" ref="view_production_parameter_tree"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem 
+            action="action_production_parameter" 
+            id="menu_production_parameter" 
+            parent="previous_requirements_joya.submenu_configuration_joya"
+        />
+    </data>
+</openerp>

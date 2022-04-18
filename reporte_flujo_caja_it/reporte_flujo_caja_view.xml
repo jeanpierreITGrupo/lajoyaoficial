@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="view_reporte_flujo_caja_wizard_form">
+			<field name="name">reporte.flujo.caja.wizard.form</field>
+			<field name="model">reporte.flujo.caja.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Flujo Caja" >
+						<group>
+							<group>
+	                    		<field name="fiscalyear_id" />
+							</group>
+							<group>
+							</group>
+						</group>
+
+						<footer>
+							<button string="Mostrar" name="do_rebuild" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="reporte_flujo_caja_format_action" model="ir.actions.act_window">
+			<field name="name">Flujo Caja Mes</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">reporte.flujo.caja.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<menuitem id="menu_reporte_flujo_caja_wizard" name="Flujo Caja Mes" parent="account_sheet_work.account_finance_state_it" sequence="109" action="reporte_flujo_caja_format_action" />
+		
+
+
+
+
+
+		<record id="view_config_flujo_caja" model="ir.ui.view">
+            <field name="name">config.flujo.caja.tree</field>
+            <field name="model">config.flujo.caja</field>
+            <field name="arch" type="xml">
+                <tree string="Flujos de Caja" editable="bottom">
+                    <field name="fefectivo_id" />
+                    <field name="n_ingreso" />
+                    <field name="n_egreso" />
+                </tree>
+
+            </field>
+        </record>
+
+		
+
+		<record id="config_flujo_caja_action" model="ir.actions.act_window">
+			<field name="name">Flujos de Caja</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">config.flujo.caja</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+
+        <menuitem name="Formato Flujos de Caja" id="config_flujo_caja_menu"  parent="account_state_financial_it.menu_state_financial_it" action="config_flujo_caja_action" sequence="5" />
+
+
+	</data>
+</openerp>

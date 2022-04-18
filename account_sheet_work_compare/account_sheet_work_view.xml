@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_account_sheet_work_simple_c_tree" model="ir.ui.view">
+            <field name="name">account.sheet.work.simple.tree</field>
+            <field name="model">account.sheet.work.simple</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Hoja de Trabajo" create="false">
+                    <field name="cuenta" />
+                    <field name="descripcion" />
+                    <field name="debe" string="Debe Año 1" />
+                    <field name="haber" string="Haber Año 1" />
+                    <field name="saldodeudor" string="Saldo Deudor Año 1" />
+                    <field name="saldoacredor" string="Saldo Acreedor Año 1" />
+
+                    <field name="debec" string="Debe Año 2" />
+                    <field name="haberc" string="Haber Año 2" />
+                    <field name="saldodeudorc" string="Saldo Deudor Año 2" />
+                    <field name="saldoacredorc" string="Saldo Acreedor Año 2" />
+
+                </tree>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

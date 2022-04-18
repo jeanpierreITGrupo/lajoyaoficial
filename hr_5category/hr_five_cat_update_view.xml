@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data> 
+        <record id="view_hr_five_cat_prob_tree" model="ir.ui.view">
+            <field name="name">hr.five.cat.update.tree</field>
+            <field name="model">hr.five.cat.update</field>
+            <field name="arch" type="xml">
+                <tree string="5ta Categoría">
+                    <field name="five_file_txt"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_five_cat_prob_form" model="ir.ui.view">
+            <field name="name">hr.five.cat.update.form</field>
+            <field name="model">hr.five.cat.update</field>
+            <field name="arch" type="xml">
+                <form string="5ta Categoría">
+                    <header>                        
+                        <button string="Importar" type="object" name="importar" class="oe_highlight"/>
+                        <button string="Importar Errores" type="object" name="importar_errores" class="oe_highlight"/>
+                        <button string="Limpiar Errores" type="object" name="limpiar_errores" class="oe_highlight"/>  
+                    </header>
+                    <group>
+                        <group>
+                            <field name="five_file" filename="five_file_txt"/>
+                            <field name="five_file_txt" invisible="1"/>
+                            <field name="delimiter"/>
+                        </group>
+                        <group></group>
+                    </group>
+                    <group>
+                        <field name="five_no_imp_lines" nolabel="1">
+                            <tree editable="bottom" create="0">
+                                <field name="period"/>
+                                <field name="dni"/>
+                                <field name="bonificacion"/>
+                                <field name="retencion"/>
+                                <field name="detalle"/>
+                            </tree>
+                        </field>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_hr_five_cat_update" model="ir.actions.act_window">
+            <field name="name">Actualización de 5ta Categoría</field>
+            <field name="res_model">hr.five.cat.update</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+         <menuitem action="action_hr_five_cat_update" id="menu_hr_five_cat_prob" parent="hr.menu_hr_main"/>
+    </data>
+</openerp>

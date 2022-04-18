@@ -1,0 +1,2267 @@
+# -*- encoding: utf-8 -*-
+from openerp import models, fields, api
+from openerp.osv import osv, expression
+from datetime import datetime, timedelta
+import pprint
+import codecs
+import base64
+import decimal
+from reportlab.lib.enums import TA_JUSTIFY,TA_CENTER,TA_RIGHT
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.colors import magenta, red , black , blue, gray, Color, HexColor
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.lib.pagesizes import letter, A4, landscape
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle,BaseDocTemplate, PageTemplate, Frame
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.platypus import Paragraph, Table, PageBreak, Spacer, FrameBreak,Image
+from reportlab.lib.units import  cm,mm
+from reportlab.lib.utils import simpleSplit
+from cgi import escape
+from reportlab import platypus
+
+class hr_tareo_line(models.Model):
+	_name = 'hr.tareo.line'
+	#Datos ingresados manualmente
+	dni = fields.Char('DNI', size=20)
+	employee_id = fields.Many2one('hr.employee', "Empleado")
+	codigo_trabajador = fields.Char(u'Código')
+	apellido_paterno = fields.Char('Apellido Paterno', size=20, readonly=1)
+	apellido_materno = fields.Char('Apellido Materno', size=20, readonly=1)
+	nombre = fields.Char('Nombres', size=30, readonly=1)
+	cargo = fields.Many2one('hr.job','Cargo', size=50, readonly=1)
+	afiliacion = fields.Many2one('hr.table.membership','Afiliación')
+	tipo_comision = fields.Boolean('Tipo Comisión')
+	basica_first = fields.Float('Básico', digits=(12,2))
+	a_familiar_first = fields.Float('A. Familiar', readonly=1, digits=(12,2))
+	basica = fields.Float('Básico', digits=(12,2))
+	a_familiar = fields.Float('A. Familiar', readonly=1, digits=(12,2))
+	######
+	total_remunerable = fields.Float('Total Remun. Computable', digits=(12,2))
+	dias_trabajador = fields.Integer('Dias Trabajados')
+	tipo_suspension_perfecta = fields.Char('Tipo Suspensión Perfecta')
+	tipo_suspension_imperfecta = fields.Char('Tipo Suspensión Imperfecta')
+	dias_suspension_perfecta = fields.Integer('Dias Suspensión Perfecta')
+	dias_suspension_imperfecta = fields.Integer('Dias Suspensión Imperfecta')
+	tardanza_horas = fields.Float('Tardanza Horas', digits=(12,2))
+	
+	horas_extra_diurna = fields.Float('Horas Extras Diurnas', digits=(12,2))
+	horas_extra_nocturna = fields.Float('Horas Extras Nocturna', digits=(12,2))
+	horas_extra_feriado = fields.Float('Horas Extras Feriado', digits=(12,2))
+	# horas extras diurnas y nocturnas para feriados
+	horas_extra_feriado_diur = fields.Float('HE feriados diurnas', digits=(12,2))
+	horas_extra_feriado_noct = fields.Float('HE feriados nocturnas', digits=(12,2))
+
+	descuento_dominical = fields.Float('Descuento Dominical', digits=(12,2))
+
+	total_horas_extras = fields.Float('Total Horas Extras', digits=(12,2))
+	total_horas_extras_horas = fields.Float('Horas', digits=(12,2))
+	total_horas_extras_minutos = fields.Float('Minutos', digits=(12,2))
+	####
+
+
+	vacaciones = fields.Float('Vacaciones', digits=(12,2))
+	vacaciones_trunca = fields.Float('Vacaciones Trunca', digits=(12,2))
+	subsidiomaternidad = fields.Float('Subsidio Maternidad', digits=(12,2))
+	subsidioincapacidad = fields.Float('Subsidio Incapacidad', digits=(12,2))
+	monto_boni_grati_liq= fields.Float('bonificacion liq', digits=(12,2))	
+	h_25 = fields.Float('H_25%', digits=(12,2))
+	h_35 = fields.Float('H_35%', digits=(12,2))
+	h_100 = fields.Float('H_100%', digits=(12,2))
+
+	otros_ingreso = fields.Float('Otros Ingreso', digits=(12,2))
+	total_ingreso = fields.Float('Total Ingreso', digits=(12,2))
+	tardanzas = fields.Float('Tardanzas', digits=(12,2))
+	inasistencias = fields.Float('Inasistencias', digits=(12,2))
+	dscto_domi = fields.Float('Dscto. Domi.', digits=(12,2))
+	rmb = fields.Float('RMB', digits=(12,2))
+	onp = fields.Float('ONP', digits=(12,2))
+	afp_jub = fields.Float('AFP_JUB', digits=(12,2))
+	afp_psi = fields.Float('AFP_PSI', digits=(12,2))
+	afp_com = fields.Float('AFP_COM', digits=(12,2))
+	quinta_cat = fields.Float('5TA CAT', digits=(12,2))
+	total_descuento = fields.Float('Total Descuento', digits=(12,2))
+	neto = fields.Float('NETO', digits=(12,2))
+	neto_sueldo = fields.Float('NETO SUELDO', digits=(12,2))
+	neto_vacaciones = fields.Float('NETO VACACIONES', digits=(12,2))
+	adelantos = fields.Float('Adelantos', digits=(12,2))
+	prestamos = fields.Float('Prestamos', digits=(12,2))
+	otros_dct = fields.Float('Otros Descuentos', digits=(12,2))
+	saldo_sueldo = fields.Float('Saldo a Pagar Sueldo', digits=(12,2))
+	essalud = fields.Float('ESSALUD', digits=(12,2))
+	senaty = fields.Float('SENATI', digits=(12,2))
+	rma_pi = fields.Float('RMA PI', digits=(12,2))
+	dsc_afp = fields.Float('DSC AFP', digits=(12,2))
+	cts = fields.Float('CTS', digits=(12,2))
+	gratificacion = fields.Float('Gratificación', digits=(12,2))
+	gratificacion_extraordinaria = fields.Float('Gratificación Trunca', digits=(12,2))
+	gratificacion_extraordinaria_real = fields.Float('Gratificación Extraordinaria', digits=(12,2))
+	centro_costo = fields.Many2one('hr.distribucion.gastos','Centro C.')
+	
+	# aditional concepts from email
+	sctr = fields.Float('SCTR', digits=(12,2))
+	eps = fields.Float('EPS %', digits=(12,2))
+	bonificacion = fields.Float('Bonificación', digits=(12,2))
+
+	comision = fields.Float('Conmisión', digits=(12,2))
+	boni_grati = fields.Float('Bonificación de Gratificación', digits=(12,2))
+
+	# main id
+	tareo_id = fields.Many2one('hr.tareo', 'Detalle')
+	state= fields.Selection([('close','Cerrado'),('open','Abierto')],related='tareo_id.state')
+
+
+
+
+
+
+	@api.onchange('dias_trabajador','tipo_suspension_perfecta','tipo_suspension_imperfecta','dias_suspension_perfecta','dias_suspension_imperfecta','tardanza_horas','horas_extra_diurna','horas_extra_nocturna','horas_extra_feriado','descuento_dominical','vacaciones','vacaciones_trunca','subsidioincapacidad','subsidiomaternidad','otros_ingreso','dscto_domi','onp','afp_jub','afp_psi','afp_com','quinta_cat','adelantos','prestamos','otros_dct','essalud','senaty','rma_pi','cts','gratificacion','gratificacion_trunca','bonificacion','comision','horas_extra_feriado_diur','horas_extra_feriado_noct','gratificacion_extraordinaria','boni_grati','a_familiar','gratificacion_extraordinaria_real')
+	def onchange_all(self):
+		tmp__1 = (self.basica_first /30) * self.dias_trabajador
+		self.basica= tmp__1
+		tmp__2 = (self.a_familiar)
+		# self.a_familiar= tmp__2
+		# if self.vacaciones>0:
+			# tmp__2 = 0
+			# self.a_familiar_first=0
+			# self.a_familiar= 0
+		# else:
+			# emp_tmp = self.env['hr.employee'].search( [('identification_id','=',self.dni)] )
+			# a_f = self.env['hr.parameters'].search([])[0].a_familiar if emp_tmp.children_number>0 else 0
+			# self.a_familiar_first=a_f
+			# self.a_familiar= a_f
+
+		#self.refresh()
+
+		tmp__3 =  ((self.total_remunerable/30) /8 )* self.horas_extra_diurna* self.env['hr.parameters'].search([])[0].he_diurnas
+		self.h_25= tmp__3
+
+		tmp__4 =  ((self.total_remunerable/30) /8 )* self.horas_extra_nocturna* self.env['hr.parameters'].search([])[0].he_nocturnas
+		self.h_35= tmp__4
+
+		tmp__5 =  ((self.total_remunerable/30) /8 )* self.horas_extra_feriado* self.env['hr.parameters'].search([])[0].he_feriados
+		self.h_100= tmp__5
+
+		apara=str(self.env['hr.parameters'].search([])[0].he_fer_noct).split('.')
+		montodia= (self.total_remunerable/30) /8 
+		montodiaso=montodia*int(apara[0])
+		montodiaso=montodiaso+montodiaso*(float(apara[1])/100)
+		tmp__51 =  montodiaso*self.horas_extra_feriado_noct
+		self.h_100+= tmp__51
+		apara=str(self.env['hr.parameters'].search([])[0].he_fer_diur).split('.')
+		montodia= (self.total_remunerable/30) /8 
+		montodiaso=montodia*int(apara[0])
+		montodiaso=montodiaso+montodiaso*(float(apara[1])/100)
+
+		tmp__52 =  self.horas_extra_feriado_diur*montodiaso
+		# ((self.total_remunerable/30) /8 )* self.horas_extra_feriado_diur* self.env['hr.parameters'].search([])[0].he_fer_diur
+		self.h_100+= tmp__52
+
+		tmp__6 =  round( ((self.total_remunerable/30) /8 )+0.0001,2)* self.tardanza_horas
+		self.tardanzas = tmp__6
+
+		tmp__7 =  ((self.total_remunerable/30) )* self.dias_suspension_perfecta
+		self.inasistencias = tmp__7
+
+		tmp__8 = self.horas_extra_diurna + self.horas_extra_nocturna + self.horas_extra_feriado+self.horas_extra_feriado_diur+self.horas_extra_feriado_noct
+		self.total_horas_extras = tmp__8
+
+
+		#self.refresh()
+
+		tmp__9 = int(self.total_horas_extras)
+		self.total_horas_extras_horas = tmp__9
+		#self.refresh()
+
+		tmp__10 = (self.total_horas_extras - int(self.total_horas_extras) )*60
+		self.total_horas_extras_minutos = tmp__10
+
+		#self.refresh()
+		tmp_1 = self.basica + self.a_familiar + self.vacaciones + self.vacaciones_trunca + self.subsidiomaternidad+self.bonificacion+self.comision
+		tmp_1 += self.subsidioincapacidad + self.h_25 + self.h_35 + self.h_100 + self.otros_ingreso
+		self.total_ingreso = tmp_1
+		tmp_2 = tmp_1 - self.tardanzas - self.inasistencias - self.dscto_domi
+		self.rmb = tmp_2
+
+		####
+		trib_1= 0
+		for iij in self.env['hr.concepto.remunerativo.line'].search([('afecto_tributo','=',True)]):
+			if iij.concepto == '001':
+				trib_1 += self.basica
+			if iij.concepto == '002':
+				trib_1 += self.a_familiar
+			if iij.concepto == '003':
+				trib_1 += self.vacaciones
+			if iij.concepto == '004':
+				trib_1 += self.vacaciones_trunca
+			if iij.concepto == '005':
+				trib_1 += self.gratificacion
+			if iij.concepto == '006':
+				trib_1 += self.subsidiomaternidad
+			if iij.concepto == '007':
+				trib_1 += self.gratificacion_extraordinaria
+			if iij.concepto == '008':
+				trib_1 += self.bonificacion
+			if iij.concepto == '009':
+				trib_1 += self.comision
+			if iij.concepto == '010':
+				trib_1 += self.boni_grati
+
+
+		trib_2= 0
+		for iij in self.env['hr.concepto.remunerativo.line'].search([('afecto_afp','=',True)]):
+			if iij.concepto == '001':
+				trib_2 += self.basica
+			if iij.concepto == '002':
+				trib_2 += self.a_familiar
+			if iij.concepto == '003':
+				trib_2 += self.vacaciones
+			if iij.concepto == '004':
+				trib_2 += self.vacaciones_trunca
+			if iij.concepto == '005':
+				trib_2 += self.gratificacion
+			if iij.concepto == '006':
+				trib_2 += self.subsidiomaternidad
+			if iij.concepto == '007':
+				trib_2 += self.gratificacion_extraordinaria
+			if iij.concepto == '008':
+				trib_2 += self.bonificacion
+			if iij.concepto == '009':
+				trib_2 += self.comision
+			if iij.concepto == '010':
+				trib_2 += self.boni_grati
+
+
+		trib_3= 0
+		for iij in self.env['hr.concepto.remunerativo.line'].search([('afecto_aportes','=',True)]):
+			if iij.concepto == '001':
+				trib_3 += self.basica
+			if iij.concepto == '002':
+				trib_3 += self.a_familiar
+			if iij.concepto == '003':
+				trib_3 += self.vacaciones
+			if iij.concepto == '004':
+				trib_3 += self.vacaciones_trunca
+			if iij.concepto == '005':
+				trib_3 += self.gratificacion
+			if iij.concepto == '006':
+				trib_3 += self.subsidiomaternidad
+			if iij.concepto == '007':
+				trib_3 += self.gratificacion_extraordinaria
+			if iij.concepto == '008':
+				trib_3 += self.bonificacion
+			if iij.concepto == '009':
+				trib_3 += self.comision
+			if iij.concepto == '010':
+				trib_3 += self.boni_grati
+
+		
+		if self.afiliacion.id:
+			t_opm=self.env['hr.membership.line'].search( [('periodo','=',self.tareo_id.periodo.id),('membership','=',self.afiliacion.id)] )
+			if len(t_opm)>0:
+				t_opm = t_opm[0]
+
+				if self.afiliacion.code == '4':
+					self.onp = (trib_1+self.h_100+self.h_25+self.h_35 - self.tardanzas - self.inasistencias - self.dscto_domi)* ( t_opm.tasa_pensiones /100.0)
+				else:
+					self.afp_jub =( trib_2+self.h_100+self.h_25+self.h_35-self.tardanzas - self.inasistencias - self.dscto_domi)* ( t_opm.tasa_pensiones /100.0)  
+					self.afp_psi = (( trib_2+self.h_100+self.h_25+self.h_35-self.tardanzas - self.inasistencias - self.dscto_domi) * ( t_opm.prima /100.0) ) if trib_2 < t_opm.rma else (t_opm.rma * ( t_opm.prima /100.0) ) 
+					self.afp_com = ( (trib_2+self.h_100+self.h_25+self.h_35-self.tardanzas - self.inasistencias - self.dscto_domi) * ( t_opm.c_mixta /100.0) ) if self.tipo_comision == True else ((trib_2+self.h_100+self.h_25+self.h_35-self.tardanzas - self.inasistencias - self.dscto_domi) * ( t_opm.c_variable /100.0) ) 
+				self.rma_pi = t_opm.rma
+			else:
+				self.onp = 0
+				self.afp_jub= 0
+				self.afp_psi= 0
+				self.afp_com= 0
+				self.rma_pi = 0
+		emp_tmp = self.env['hr.employee'].search( [('identification_id','=',self.dni)] )
+		if trib_3+self.h_100+self.h_25+self.h_35 -self.tardanzas - self.inasistencias - self.dscto_domi<self.env['hr.parameters'].search([])[0].rmv:
+			self.essalud= self.env['hr.parameters'].search([])[0].rmv*(self.env['hr.parameters'].search([])[0].essalud /100.0)
+		else:
+			self.essalud = (self.env['hr.parameters'].search([])[0].essalud /100.0)*(trib_3+self.h_100+self.h_25+self.h_35 -self.tardanzas - self.inasistencias - self.dscto_domi)
+		self.eps=0
+		if emp_tmp.use_eps:
+			eps1=(self.env['hr.parameters'].search([])[0].eps_percent /100.0)*(trib_3+self.h_100+self.h_25+self.h_35 -self.tardanzas - self.inasistencias - self.dscto_domi)
+			if trib_3+self.h_100+self.h_25+self.h_35 -self.tardanzas - self.inasistencias - self.dscto_domi<self.env['hr.parameters'].search([])[0].rmv:
+				self.essalud= self.env['hr.parameters'].search([])[0].rmv*(self.env['hr.parameters'].search([])[0].essalud /100.0)				
+				esalud1=self.env['hr.parameters'].search([])[0].rmv*(self.env['hr.parameters'].search([])[0].essalud /100.0)				
+			else:
+				esalud1 = (self.env['hr.parameters'].search([])[0].essalud /100.0)*(trib_3+self.h_100+self.h_25+self.h_35-self.tardanzas - self.inasistencias - self.dscto_domi)
+			self.eps=eps1
+			self.essalud=esalud1-eps1
+		self.senaty = (self.env['hr.parameters'].search([])[0].senati /100.0) *(trib_3+self.h_100+self.h_25+self.h_35 -self.tardanzas - self.inasistencias - self.dscto_domi)
+		tmp_3 = self.onp + self.afp_jub + self.afp_psi + self.afp_com + self.quinta_cat
+		self.total_descuento = tmp_3
+		tmp_4 = tmp_2 - tmp_3
+		
+		# s_porc =  (self.basica + self.a_familiar ) / (self.basica + self.a_familiar + self.vacaciones + self.vacaciones_trunca)  if (self.basica + self.a_familiar + self.vacaciones + self.vacaciones_trunca) != 0 else 0
+		# v_porc = (1- s_porc)
+		# tmp_5 = round( (tmp_4 * s_porc)+ 0.000001,2)
+		# self.neto_sueldo = tmp_5
+		# tmp_6 = tmp_4 - tmp_5
+		# self.neto_vacaciones = tmp_6
+		montovaca=self.vacaciones+self.vacaciones_trunca
+		if self.vacaciones+self.vacaciones_trunca>0:
+			montovaca = self.vacaciones+self.vacaciones_trunca+self.a_familiar
+		motosueldo = self.total_ingreso-montovaca
+		if self.total_ingreso>0:
+			factorsuel = motosueldo/self.total_ingreso
+			factorvaca = montovaca/self.total_ingreso
+			self.neto_sueldo = tmp_4*factorsuel
+			tmp_5=tmp_4*factorsuel
+			self.neto_vacaciones = tmp_4*factorvaca
+			tmp_7 = tmp_5 - self.adelantos - self.prestamos - self.otros_dct
+
+		prest_tmp = 0
+		if len(emp_tmp) > 0:
+			emp_tmp = emp_tmp[0]
+			for iomn in self.env['hr.adelanto'].search( [('employee','=',emp_tmp.id),('fecha','>=',self.tareo_id.periodo.date_start),('fecha','<=',self.tareo_id.periodo.date_stop)] ):
+				prest_tmp+= iomn.monto
+		self.adelantos = prest_tmp
+		
+		
+		tmp_8 = self.afp_jub + self.afp_psi + self.afp_com 
+		self.dsc_afp = tmp_8
+
+		self.neto = tmp_4
+		self.saldo_sueldo = self.neto+self.cts+self.gratificacion_extraordinaria+self.gratificacion_extraordinaria_real-prest_tmp
+
+	@api.multi
+	def open_wizard(self):
+		return {
+			'type': 'ir.actions.act_window',
+			'name': "Detalle Tareo",
+			'view_type': 'form',
+			'view_mode': 'form',
+			'res_model': 'hr.tareo.line',
+			'res_id': self.id,
+			'target': 'new',
+		   }
+
+	@api.one
+	def write(self,vals):
+		t = super(hr_tareo_line,self).write(vals)
+		self.refresh()
+
+		if 'nohacernada' in vals:
+			pass
+		else:
+
+			tmp__1 = (self.basica_first /30) * self.dias_trabajador
+			self.write({'nohacernada':1,'basica': tmp__1})
+			
+			tmp__2 = (self.a_familiar)
+			# if self.vacaciones>0:
+				# tmp__2=0
+				
+
+			self.write({'nohacernada':1,'a_familiar': tmp__2})
+			self.refresh()
+
+			tmp__3 =  ((self.total_remunerable/30) /8 )* self.horas_extra_diurna* self.env['hr.parameters'].search([])[0].he_diurnas
+			self.write({'nohacernada':1,'h_25': tmp__3})
+
+			tmp__4 =  ((self.total_remunerable/30) /8 )* self.horas_extra_nocturna* self.env['hr.parameters'].search([])[0].he_nocturnas
+			self.write({'nohacernada':1,'h_35': tmp__4})
+
+			tmp__5 =  ((self.total_remunerable/30) /8 )* self.horas_extra_feriado* self.env['hr.parameters'].search([])[0].he_feriados
+			
+			apara=str(self.env['hr.parameters'].search([])[0].he_fer_noct).split('.')
+			montodia= (self.total_remunerable/30) /8 
+			montodiaso=montodia*int(apara[0])
+			montodiaso=montodiaso+montodiaso*(float(apara[1])/100)
+			tmp__5+=   self.horas_extra_feriado_noct* montodiaso
+
+			apara=str(self.env['hr.parameters'].search([])[0].he_fer_diur).split('.')
+			montodia= (self.total_remunerable/30) /8 
+			montodiaso=montodia*int(apara[0])
+			montodiaso=montodiaso+montodiaso*(float(apara[1])/100)
+			tmp__5+=  self.horas_extra_feriado_diur*montodiaso
+
+			self.write({'nohacernada':1,'h_100': tmp__5})
+
+			tmp__6 =  round( ((self.total_remunerable/30) /8 )+0.0001,2)* self.tardanza_horas
+			self.write({'nohacernada':1,'tardanzas': tmp__6})
+
+			tmp__7 =  ((self.total_remunerable/30) )* self.dias_suspension_perfecta
+			self.write({'nohacernada':1,'inasistencias': tmp__7})
+
+			tmp__8 = self.horas_extra_diurna + self.horas_extra_nocturna + self.horas_extra_feriado+self.horas_extra_feriado_diur+self.horas_extra_feriado_noct
+			self.write({'nohacernada':1,'total_horas_extras': tmp__8})
+			self.refresh()
+
+			tmp__9 = int(self.total_horas_extras)
+			self.write({'nohacernada':1,'total_horas_extras_horas': tmp__9})
+			self.refresh()
+
+			tmp__10 = (self.total_horas_extras - int(self.total_horas_extras) )*60
+			self.write({'nohacernada':1,'total_horas_extras_minutos': tmp__10})
+			
+
+			self.refresh()
+
+			tmp_1 = self.basica + self.a_familiar + self.vacaciones + self.vacaciones_trunca + self.subsidiomaternidad+self.bonificacion+self.comision
+			tmp_1 += self.subsidioincapacidad + self.h_25 + self.h_35 + self.h_100 + self.otros_ingreso 
+			self.write({'nohacernada':1,'total_ingreso': tmp_1})
+			tmp_2 = tmp_1 - self.tardanzas - self.inasistencias - self.dscto_domi
+			self.write({'nohacernada':1,'rmb': tmp_2})
+
+			####
+			
+			trib_1= 0
+			for iij in self.env['hr.concepto.remunerativo.line'].search([('afecto_tributo','=',True)]):
+				if iij.concepto == '001':
+					trib_1 += self.basica
+				if iij.concepto == '002':
+					trib_1 += self.a_familiar
+				if iij.concepto == '003':
+					trib_1 += self.vacaciones
+				if iij.concepto == '004':
+					trib_1 += self.vacaciones_trunca
+				if iij.concepto == '005':
+					trib_1 += self.gratificacion
+				if iij.concepto == '006':
+					trib_1 += self.subsidiomaternidad
+				if iij.concepto == '007':
+					trib_1 += self.gratificacion_extraordinaria
+				if iij.concepto == '008':
+					trib_1 += self.bonificacion
+				if iij.concepto == '009':
+					trib_1 += self.comision
+				if iij.concepto == '010':
+					trib_1 += self.boni_grati
+
+			trib_2= 0
+			for iij in self.env['hr.concepto.remunerativo.line'].search([('afecto_afp','=',True)]):
+				if iij.concepto == '001':
+					trib_2 += self.basica
+				if iij.concepto == '002':
+					trib_2 += self.a_familiar
+				if iij.concepto == '003':
+					trib_2 += self.vacaciones
+				if iij.concepto == '004':
+					trib_2 += self.vacaciones_trunca
+				if iij.concepto == '005':
+					trib_2 += self.gratificacion
+				if iij.concepto == '006':
+					trib_2 += self.subsidiomaternidad
+				if iij.concepto == '007':
+					trib_2 += self.gratificacion_extraordinaria
+				if iij.concepto == '008':
+					trib_2 += self.bonificacion
+				if iij.concepto == '009':
+					trib_2 += self.comision
+				if iij.concepto == '010':
+					trib_2 += self.boni_grati			
+
+			trib_3= 0
+			for iij in self.env['hr.concepto.remunerativo.line'].search([('afecto_aportes','=',True)]):
+				if iij.concepto == '001':
+					trib_3 += self.basica
+				if iij.concepto == '002':
+					trib_3 += self.a_familiar
+				if iij.concepto == '003':
+					trib_3 += self.vacaciones
+				if iij.concepto == '004':
+					trib_3 += self.vacaciones_trunca
+				if iij.concepto == '005':
+					trib_3 += self.gratificacion
+				if iij.concepto == '006':
+					trib_3 += self.subsidiomaternidad
+				if iij.concepto == '007':
+					trib_3 += self.gratificacion_extraordinaria
+				if iij.concepto == '008':
+					trib_3 += self.bonificacion
+				if iij.concepto == '009':
+					trib_3 += self.comision
+				if iij.concepto == '010':
+					trib_3 += self.boni_grati					
+
+			if self.afiliacion.id:
+				t_opm=self.env['hr.membership.line'].search( [('periodo','=',self.tareo_id.periodo.id),('membership','=',self.afiliacion.id)] )
+				if len(t_opm)>0:
+					t_opm = t_opm[0]
+					if self.afiliacion.code == '4':
+						self.write({'nohacernada':1,'onp': (trib_1+self.h_100+self.h_25+self.h_35 - self.tardanzas - self.inasistencias - self.dscto_domi) * ( t_opm.tasa_pensiones /100.0)  })
+					else:
+						self.write({'nohacernada':1,'afp_jub': (trib_2+self.h_100+self.h_25+self.h_35 - self.tardanzas - self.inasistencias - self.dscto_domi) * ( t_opm.tasa_pensiones /100.0)  })
+						self.write({'nohacernada':1,'afp_psi': ((trib_2+self.h_100+self.h_25+self.h_35 - self.tardanzas - self.inasistencias - self.dscto_domi) * ( t_opm.prima /100.0) ) if trib_2 < t_opm.rma else (t_opm.rma * ( t_opm.prima /100.0) ) })
+						self.write({'nohacernada':1,'afp_com': ( (trib_2+self.h_100+self.h_25+self.h_35 - self.tardanzas - self.inasistencias - self.dscto_domi) * ( t_opm.c_mixta /100.0) ) if self.tipo_comision == True else ((trib_2+self.h_100+self.h_25+self.h_35-self.tardanzas - self.inasistencias - self.dscto_domi) * ( t_opm.c_variable /100.0) ) })
+					
+					self.write({'nohacernada':1,'rma_pi': t_opm.rma })
+				else:
+					self.write({'nohacernada':1,'afp_jub': 0 })
+					self.write({'nohacernada':1,'afp_psi': 0 })
+					self.write({'nohacernada':1,'afp_com': 0 })
+					self.write({'nohacernada':1,'rma_pi': 0 })
+			if trib_3+self.h_100+self.h_25+self.h_35-self.tardanzas - self.inasistencias - self.dscto_domi<self.env['hr.parameters'].search([])[0].rmv:
+				self.write({'nohacernada':1,'essalud': (self.env['hr.parameters'].search([])[0].essalud /100.0) *self.env['hr.parameters'].search([])[0].rmv})
+			else:
+				self.write({'nohacernada':1,'essalud': (self.env['hr.parameters'].search([])[0].essalud /100.0) *(trib_3+self.h_100+self.h_25+self.h_35-self.tardanzas - self.inasistencias - self.dscto_domi) })
+			# self.essalud = (self.env['hr.parameters'].search([])[0].essalud /100.0)*trib_3 
+			# self.eps=0
+			emp_tmp = self.env['hr.employee'].search( [('identification_id','=',self.dni)] )
+			if emp_tmp.use_eps:
+				eps1=(self.env['hr.parameters'].search([])[0].eps_percent /100.0)*(trib_3 +self.h_100+self.h_25+self.h_35-self.tardanzas - self.inasistencias - self.dscto_domi)
+				esalud1 = (self.env['hr.parameters'].search([])[0].essalud /100.0)*(trib_3+self.h_100+self.h_25+self.h_35-self.tardanzas - self.inasistencias - self.dscto_domi)
+				self.write({'nohacernada':1,'essalud': esalud1-eps1,'eps':eps1})
+
+			self.write({'nohacernada':1,'senaty': (self.env['hr.parameters'].search([])[0].senati /100.0) *(trib_3+self.h_100+self.h_25+self.h_35-self.tardanzas - self.inasistencias - self.dscto_domi) })
+			self.write({'nohacernada':1,'sctr':self.sctr })
+			self.refresh()
+			tmp_3 = self.onp + self.afp_jub + self.afp_psi + self.afp_com + self.quinta_cat
+			self.write({'nohacernada':1,'total_descuento': tmp_3})
+			tmp_4 = tmp_2 - tmp_3
+			
+			s_porc =  (self.basica + self.a_familiar ) / (self.basica + self.a_familiar + self.vacaciones + self.vacaciones_trunca)  if (self.basica + self.a_familiar + self.vacaciones + self.vacaciones_trunca) != 0 else 0
+			v_porc = (1- s_porc)
+			tmp_5 = round( (tmp_4 * s_porc)+ 0.000001,2)
+
+			montovaca=self.vacaciones+self.vacaciones_trunca
+			if self.vacaciones+self.vacaciones_trunca>0:
+				montovaca = self.vacaciones+self.vacaciones_trunca+self.otros_ingreso
+			motosueldo = self.total_ingreso-montovaca-self.comision
+			montocomision = self.comision
+			factorsuel = 0
+			factorvaca = 0
+			factorcomi = 0
+
+			if self.total_ingreso!=0:
+				factorsuel = motosueldo/self.total_ingreso
+				factorvaca = montovaca/self.total_ingreso
+				factorcomi = montocomision/self.total_ingreso
+
+			tmp_5 = tmp_4*factorsuel
+			tmp_6 = tmp_4*factorvaca
+			tmp_comi = tmp_4*factorcomi
+			self.write({'nohacernada':1,'neto_sueldo': tmp_5})
+			# tmp_6 = tmp_4 - tmp_5
+			self.write({'nohacernada':1,'neto_vacaciones': tmp_6})
+
+			######
+			prest_tmp = 0
+			emp_tmp = self.env['hr.employee'].search( [('identification_id','=',self.dni)] )
+			if len(emp_tmp) > 0:
+				emp_tmp = emp_tmp[0]
+				for iomn in self.env['hr.adelanto'].search( [('employee','=',emp_tmp.id),('fecha','>=',self.tareo_id.periodo.date_start),('fecha','<=',self.tareo_id.periodo.date_stop)] ):
+					prest_tmp+= iomn.monto
+
+			self.write({'nohacernada':1,'adelantos': prest_tmp})
+			self.refresh()
+			######
+			# tmp_7 = tmp_5 - self.adelantos - self.prestamos - self.otros_dct
+			# self.write({'nohacernada':1,'saldo_sueldo': tmp_7})
+			tmp_8 = self.afp_jub + self.afp_psi + self.afp_com 
+			self.write({'nohacernada':1,'dsc_afp': tmp_8})
+			self.write({'nohacernada':1,'neto': tmp_4})
+			valor = self.neto+self.cts+self.gratificacion_extraordinaria+self.gratificacion_extraordinaria_real-prest_tmp
+			self.write({'nohacernada':1,'saldo_sueldo': valor})
+			trabajador = self.env['hr.employee'].search( [('identification_id','=',self.dni)] )
+			# encontrar el actual en la tabla grabada vertical concepto por concepto
+			for concepto in self.env['hr.concepto.remunerativo.line'].search([]):
+				tareoconcepto=self.env['hr.tareo.concepto'].search([('concepto_id','=',concepto.id),('tareo_id','=',self.tareo_id.id),('employee_id','=',trabajador.id)])
+				vals={}
+				lcrear = True
+				if len(tareoconcepto)>0:
+					afp_code = tareoconcepto.membership_id.code
+					lcrear=False
+				else:
+					afp_code = trabajador.afiliacion.code
+
+				if concepto.codigo=='001':
+					vals.update({'amount':self.basica})
+				if concepto.codigo=='002':
+					vals.update({'amount':self.a_familiar})
+				if concepto.codigo=='003': # ,'Vacaciones'),
+					vals.update({'amount':self.vacaciones})
+				if concepto.codigo=='004': #,'Vacaciones Truncas'),
+					vals.update({'amount':self.vacaciones_trunca})
+				if concepto.codigo=='005': #,'Gratificación'),
+					vals.update({'amount':self.gratificacion})
+				if concepto.codigo=='006': #,'Subsidio Maternidad'),
+					vals.update({'amount':self.subsidiomaternidad})
+				if concepto.codigo=='007': #,'Gratificacion Extraordinari'),
+					vals.update({'amount':self.gratificacion_extraordinaria_real})
+				if concepto.codigo=='008': #,'Bonificación'),
+					vals.update({'amount':self.bonificacion})
+				if concepto.codigo=='009': #,'Comsión'),
+					vals.update({'amount':self.comision})
+				if concepto.codigo=='010': #,'Bonificación de Gratificación'),
+					vals.update({'amount':self.boni_grati})
+				if concepto.codigo=='916': #,'Subsidio incapacidad'),
+					vals.update({'amount':self.subsidioincapacidad})
+				if concepto.codigo=='105': #,'H25'),
+					vals.update({'amount':self.h_25})
+				if concepto.codigo=='106': #,'H35'),
+					vals.update({'amount':self.h_35})
+				if concepto.codigo=='107': #,'H100'),
+					vals.update({'amount':self.h_100})
+				if concepto.codigo=='504': #,'Indemnización por vacaciones'),
+					vals.update({'amount':self.otros_ingreso})
+				if concepto.codigo=='10': #,'Total de ingreso'),
+					vals.update({'amount':self.total_ingreso})
+				if concepto.codigo=='704': #,'Tardanzas'),
+					vals.update({'amount':self.tardanzas})
+				if concepto.codigo=='705': #,'Inasistencias'),
+					vals.update({'amount':self.inasistencias})
+				if concepto.codigo=='706': #,'Descuento dominical'),
+					vals.update({'amount':self.descuento_dominical})
+				if concepto.codigo=='607': #,'ONP'),
+					vals.update({'amount':self.onp})
+				if concepto.codigo=='605': #,'Retención de 5ta categoría'),
+					vals.update({'amount':self.quinta_cat})
+				if concepto.codigo=='701': #,'Adelantos'),
+					vals.update({'amount':self.adelantos})
+				if concepto.codigo=='610': #,'ESSALUD'),
+					vals.update({'amount':self.essalud})
+				if concepto.codigo=='810': #,'EPS'),
+					vals.update({'amount':self.eps})
+				if concepto.codigo=='807': #,'SENATI'),
+					vals.update({'amount':self.senaty})
+				if concepto.codigo=='811': #,'SCTR'),
+					vals.update({'amount':self.sctr})
+				if concepto.codigo=='505': #,'CTS'),
+					vals.update({'amount':self.cts})
+				if concepto.codigo=='407': #,'Gratificación trunca'),
+					vals.update({'amount':self.gratificacion_extraordinaria})
+				#conceptos propios del cáculo
+				if concepto.codigo=='12': #,'RMB'),
+					vals.update({'amount':self.rmb})
+				# afps
+				if concepto.codigo=='13': #,'AFP INTEGRA'),
+					if afp_code=='AFP INTEGRA':
+						valor=self.afp_com+self.afp_psi+self.afp_jub
+						vals.update({'amount':valor})
+				if concepto.codigo=='14': #,'AFP PRIMA'),
+					if afp_code=='AFP PRIMA':
+						valor=self.afp_com+self.afp_psi+self.afp_jub
+						vals.update({'amount':valor})
+				if concepto.codigo=='15': #,'AFP PROFUTURO'),
+					if afp_code=='AFP PROFUTURO':
+						valor=self.afp_com+self.afp_psi+self.afp_jub
+						vals.update({'amount':valor})
+				if concepto.codigo=='16': #,'AFP HABITAD'),
+					if afp_code=='AFP HABITAD':
+						valor=self.afp_com+self.afp_psi+self.afp_jub
+						vals.update({'amount':valor})
+				if concepto.codigo=='17': #,'Total descuentos'),
+					vals.update({'amount':self.total_descuento})
+				if concepto.codigo=='18': #,'NETO'),
+					vals.update({'amount':self.neto})
+				if concepto.codigo=='19': #,'NETO SUELDOS'),
+					vals.update({'amount':self.neto_sueldo})
+				if concepto.codigo=='20': #,'NETO VACACIONES'),
+					vals.update({'amount':self.neto_vacaciones})
+				if concepto.codigo=='21': #,'Préstamos'),
+					vals.update({'amount':self.prestamos})
+				if concepto.codigo=='22': #,'Otros descuentos'),
+					vals.update({'amount':self.otros_dct})
+				if concepto.codigo=='23': #,'Saldo a pagar sueldo'),
+					vals.update({'amount':self.saldo_sueldo})
+				# conceptos solo para el cáculo del asiento contable
+				if concepto.codigo=='24': #,'Sueldo asiento'),
+					valor = self.basica+self.a_familiar-self.tardanzas-self.inasistencias
+					vals.update({'amount':valor})
+				if concepto.codigo=='25': #,'Horas extra asiento'),
+					valor = self.h_25+self.h_35+self.h_100
+					vals.update({'amount':valor})
+				if concepto.codigo=='26': #,'Vacaciones asiento'),
+					valor = self.vacaciones+self.vacaciones_trunca
+					vals.update({'amount':valor})
+				if concepto.codigo=='27': #,'Total descuento inafectos asiento'),
+					valor = self.adelantos+self.prestamos+self.otros_dct
+					vals.update({'amount':valor})
+				if concepto.codigo=='28': #,'Neto - Descuentos inafectos asiento'),
+					valor = self.neto-(self.adelantos+self.prestamos+self.otros_dct)
+					vals.update({'amount':valor})
+				if concepto.codigo=='29': #,'Descuentos AFP asiento'),
+					vals.update({'amount':self.dsc_afp})
+				if concepto.codigo=='30': #,'Total Gratificanoes asiento'),
+					valor = self.gratificacion+self.gratificacion_extraordinaria+self.boni_grati+self.gratificacion_extraordinaria_real
+					vals.update({'amount':valor})
+				if concepto.codigo=='31': # ,'basica_first'),
+					vals.update({'amount':self.basica_first})
+				if concepto.codigo=='32': # ,'a_familiar_first'),
+					vals.update({'amount':self.a_familiar})
+				if concepto.codigo=='33': # ,'total_remunerable'),
+					vals.update({'amount':self.total_remunerable})
+				if concepto.codigo=='34': # ,'dias_trabajador'),
+					vals.update({'amount':self.dias_trabajador})
+				if concepto.codigo=='35': # ,'tipo_suspension_perfecta'),
+					vals.update({'amount':0,'descripcion':self.tipo_suspension_perfecta
+
+						# self.tipo_suspension_perfecta
+						})
+				if concepto.codigo=='36': # ,'tipo_suspension_imperfecta'),
+					vals.update({'amount':0,'descripcion':self.tipo_suspension_imperfecta
+						# self.tipo_suspension_imperfecta
+						})
+				if concepto.codigo=='37': # ,'dias_suspension_perfecta'),
+					vals.update({'amount':self.dias_suspension_perfecta})
+				if concepto.codigo=='38': # ,'tardanza_horas'),
+					vals.update({'amount':self.tardanza_horas})
+				if concepto.codigo=='39': # ,'horas_extra_diurna'),
+					vals.update({'amount':self.horas_extra_diurna})
+				if concepto.codigo=='40': # ,'horas_extra_nocturna'),
+					vals.update({'amount':self.horas_extra_nocturna})
+				if concepto.codigo=='41': # ,'horas_extra_feriado'),
+					vals.update({'amount':self.horas_extra_feriado})
+				if concepto.codigo=='42': # ,'horas_extra_feriado_diur'),
+					vals.update({'amount':self.horas_extra_feriado_diur})
+				if concepto.codigo=='43': # ,'horas_extra_feriado_noct'),
+					vals.update({'amount':self.horas_extra_feriado_noct})
+				if concepto.codigo=='44': # ,'total_horas_extras'),
+					vals.update({'amount':self.total_horas_extras})
+				if concepto.codigo=='45': # ,'total_horas_extras_horas'),
+					vals.update({'amount':self.total_horas_extras_horas})
+				if concepto.codigo=='46': # ,'total_horas_extras_minutos'),
+					vals.update({'amount':self.total_horas_extras_minutos})
+				if concepto.codigo=='47': # ,'otros_ingreso'),
+					vals.update({'amount':self.otros_ingreso})
+				if concepto.codigo=='48': # ,'total_ingreso'),
+					vals.update({'amount':self.total_ingreso})
+				if concepto.codigo=='49': # ,'afp_jub'),
+					vals.update({'amount':self.afp_jub})
+				if concepto.codigo=='50': # ,'afp_psi'),
+					vals.update({'amount':self.afp_psi})
+				if concepto.codigo=='51': # ,'afp_com'),
+					vals.update({'amount':self.afp_com})
+				if concepto.codigo=='52': # ,'quinta_cat'),
+					vals.update({'amount':self.quinta_cat})
+				if concepto.codigo=='53': # ,'rma_pi'),
+					vals.update({'amount':self.rma_pi})
+				if concepto.codigo=='54': # ,'centro_costo'),
+					vals.update({'amount':0
+						# self.centro_costo.id
+						})
+				if self.total_ingreso>0:
+
+					if concepto.codigo=='55': # ,'neto sueldo asiento'),
+						factorvacaciones= (self.vacaciones+self.vacaciones_trunca)/self.total_ingreso
+						factorcomision = self.comision/self.total_ingreso
+						factorsueldo=1-(factorvacaciones+factorcomision)					
+						ndi = self.neto-(self.adelantos+self.prestamos+self.otros_dct)
+						vals.update({'amount':ndi*factorsueldo})
+					if concepto.codigo=='56': # ,'neto vacaciones asiento'),
+						factorvacaciones= (self.vacaciones+self.vacaciones_trunca)/self.total_ingreso
+						factorcomision = self.comision/self.total_ingreso
+						factorsueldo=1-(factorvacaciones+factorcomision)					
+						ndi = self.neto-(self.adelantos+self.prestamos+self.otros_dct)
+						vals.update({'amount':ndi*factorvacaciones})					
+					if concepto.codigo=='57': # ,'neto comisiones asiento'),
+						factorvacaciones= (self.vacaciones+self.vacaciones_trunca)/self.total_ingreso
+						factorcomision = self.comision/self.total_ingreso
+						factorsueldo=1-(factorvacaciones+factorcomision)					
+						ndi = self.neto-(self.adelantos+self.prestamos+self.otros_dct)
+						vals.update({'amount':ndi*factorcomision})	
+				else:
+					vals.update({'amount':0})
+				if concepto.account_credit:
+					vals.update({'cuenta_haber':concepto.account_credit.id})	
+				else:
+					vals.update({'cuenta_haber':None})	
+				if self.centro_costo:
+					valor = 0
+					vals.update({'extraccion_acc_a':valor})
+					vals.update({'trituracion_acc_a':valor})
+					vals.update({'calcinacion_acc_a':valor})
+					vals.update({'micronizado_acc_a':valor})
+					vals.update({'administracion_acc_a':valor})
+					vals.update({'ventas_acc_a':valor})
+					vals.update({'capacitacion_acc_a':valor})
+					vals.update({'promocion_acc_a':valor})
+					vals.update({'gastos_acc_a':valor})
+					vals.update({'extraccion_acc_m':valor})
+					vals.update({'trituracion_acc_m':valor})
+					vals.update({'calcinacion_acc_m':valor})
+					vals.update({'micronizado_acc_m':valor})
+					vals.update({'administracion_acc_m':valor})
+					vals.update({'ventas_acc_m':valor})
+					vals.update({'capacitacion_acc_m':valor})
+					vals.update({'promocion_acc_m':valor})
+					vals.update({'gastos_acc_m':valor})										
+					vals.update({'extraccion_acc_o':valor})
+					vals.update({'trituracion_acc_o':valor})
+					vals.update({'calcinacion_acc_o':valor})
+					vals.update({'micronizado_acc_o':valor})
+					vals.update({'administracion_acc_o':valor})
+					vals.update({'ventas_acc_o':valor})
+					vals.update({'capacitacion_acc_o':valor})
+					vals.update({'promocion_acc_o':valor})
+					vals.update({'gastos_acc_o':valor})																				
+					vals.update({'extraccion_acc_v':valor})
+					vals.update({'trituracion_acc_v':valor})
+					vals.update({'calcinacion_acc_v':valor})
+					vals.update({'micronizado_acc_v':valor})
+					vals.update({'administracion_acc_v':valor})
+					vals.update({'ventas_acc_v':valor})
+					vals.update({'capacitacion_acc_v':valor})
+					vals.update({'promocion_acc_v':valor})
+					vals.update({'gastos_acc_v':valor})				
+
+					valor = None
+					vals.update({'extraccion_acc_a_d':valor})
+					vals.update({'trituracion_acc_a_d':valor})
+					vals.update({'calcinacion_acc_a_d':valor})
+					vals.update({'micronizado_acc_a_d':valor})
+					vals.update({'administracion_acc_a_d':valor})
+					vals.update({'ventas_acc_a_d':valor})
+					vals.update({'capacitacion_acc_a_d':valor})
+					vals.update({'promocion_acc_a_d':valor})
+					vals.update({'gastos_acc_a_d':valor})
+					vals.update({'extraccion_acc_m_d':valor})
+					vals.update({'trituracion_acc_m_d':valor})
+					vals.update({'calcinacion_acc_m_d':valor})
+					vals.update({'micronizado_acc_m_d':valor})
+					vals.update({'administracion_acc_m_d':valor})
+					vals.update({'ventas_acc_m_d':valor})
+					vals.update({'capacitacion_acc_m_d':valor})
+					vals.update({'promocion_acc_m_d':valor})
+					vals.update({'gastos_acc_m_d':valor})										
+					vals.update({'extraccion_acc_o_d':valor})
+					vals.update({'trituracion_acc_o_d':valor})
+					vals.update({'calcinacion_acc_o_d':valor})
+					vals.update({'micronizado_acc_o_d':valor})
+					vals.update({'administracion_acc_o_d':valor})
+					vals.update({'ventas_acc_o_d':valor})
+					vals.update({'capacitacion_acc_o_d':valor})
+					vals.update({'promocion_acc_o_d':valor})
+					vals.update({'gastos_acc_o_d':valor})																				
+					vals.update({'extraccion_acc_v_d':valor})
+					vals.update({'trituracion_acc_v_d':valor})
+					vals.update({'calcinacion_acc_v_d':valor})
+					vals.update({'micronizado_acc_v_d':valor})
+					vals.update({'administracion_acc_v_d':valor})
+					vals.update({'ventas_acc_v_d':valor})
+					vals.update({'capacitacion_acc_v_d':valor})
+					vals.update({'promocion_acc_v_d':valor})
+					vals.update({'gastos_acc_v_d':valor})				
+					convalores=[]
+					for lineadist in self.centro_costo.distribucion_lines:
+						
+						
+						if 'amount' in vals:
+							
+							if vals['amount']>0:
+								
+								# inicializamos cada uno con cero por si se cambia
+								# de cc y luego los vamos a recalcular todos
+								
+
+								valor =(lineadist.porcentaje/100)*vals['amount']
+								valor = float(decimal.Decimal(str(valor)).quantize(decimal.Decimal('1.11'),rounding=decimal.ROUND_HALF_UP))
+
+								if trabajador.tipo_contab=='administracion':
+									if lineadist.analitica.cost_center_id.columna=='1' and concepto.extraccion_acc_a:
+										vals.update({'extraccion_acc_a':valor,'extraccion_acc_a_d':concepto.extraccion_acc_a.id})
+									if lineadist.analitica.cost_center_id.columna=='2' and concepto.trituracion_acc_a:
+										vals.update({'trituracion_acc_a':valor,'trituracion_acc_a_d':concepto.trituracion_acc_a.id})
+									if lineadist.analitica.cost_center_id.columna=='3' and concepto.calcinacion_acc_a:
+										vals.update({'calcinacion_acc_a':valor,'calcinacion_acc_a_d':concepto.calcinacion_acc_a.id})
+									if lineadist.analitica.cost_center_id.columna=='4' and concepto.micronizado_acc_a:
+										vals.update({'micronizado_acc_a':valor,'micronizado_acc_a_d':concepto.micronizado_acc_a.id})
+									if lineadist.analitica.cost_center_id.columna=='5' and concepto.administracion_acc_a:
+										vals.update({'administracion_acc_a':valor,'administracion_acc_a_d':concepto.administracion_acc_a.id})
+									if lineadist.analitica.cost_center_id.columna=='6' and concepto.ventas_acc_a:
+										vals.update({'ventas_acc_a':valor,'ventas_acc_a_d':concepto.ventas_acc_a.id})
+									if lineadist.analitica.cost_center_id.columna=='7' and concepto.capacitacion_acc_a:
+										vals.update({'capacitacion_acc_a':valor,'capacitacion_acc_a_d':concepto.capacitacion_acc_a.id})
+									if lineadist.analitica.cost_center_id.columna=='8' and concepto.promocion_acc_a:
+										vals.update({'promocion_acc_a':valor,'promocion_acc_a_d':concepto.promocion_acc_a.id})
+									if lineadist.analitica.cost_center_id.columna=='9' and concepto.gastos_acc_a:
+										vals.update({'gastos_acc_a':valor,'gastos_acc_a_d':concepto.gastos_acc_a.id})
+								if trabajador.tipo_contab=='mantenimiento':
+									if lineadist.analitica.cost_center_id.columna=='1' and concepto.extraccion_acc_m:
+										vals.update({'extraccion_acc_m':valor,'extraccion_acc_m_d':concepto.extraccion_acc_m.id})
+									if lineadist.analitica.cost_center_id.columna=='2' and concepto.trituracion_acc_m:
+										vals.update({'trituracion_acc_m':valor,'trituracion_acc_m_d':concepto.trituracion_acc_m.id})
+									if lineadist.analitica.cost_center_id.columna=='3' and concepto.calcinacion_acc_m:
+										vals.update({'calcinacion_acc_m':valor,'calcinacion_acc_m_d':concepto.calcinacion_acc_m.id})
+									if lineadist.analitica.cost_center_id.columna=='4' and concepto.micronizado_acc_m:
+										vals.update({'micronizado_acc_m':valor,'micronizado_acc_m_d':concepto.micronizado_acc_m.id})
+									if lineadist.analitica.cost_center_id.columna=='5' and concepto.administracion_acc_m:
+										vals.update({'administracion_acc_m':valor,'administracion_acc_m_d':concepto.administracion_acc_m.id})
+									if lineadist.analitica.cost_center_id.columna=='6' and concepto.ventas_acc_m:
+										vals.update({'ventas_acc_m':valor,'ventas_acc_m_d':concepto.ventas_acc_m.id})
+									if lineadist.analitica.cost_center_id.columna=='7' and concepto.capacitacion_acc_m:
+										vals.update({'capacitacion_acc_m':valor,'capacitacion_acc_m_d':concepto.capacitacion_acc_m.id})
+									if lineadist.analitica.cost_center_id.columna=='8' and concepto.promocion_acc_m:
+										vals.update({'promocion_acc_m':valor,'promocion_acc_m_d':concepto.promocion_acc_m.id})
+									if lineadist.analitica.cost_center_id.columna=='9' and concepto.gastos_acc_m:
+										convalores.append({'campo':'gastos_acc_m','valor':valor})
+										vals.update({'gastos_acc_m':valor,'gastos_acc_m_d':concepto.gastos_acc_m.id})										
+								if trabajador.tipo_contab=='operario':
+									if lineadist.analitica.cost_center_id.columna=='1'and concepto.extraccion_acc_o:
+										vals.update({'extraccion_acc_o':valor,'extraccion_acc_o_d':concepto.extraccion_acc_o.id})
+									if lineadist.analitica.cost_center_id.columna=='2' and concepto.trituracion_acc_o:
+										vals.update({'trituracion_acc_o':valor,'trituracion_acc_o_d':concepto.trituracion_acc_o.id})
+									if lineadist.analitica.cost_center_id.columna=='3' and concepto.calcinacion_acc_o:
+										vals.update({'calcinacion_acc_o':valor,'calcinacion_acc_o_d':concepto.calcinacion_acc_o.id})
+									if lineadist.analitica.cost_center_id.columna=='4' and concepto.micronizado_acc_o:
+										vals.update({'micronizado_acc_o':valor,'micronizado_acc_o_d':concepto.micronizado_acc_o.id})
+									if lineadist.analitica.cost_center_id.columna=='5' and concepto.administracion_acc_o:
+										vals.update({'administracion_acc_o':valor,'administracion_acc_o_d':concepto.administracion_acc_o.id})
+									if lineadist.analitica.cost_center_id.columna=='6' and concepto.ventas_acc_o:
+										vals.update({'ventas_acc_o':valor,'ventas_acc_o_d':concepto.ventas_acc_o.id})
+									if lineadist.analitica.cost_center_id.columna=='7' and concepto.capacitacion_acc_o:
+										vals.update({'capacitacion_acc_o':valor,'capacitacion_acc_o_d':concepto.capacitacion_acc_o.id})
+									if lineadist.analitica.cost_center_id.columna=='8' and concepto.promocion_acc_o:
+										vals.update({'promocion_acc_o':valor,'promocion_acc_o_d':concepto.promocion_acc_o.id})
+									if lineadist.analitica.cost_center_id.columna=='9' and concepto.gastos_acc_o:
+										convalores.append({'campo':'gastos_acc_o','valor':valor})
+										vals.update({'gastos_acc_o':valor,'gastos_acc_o_d':concepto.gastos_acc_o.id})
+								if trabajador.tipo_contab=='ventas':
+									if lineadist.analitica.cost_center_id.columna=='1' and concepto.extraccion_acc_v:
+										vals.update({'extraccion_acc_v':valor,'extraccion_acc_v_d':concepto.extraccion_acc_v.id})
+									if lineadist.analitica.cost_center_id.columna=='2' and concepto.trituracion_acc_v:
+										vals.update({'trituracion_acc_v':valor,'trituracion_acc_v_d':concepto.trituracion_acc_v.id})
+									if lineadist.analitica.cost_center_id.columna=='3' and concepto.calcinacion_acc_v:
+										vals.update({'calcinacion_acc_v':valor,'calcinacion_acc_v_d':concepto.calcinacion_acc_v.id})
+									if lineadist.analitica.cost_center_id.columna=='4' and concepto.micronizado_acc_v:
+										vals.update({'micronizado_acc_v':valor,'micronizado_acc_v_d':concepto.micronizado_acc_v.id})
+									if lineadist.analitica.cost_center_id.columna=='5' and concepto.administracion_acc_v:
+										vals.update({'administracion_acc_v':valor,'administracion_acc_v_d':concepto.administracion_acc_v.id})
+									if lineadist.analitica.cost_center_id.columna=='6' and concepto.ventas_acc_v:
+										vals.update({'ventas_acc_v':valor,'ventas_acc_v_d':concepto.ventas_acc_v.id})
+									if lineadist.analitica.cost_center_id.columna=='7' and concepto.capacitacion_acc_v:
+										vals.update({'capacitacion_acc_v':valor,'capacitacion_acc_v_d':concepto.capacitacion_acc_v.id})
+									if lineadist.analitica.cost_center_id.columna=='8' and concepto.promocion_acc_v:
+										vals.update({'promocion_acc_v':valor,'promocion_acc_v_d':concepto.promocion_acc_v.id})
+									if lineadist.analitica.cost_center_id.columna=='9' and concepto.gastos_acc_v:
+										vals.update({'gastos_acc_v':valor,'gastos_acc_v_d':concepto.gastos_acc_v.id})
+
+
+
+				if lcrear:
+					vals.update({'tareo_id':self.tareo_id.id})
+					vals.update({'employee_id':trabajador.id})
+					vals.update({'tipo_contab':trabajador.tipo_contab})
+					vals.update({'membership_id':trabajador.afiliacion.id})
+					vals.update({'distribucion_id':trabajador.dist_c.id if trabajador.dist_c else None})
+					vals.update({'concepto_id':concepto.id})
+					# print vals
+					self.env['hr.tareo.concepto'].create(vals)
+				else:
+					# print 'editando'
+					tareoconcepto.write(vals)
+
+		return t
+
+	@api.multi
+	def save_data(self):
+		self.write({})
+		return
+
+	@api.one
+	def unlink(self):
+		empl=self.env['hr.employee'].search([('identification_id','=',self.dni)])
+		elems=self.env['hr.tareo.concepto'].search([('tareo_id','=',self.tareo_id.id),('employee_id','=',empl.id)])
+		elems.unlink()
+
+		super(hr_tareo_line,self).unlink()
+class hr_tareo(models.Model):
+	_name = 'hr.tareo'
+	
+	periodo = fields.Many2one('account.period', 'Tareo')
+	detalle = fields.One2many('hr.tareo.line', 'tareo_id','lineas')
+	detallev =  fields.One2many('hr.tareo.concepto', 'tareo_id','Detalle vertical')
+	asiento =  fields.Many2one('account.move', 'Asiento contable')
+	state= fields.Selection([('close','Cerrado'),('open','Abierto')],default='open')
+
+	_rec_name = 'periodo'
+	conceptoact = ''
+	trabajador_act = ''
+	
+	@api.one
+	def close_tareo(self):
+		for deta in self.detalle:
+			empl=self.env['hr.employee'].search([('identification_id','=',deta.dni)])
+			prestamosheader=self.env['hr.prestamo.header'].search([('employee_id','=',empl.id)])
+			if len(prestamosheader)>0:
+				for deta in prestamosheader.prestamo_lines_ids:
+					if deta.validacion=='2':
+						aperioddate=deta.fecha_pago.split('-')
+						if aperioddate[1]+'/'+aperioddate[0]==self.periodo.code:
+							deta.validacion='1'
+		self.state='close'
+
+
+	@api.one
+	def open_tareo(self):
+		for deta in self.detalle:
+			empl=self.env['hr.employee'].search([('identification_id','=',deta.dni)])
+			prestamosheader=self.env['hr.prestamo.header'].search([('employee_id','=',empl.id)])
+			if len(prestamosheader)>0:
+				for deta in prestamosheader.prestamo_lines_ids:
+					if deta.validacion=='1':
+						aperioddate=deta.fecha_pago.split('-')
+						if aperioddate[1]+'/'+aperioddate[0]==self.periodo.code:
+							deta.validacion='2'
+		self.state='open'
+
+
+	def add_dict(self,dtotales,lstkeys,valor,cuenta,debe_l):
+		if cuenta and valor:
+			nombre = cuenta.code+" - "+cuenta.name
+			cuenta_id = cuenta.id
+			debe =0
+			haber =0
+
+			if debe_l:
+				debe = valor
+			else:
+				haber = valor
+			debe=float(decimal.Decimal(str(debe)).quantize(decimal.Decimal('1.11'),rounding=decimal.ROUND_HALF_UP))
+			haber=float(decimal.Decimal(str(haber)).quantize(decimal.Decimal('1.11'),rounding=decimal.ROUND_HALF_UP))
+			if cuenta_id not in lstkeys:
+				d1 = {
+					'cuenta':nombre,
+					'account_id':cuenta_id,
+					'debit': debe,
+					'credit': haber,
+				}
+				dtotales.update({cuenta_id:d1})
+				lstkeys.append(cuenta_id)
+			else:
+				dtotales[cuenta_id]['debit']=dtotales[cuenta_id]['debit']+debe
+				dtotales[cuenta_id]['credit']=dtotales[cuenta_id]['credit']+haber				
+		return dtotales
+
+		
+	@api.one
+	def recalcular(self,period_pla):
+		period_pla=self.periodo.id
+		periodo=self.env['account.period'].browse(period_pla)
+		for deta in self.detalle:
+			ant=deta.dias_trabajador
+			deta.write({'dias_trabajador':1})
+			deta.write({'dias_trabajador':ant})	
+			deta.refresh()
+		for deta in self.detallev:
+			montodividido=0
+			if deta.extraccion_acc_o:
+				montodividido+= deta.extraccion_acc_o
+			if deta.trituracion_acc_o:
+				montodividido+= deta.trituracion_acc_o
+			if deta.calcinacion_acc_o:
+				montodividido+=deta.calcinacion_acc_o
+			if deta.micronizado_acc_o:
+				montodividido+=deta.micronizado_acc_o
+			if deta.administracion_acc_o :
+				montodividido+=deta.administracion_acc_o
+			if deta.ventas_acc_o :
+				montodividido+=deta.ventas_acc_o
+			if deta.capacitacion_acc_o :
+				montodividido+=deta.capacitacion_acc_o
+			if deta.promocion_acc_o :
+				montodividido+=deta.promocion_acc_o			
+			if deta.gastos_acc_o :
+				montodividido+=deta.gastos_acc_o
+			if deta.extraccion_acc_m :
+				montodividido+=deta.extraccion_acc_m
+			if deta.trituracion_acc_m:
+				montodividido+=deta.trituracion_acc_m
+			if deta.calcinacion_acc_m:
+				montodividido+=deta.calcinacion_acc_m
+			if deta.micronizado_acc_m:
+				montodividido+=deta.micronizado_acc_m
+			if deta.administracion_acc_m:
+				montodividido+=deta.administracion_acc_m
+			if deta.ventas_acc_m :
+				montodividido+=deta.ventas_acc_m
+			if deta.capacitacion_acc_m :
+				montodividido+=deta.capacitacion_acc_m
+			if deta.promocion_acc_m :
+				montodividido+=deta.promocion_acc_m
+			if deta.gastos_acc_m :
+				montodividido+=deta.gastos_acc_m
+			if deta.extraccion_acc_a :
+				montodividido+=deta.extraccion_acc_a
+			if deta.trituracion_acc_a:
+				montodividido+=deta.trituracion_acc_a
+			if deta.calcinacion_acc_a:
+				montodividido+=deta.calcinacion_acc_a
+			if deta.micronizado_acc_a:
+				montodividido+=deta.micronizado_acc_a
+			if deta.administracion_acc_a:
+				montodividido+=deta.administracion_acc_a
+			if deta.ventas_acc_a:
+				montodividido+=deta.ventas_acc_a
+			if deta.capacitacion_acc_a:
+				montodividido+=deta.capacitacion_acc_a
+			if deta.promocion_acc_a:
+				montodividido+=deta.promocion_acc_a
+			if deta.gastos_acc_a:
+				montodividido+=deta.gastos_acc_a
+			if deta.extraccion_acc_v:
+				montodividido+=deta.extraccion_acc_v
+			if deta.trituracion_acc_v:
+				montodividido+=deta.trituracion_acc_v
+			if deta.calcinacion_acc_v:
+				montodividido+=deta.calcinacion_acc_v
+			if deta.micronizado_acc_v:
+				montodividido+=deta.micronizado_acc_v
+			if deta.administracion_acc_v:
+				montodividido+=deta.administracion_acc_v
+			if deta.ventas_acc_v:
+				montodividido+=deta.ventas_acc_v
+			if deta.capacitacion_acc_v:
+				montodividido+=deta.capacitacion_acc_v
+			if deta.promocion_acc_v:
+				montodividido+=deta.promocion_acc_v
+			if deta.gastos_acc_v:
+				montodividido+=deta.gastos_acc_v
+			
+			
+			
+			
+			if montodividido!=deta.amount:
+				resta = deta.amount-montodividido
+				seguir=True
+				if deta.extraccion_acc_o and seguir:
+					seguir=False
+					deta.extraccion_acc_o+=resta
+					
+				if deta.trituracion_acc_o and seguir:
+					seguir=False
+					deta.trituracion_acc_o+=resta
+				if deta.calcinacion_acc_o and seguir:
+					seguir=False
+					deta.calcinacion_acc_o+=resta
+				if deta.micronizado_acc_o and seguir:
+					seguir=False
+					deta.micronizado_acc_o+=resta
+				if deta.administracion_acc_o  and seguir:
+					seguir=False
+					deta.administracion_acc_o+=resta
+				if deta.ventas_acc_o  and seguir:
+					seguir=False
+					deta.ventas_acc_o+=resta
+				if deta.capacitacion_acc_o  and seguir:
+					seguir=False
+					deta.capacitacion_acc_o+=resta
+				if deta.promocion_acc_o  and seguir:
+					seguir=False
+					deta.promocion_acc_o+=resta
+				if deta.gastos_acc_o  and seguir:
+					seguir=False
+					deta.gastos_acc_o+=resta
+				if deta.extraccion_acc_m  and seguir:
+					seguir=False
+					deta.extraccion_acc_m+=resta
+				if deta.trituracion_acc_m and seguir:
+					seguir=False
+					deta.trituracion_acc_m+=resta
+				if deta.calcinacion_acc_m and seguir:
+					seguir=False
+					deta.calcinacion_acc_m+=resta
+				if deta.micronizado_acc_m and seguir:
+					seguir=False
+					deta.micronizado_acc_m+=resta
+				if deta.administracion_acc_m and seguir:
+					seguir=False
+					deta.administracion_acc_m+=resta
+				if deta.ventas_acc_m  and seguir:
+					seguir=False
+					deta.ventas_acc_m+=resta
+				if deta.capacitacion_acc_m  and seguir:
+					seguir=False
+					deta.capacitacion_acc_m+=resta
+				if deta.promocion_acc_m  and seguir:
+					seguir=False
+					deta.promocion_acc_m+=resta
+				if deta.gastos_acc_m  and seguir:
+					seguir=False
+					deta.gastos_acc_m+=resta
+				if deta.extraccion_acc_a  and seguir:
+					seguir=False
+					deta.extraccion_acc_a+=resta
+				if deta.trituracion_acc_a and seguir:
+					seguir=False
+					deta.trituracion_acc_a+=resta
+				if deta.calcinacion_acc_a and seguir:
+					seguir=False
+					deta.calcinacion_acc_a+=resta
+				if deta.micronizado_acc_a and seguir:
+					seguir=False
+					deta.micronizado_acc_a+=resta
+				if deta.administracion_acc_a and seguir:
+					seguir=False
+					deta.administracion_acc_a+=resta
+				if deta.ventas_acc_a and seguir:
+					seguir=False
+					deta.ventas_acc_a+=resta
+				if deta.capacitacion_acc_a and seguir:
+					seguir=False
+					deta.capacitacion_acc_a+=resta
+				if deta.promocion_acc_a and seguir:
+					seguir=False
+					deta.promocion_acc_a+=resta
+				if deta.gastos_acc_a and seguir:
+					seguir=False
+					deta.gastos_acc_a+=resta
+				if deta.extraccion_acc_v and seguir:
+					seguir=False
+					deta.extraccion_acc_v+=resta
+				if deta.trituracion_acc_v and seguir:
+					seguir=False
+					deta.trituracion_acc_v+=resta
+				if deta.calcinacion_acc_v and seguir:
+					seguir=False
+					deta.calcinacion_acc_v+=resta
+				if deta.micronizado_acc_v and seguir:
+					seguir=False
+					deta.micronizado_acc_v+=resta
+				if deta.administracion_acc_v and seguir:
+					seguir=False
+					deta.administracion_acc_v+=resta
+				if deta.ventas_acc_v and seguir:
+					seguir=False
+					deta.ventas_acc_v+=resta
+				if deta.capacitacion_acc_v and seguir:
+					seguir=False
+					deta.capacitacion_acc_v+=resta
+				if deta.promocion_acc_v and seguir:
+					seguir=False
+					deta.promocion_acc_v+=resta
+				if deta.gastos_acc_v and seguir:
+					seguir=False
+					deta.gastos_acc_v+=resta
+				deta.refresh()
+			
+			
+				
+				
+
+
+
+
+
+			
+			
+		
+		
+	@api.one
+	def make_account_move3(self,period_pla):
+		period_pla=self.periodo.id
+		periodo=self.env['account.period'].browse(period_pla)
+		# for deta in self.detalle:
+			# ant=deta.dias_trabajador
+			# deta.write({'dias_trabajador':1})
+			# deta.write({'dias_trabajador':ant})
+
+		no=0
+		debea=0
+		habera=0
+		trabajadores=self.env['hr.employee'].search([])
+		for trabajadoract in trabajadores:
+			# print trabajadoract.id
+			actlesdet=self.env['hr.tareo.concepto'].search([('employee_id','=',trabajadoract.id)])
+			dtotales={}
+			lstkeys=[]
+			
+			for linea in actlesdet:
+				
+				dtotales = self.add_dict(dtotales,lstkeys,linea.extraccion_acc_m,linea.extraccion_acc_m_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.trituracion_acc_m,linea.trituracion_acc_m_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.calcinacion_acc_m,linea.calcinacion_acc_m_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.micronizado_acc_m,linea.micronizado_acc_m_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.administracion_acc_m,linea.administracion_acc_m_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.ventas_acc_m,linea.ventas_acc_m_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.capacitacion_acc_m,linea.capacitacion_acc_m_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.promocion_acc_m,linea.promocion_acc_m_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.gastos_acc_m,linea.gastos_acc_m_d,True)
+
+				dtotales = self.add_dict(dtotales,lstkeys,linea.extraccion_acc_a,linea.extraccion_acc_a_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.trituracion_acc_a,linea.trituracion_acc_a_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.calcinacion_acc_a,linea.calcinacion_acc_a_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.micronizado_acc_a,linea.micronizado_acc_a_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.administracion_acc_a,linea.administracion_acc_a_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.ventas_acc_a,linea.ventas_acc_a_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.capacitacion_acc_a,linea.capacitacion_acc_a_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.promocion_acc_a,linea.promocion_acc_a_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.gastos_acc_a,linea.gastos_acc_a_d,True)
+
+				dtotales = self.add_dict(dtotales,lstkeys,linea.extraccion_acc_o,linea.extraccion_acc_o_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.trituracion_acc_o,linea.trituracion_acc_o_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.calcinacion_acc_o,linea.calcinacion_acc_o_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.micronizado_acc_o,linea.micronizado_acc_o_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.administracion_acc_o,linea.administracion_acc_o_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.ventas_acc_o,linea.ventas_acc_o_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.capacitacion_acc_o,linea.capacitacion_acc_o_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.promocion_acc_o,linea.promocion_acc_o_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.gastos_acc_o,linea.gastos_acc_o_d,True)			
+
+				dtotales = self.add_dict(dtotales,lstkeys,linea.extraccion_acc_v,linea.extraccion_acc_v_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.trituracion_acc_v,linea.trituracion_acc_v_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.calcinacion_acc_v,linea.calcinacion_acc_v_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.micronizado_acc_v,linea.micronizado_acc_v_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.administracion_acc_v,linea.administracion_acc_v_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.ventas_acc_v,linea.ventas_acc_v_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.capacitacion_acc_v,linea.capacitacion_acc_v_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.promocion_acc_v,linea.promocion_acc_v_d,True)
+				dtotales = self.add_dict(dtotales,lstkeys,linea.gastos_acc_v,linea.gastos_acc_v_d,True)			
+
+				if linea.concepto_id.es_adelanto:
+					if linea.employee_id.cuenta_adelanto:
+						dtotales = self.add_dict(dtotales,lstkeys,linea.amount,linea.employee_id.cuenta_adelanto,False)
+				else:
+					dtotales = self.add_dict(dtotales,lstkeys,linea.amount,linea.cuenta_haber,False)						
+				
+
+
+
+			new_m=self.env['account.move'].create(
+					{
+						'ref':trabajadoract.name_related,
+						'journal_id':14,
+						'period_id':20,
+						'date':'2016-06-30',
+						'name':'Planilla '+periodo.code
+					}
+				)
+			
+			nh=0
+			nd=0
+			for d in lstkeys:
+				# print dtotales[d]['cuenta'],dtotales[d]['debit'],dtotales[d]['credit']
+				lya=False
+				if dtotales[d]['credit']>0:
+					self.env['account.move.line'].create({
+					
+					'move_id':new_m.id,
+					'account_id':dtotales[d]['account_id'],
+					'debit':0,
+					'credit':float(decimal.Decimal(str(dtotales[d]['credit'])).quantize(decimal.Decimal('1.111111'),rounding=decimal.ROUND_HALF_UP)),			
+					'name':'Planilla '+periodo.code
+					})
+					lya=True
+				if dtotales[d]['debit']>0:
+					self.env['account.move.line'].create({
+					'move_id':new_m.id,
+					'account_id':dtotales[d]['account_id'],
+					'debit':float(decimal.Decimal(str(dtotales[d]['debit'])).quantize(decimal.Decimal('1.111111'),rounding=decimal.ROUND_HALF_UP)),			
+					'credit':0,
+					'name':'Planilla '+periodo.code
+					})
+				nh=nh+dtotales[d]['credit']
+				nd=nd+dtotales[d]['debit']
+			if nh!=nd:
+				print 'Mal',trabajadoract.name_related,nh,nd
+			
+		return True		
+		
+		
+		
+		
+		
+		
+
+	@api.one
+	def make_account_move2(self,period_pla):
+		period_pla=self.periodo.id
+		periodo=self.env['account.period'].browse(period_pla)
+
+		if self.asiento:
+			self.asiento.unlink()
+
+		
+		dtotales={}
+		lstkeys=[]
+		
+		for linea in self.detallev:
+			
+			dtotales = self.add_dict(dtotales,lstkeys,linea.extraccion_acc_m,linea.extraccion_acc_m_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.trituracion_acc_m,linea.trituracion_acc_m_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.calcinacion_acc_m,linea.calcinacion_acc_m_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.micronizado_acc_m,linea.micronizado_acc_m_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.administracion_acc_m,linea.administracion_acc_m_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.ventas_acc_m,linea.ventas_acc_m_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.capacitacion_acc_m,linea.capacitacion_acc_m_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.promocion_acc_m,linea.promocion_acc_m_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.gastos_acc_m,linea.gastos_acc_m_d,True)
+
+			dtotales = self.add_dict(dtotales,lstkeys,linea.extraccion_acc_a,linea.extraccion_acc_a_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.trituracion_acc_a,linea.trituracion_acc_a_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.calcinacion_acc_a,linea.calcinacion_acc_a_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.micronizado_acc_a,linea.micronizado_acc_a_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.administracion_acc_a,linea.administracion_acc_a_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.ventas_acc_a,linea.ventas_acc_a_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.capacitacion_acc_a,linea.capacitacion_acc_a_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.promocion_acc_a,linea.promocion_acc_a_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.gastos_acc_a,linea.gastos_acc_a_d,True)
+
+			dtotales = self.add_dict(dtotales,lstkeys,linea.extraccion_acc_o,linea.extraccion_acc_o_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.trituracion_acc_o,linea.trituracion_acc_o_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.calcinacion_acc_o,linea.calcinacion_acc_o_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.micronizado_acc_o,linea.micronizado_acc_o_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.administracion_acc_o,linea.administracion_acc_o_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.ventas_acc_o,linea.ventas_acc_o_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.capacitacion_acc_o,linea.capacitacion_acc_o_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.promocion_acc_o,linea.promocion_acc_o_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.gastos_acc_o,linea.gastos_acc_o_d,True)			
+
+			dtotales = self.add_dict(dtotales,lstkeys,linea.extraccion_acc_v,linea.extraccion_acc_v_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.trituracion_acc_v,linea.trituracion_acc_v_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.calcinacion_acc_v,linea.calcinacion_acc_v_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.micronizado_acc_v,linea.micronizado_acc_v_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.administracion_acc_v,linea.administracion_acc_v_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.ventas_acc_v,linea.ventas_acc_v_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.capacitacion_acc_v,linea.capacitacion_acc_v_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.promocion_acc_v,linea.promocion_acc_v_d,True)
+			dtotales = self.add_dict(dtotales,lstkeys,linea.gastos_acc_v,linea.gastos_acc_v_d,True)			
+
+			if linea.concepto_id.es_adelanto:
+				if linea.employee_id.cuenta_adelanto:
+					dtotales = self.add_dict(dtotales,lstkeys,linea.amount,linea.employee_id.cuenta_adelanto,False)
+			else:
+				dtotales = self.add_dict(dtotales,lstkeys,linea.amount,linea.cuenta_haber,False)						
+			
+
+
+
+		new_m=self.env['account.move'].create(
+				{
+					'journal_id':14,
+					'period_id':periodo.id,
+					'date':periodo.date_stop,
+					'name':'Planilla '+periodo.code
+				}
+			)
+		
+
+		for d in lstkeys:
+			# print dtotales[d]['cuenta'],dtotales[d]['debit'],dtotales[d]['credit']
+			lya=False
+			if dtotales[d]['credit']>0:
+				self.env['account.move.line'].create({
+				'move_id':new_m.id,
+				'account_id':dtotales[d]['account_id'],
+				'debit':0,
+				'credit':float(decimal.Decimal(str(dtotales[d]['credit'])).quantize(decimal.Decimal('1.111111'),rounding=decimal.ROUND_HALF_UP)),			
+				'name':'Planilla '+periodo.code
+				})
+				lya=True
+			if dtotales[d]['debit']>0:
+				self.env['account.move.line'].create({
+				'move_id':new_m.id,
+				'account_id':dtotales[d]['account_id'],
+				'debit':float(decimal.Decimal(str(dtotales[d]['debit'])).quantize(decimal.Decimal('1.111111'),rounding=decimal.ROUND_HALF_UP)),			
+				'credit':0,
+				'name':'Planilla '+periodo.code
+				})
+			
+		self.asiento=new_m.id
+		return True
+
+	def makedata(self,periodo_id):
+		cadsql = """
+		select httl.id,	
+		htt.periodo,		
+		httl.dni ,
+		httl.apellido_paterno ,
+		httl.apellido_materno ,
+		httl.nombre ,
+		httl.dias_trabajador ,
+		httl.cargo ,
+		httl.afiliacion ,
+		httl.tipo_comision,
+		httl.basica,
+		httl.a_familiar ,
+		httl.vacaciones ,
+		httl.vacaciones_trunca ,
+		httl.subsidiomaternidad ,
+		httl.subsidioincapacidad ,
+		httl.h_25 ,
+		httl.h_35 ,
+		httl.h_100 ,
+		httl.otros_ingreso ,
+		httl.total_ingreso ,
+		httl.tardanzas ,
+		httl.inasistencias ,
+		httl.dscto_domi ,
+		httl.rmb ,
+		httl.onp ,
+		httl.afp_jub ,
+		httl.afp_psi ,
+		httl.afp_com ,
+		httl.quinta_cat ,
+		httl.total_descuento ,
+		httl.neto ,
+		httl.neto_sueldo ,
+		httl.neto_vacaciones ,
+		httl.adelantos ,
+		httl.prestamos ,
+		httl.otros_dct ,
+		httl.saldo_sueldo ,
+		httl.essalud ,
+		httl.senaty ,
+		httl.rma_pi ,
+		httl.dsc_afp ,
+		httl.cts ,
+		httl.gratificacion ,
+		httl.gratificacion_extraordinaria ,
+		httl.centro_costo,
+		httl.eps,
+		httl.sctr,
+		httl.bonificacion,
+		coalesce(httl.comision,0) as comision ,
+		httl.boni_grati,
+		httl.gratificacion_extraordinaria_real,
+		httl.codigo_trabajador
+		from hr_tareo htt
+		inner join hr_tareo_line httl on httl.tareo_id = htt.id
+		where periodo ="""+str(periodo_id)+""" order by codigo_trabajador"""
+		
+		self.env.cr.execute(cadsql)
+		data = self.env.cr.dictfetchall()
+		return data
+
+
+	@api.multi
+	def make_pdf(self):
+		d= False
+		# d=self.detalle.reporteador()
+		# print self
+		# input('-------------')
+		pdfmetrics.registerFont(TTFont('Calibri', 'Calibri.ttf'))
+		datasdb = self.makedata(self[0].periodo.id)
+		import sys	
+		reload(sys)
+		sys.setdefaultencoding('iso-8859-1')
+		width , height = A4  # 595 , 842
+		wReal = width
+		hReal = height - 40
+		direccion = self.env['main.parameter'].search([])[0].dir_create_file
+
+		doc = BaseDocTemplate(direccion+"reporte_boletas.pdf", pagesize=landscape(A4),bottomMargin=1*cm, topMargin=1*cm, rightMargin=2*cm, leftMargin=2*cm)
+		column_gap = 2 * cm
+
+		I = Image(direccion+"calquipalleft.png")
+		I.drawHeight = 25
+		I.drawWidth = 50
+
+		I2 = Image(direccion+"calquipalright.png")
+		I2.drawHeight = 25
+		I2.drawWidth = 50
+		doc.addPageTemplates(
+		[
+			PageTemplate(
+				frames=[
+					Frame(
+						doc.leftMargin,
+						doc.bottomMargin,
+						doc.width / 2,
+						doc.height,
+						id='left',
+						rightPadding=column_gap,
+						showBoundary=0  # set to 1 for debugging
+					),
+					Frame(
+						doc.leftMargin + doc.width / 2,
+						doc.bottomMargin,
+						doc.width / 2,
+						doc.height,
+						id='right',
+						leftPadding=column_gap,
+						showBoundary=0
+						),
+					]
+				),
+			]
+		)
+		colorfondo = colors.lightblue
+		elements=[]
+		# com = 'canvas.drawImage("'+direccion+'calquipalleft.png",45, '+str(hReal-45)+', width=200, height=60)'
+		elements.append(platypus.flowables.Macro('canvas.saveState()'))
+		# elements.append(platypus.flowables.Macro(com))
+		elements.append(platypus.flowables.Macro('canvas.restoreState()'))		
+
+		for datadb in datasdb:
+			empl=self.env['hr.employee'].search([('identification_id','=',datadb['dni'])])
+			tareo_line=self.env['hr.tareo.line'].search([('dni','=',datadb['dni']),('tareo_id','=',self.id)])
+			tdoc=empl.type_document_id.description
+			if empl.type_document_id.code=='01':
+				tdoc = 'DNI'
+			
+			company = self.env['res.users'].browse(self.env.uid).company_id
+
+			di = [[I,'',I2]]
+			ti=Table(di, colWidths=[50,244,50])		
+			elements.append(ti)
+
+			data=[
+				['RUC: '+company.partner_id.type_number,'','','','','','',''],
+				['Empleador: '+company.partner_id.name,'','','','','','',''],
+				[u'Dirección: '+company.street,'','','','','','',''],
+				['Periodo : '+self.periodo.name,'','','','','','',''],
+				['','','','','','','',''],
+				['Documento de identidad','','','','','',u'Situación',''],
+				['Tipo',u'Número','Nombre y Apellidos','','','','',''],
+				[tdoc,datadb['dni'],datadb['apellido_paterno']+' '+datadb['apellido_materno']+', '+datadb['nombre'],'','','',empl.situacion,''],
+				['Ingreso','Código','Tipo de Trabajador','','Régimen Pensionario','','CUSPP',''],
+				[empl.fecha_ingreso,empl.codigo_trabajador,empl.tipo_trabajador,'',empl.afiliacion.name,'',empl.cusspp if empl.cusspp else '',''],
+				['Días \nlaborados','Días no \nLaborados','Días \nSubsidiados','Condición','Jornada Ordinaria','','Sobretiempo',''],
+				['','','','','Total Horas','Minutos','Total Horas','Minutos'],
+				[tareo_line.dias_trabajador,tareo_line.dias_suspension_perfecta,'0',empl.condicion if empl.condicion else '' ,tareo_line.dias_trabajador*8,'',tareo_line.total_horas_extras_horas,''],
+				['','','','','','','',''],
+				['Código','Conceptos','','','','Ingresos S/.','Descuentos S/.','Neto S./'],		
+			]
+			estilo=[
+				# ('BOX',(0,0),(-1,-1),0.5,colors.black),
+				('VALIGN',(0,0),(-1,-1),'MIDDLE'),
+				('FONTSIZE', (0, 0), (-1, -1), 6),
+
+				('FONT', (0, 0), (-1,-1),'Calibri'),
+				# ('GRID',(0,0),(7,3),0.5, colors.black),
+				('SPAN',(0,0),(7,0)),
+				('SPAN',(0,1),(7,1)),
+				('SPAN',(0,2),(7,2)),
+				('SPAN',(0,3),(7,3)),
+
+				('BACKGROUND',(0,0),(7,3), colorfondo),
+
+				('SPAN',(0,4),(7,4)),
+				# ('GRID',(0,5),(7,15),0.5, colors.black),
+				('ALIGN',(0,4),(7,15),'CENTER'),
+
+				('SPAN',(0,5),(1,5)),
+				('BACKGROUND',(0,5),(7,6), colorfondo),
+				('SPAN',(2,5),(5,6)),
+				('SPAN',(2,6),(5,6)),
+				('SPAN',(2,7),(5,7)),
+				('SPAN',(6,5),(7,6)),
+				('SPAN',(6,7),(7,7)),
+
+
+				('BACKGROUND',(0,8),(1,8), colorfondo),
+				('BACKGROUND',(2,8),(3,8), colorfondo),
+				('SPAN',(2,8),(3,8)),
+				('SPAN',(2,9),(3,9)),
+				('BACKGROUND',(4,8),(5,8), colorfondo),
+				('SPAN',(4,8),(5,8)),
+				('SPAN',(4,9),(5,9)),
+				('BACKGROUND',(6,8),(7,8), colorfondo),
+				('SPAN',(6,8),(7,8)),
+				('SPAN',(6,9),(7,9)),
+				('SPAN',(0,10),(0,11)),
+				('SPAN',(1,10),(1,11)),
+				('SPAN',(2,10),(2,11)),
+				('SPAN',(3,10),(3,11)),
+				('SPAN',(4,10),(5,10)),
+				('SPAN',(6,10),(7,10)),
+				('SPAN',(6,11),(7,11)),
+				('BACKGROUND',(0,10),(7,11), colorfondo),
+				('SPAN',(0,13),(7,13)),
+				('SPAN',(1,14),(4,14)),
+				('BACKGROUND',(0,14),(7,14), colorfondo),			
+				('GRID',(0,0),(-1,-1),0.5, colors.black),
+				]
+			aposblue=[]
+			aposblue.append(15)
+			npos=15
+
+			data.append(['Ingresos','','','','','','',''])
+			npos+=1
+			ningresos=0
+			ndescuentos=0
+			if datadb['basica'] or datadb['basica']>0:
+				npos+=1
+				# '{:,.2f}'.format(decimal.Decimal("%0.2f" % i.mt_por_dia)
+				data.append(['0121','REMUNERACION PERMANENTE','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['basica'])),'',''])
+				ningresos = ningresos+datadb['basica']
+			if datadb['a_familiar'] or datadb['a_familiar']>0:
+				npos+=1
+				data.append(['0201','ASIGNACION FAMILIAR','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['a_familiar'])),'',''],)
+				ningresos = ningresos+datadb['a_familiar']
+			if datadb['vacaciones'] or datadb['vacaciones']>0:
+				npos+=1
+				data.append(['0118','REMUNERACION VACACIONAL','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['vacaciones'])),'',''],)
+				ningresos = ningresos+datadb['vacaciones']
+			if datadb['vacaciones_trunca'] or datadb['vacaciones_trunca']>0:
+				npos+=1
+				data.append(['0114','VACACIONES TRUNCAS','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['vacaciones_trunca'])),'',''],)
+				ningresos = ningresos+datadb['vacaciones_trunca']
+			if datadb['subsidiomaternidad'] or datadb['subsidiomaternidad']>0:
+				npos+=1
+				data.append(['0915','SUBSIDIO POR MATERNIDAD','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['subsidiomaternidad'])),'',''],)
+				ningresos = ningresos+datadb['subsidiomaternidad']
+			if datadb['subsidioincapacidad'] or datadb['subsidioincapacidad']>0:
+				npos+=1
+				data.append(['0916','SUBSIDIO DE INCAPACIDAD POR ENFERMEDAD','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['subsidioincapacidad'])),'',''],)
+				ningresos = ningresos+datadb['subsidioincapacidad']
+			if datadb['h_25'] or datadb['h_25']>0:
+				npos+=1
+				data.append(['0105','TRABAJO EN SOBRETIEMPO (HORAS EXTRAS ) 25%','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['h_25'])),'',''],)
+				ningresos = ningresos+datadb['h_25']
+			if datadb['h_35'] or datadb['h_35']>0:
+				npos+=1
+				data.append(['0106','TRABAJO EN SOBRETIEMPO (HORAS EXTRAS ) 35%','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['h_35'])),'',''],)
+				ningresos = ningresos+datadb['h_35']
+			if datadb['h_100'] or datadb['h_100']>0:
+				npos+=1
+				data.append(['0507','TRABAJO EN DÍAS FERIADO O DÍA DE DESCANSO','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['h_100'])),'',''],)
+				ningresos = ningresos+datadb['h_100']
+			if datadb['bonificacion'] or datadb['bonificacion']>0:
+				npos+=1
+				data.append(['0306','BONIFICACIONES REGULARES','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['bonificacion'])),'',''],)
+				ningresos = ningresos+datadb['bonificacion']
+			if datadb['cts'] or datadb['cts']>0:
+				npos+=1
+				data.append(['0904','CONMPENSACION POR TIEMPO DE SERVICIOS','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['cts'])),'',''],)
+				ningresos = ningresos+datadb['cts']
+			# if datadb['gratificacion'] or datadb['gratificacion']>0:
+				# if datadb['dias_trabajador']:
+					# if datadb['dias_trabajador']!=0:
+						# npos+=1
+						# data.append(['0406','GRATIFICACIONES DE FIESTAS PATRIAS Y NAVIDAD - LEY 29351','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['gratificacion'])),'',''],)
+			if datadb['gratificacion_extraordinaria'] or datadb['gratificacion_extraordinaria']>0:
+				if empl.fecha_cese:
+					npos+=1
+					data.append(['0407','GRATIFICACIONES PROPORCIONALES - LEY 29351','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['gratificacion_extraordinaria'])),'',''],)
+					ningresos = ningresos+datadb['gratificacion_extraordinaria']
+			if datadb['boni_grati'] or datadb['boni_grati']>0:
+				if empl.fecha_cese:
+					npos+=1
+					data.append(['0313','BONIFICACION EXTRAORDINARIA PROPORCIONAL - LEY 29351','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % tareo_line.monto_boni_grati_liq)),'',''],)
+					ningresos = ningresos+tareo_line.monto_boni_grati_liq
+			if datadb['comision'] or datadb['comision']>0:
+				npos+=1
+				data.append(['0103','COMISION','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['comision'])),'',''],)
+				ningresos = ningresos+datadb['comision']
+			if datadb['otros_ingreso'] or datadb['otros_ingreso']>0:
+				npos+=1
+				data.append(['0504','INDEMNIZACIÓN POR VACACIONES NO GOZADAS','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['otros_ingreso'])),'',''],)
+				ningresos = ningresos+datadb['otros_ingreso']
+
+			
+			aposblue.append(npos)
+			data.append(['Descuentos','','','','','','',''],)
+			npos+=1
+			if datadb['tardanzas'] or datadb['tardanzas']>0:
+				npos+=1
+				data.append(['0705','TARDANZAS','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['tardanzas'])),''],)
+				ndescuentos = ndescuentos+datadb['tardanzas']
+			if datadb['inasistencias'] or datadb['inasistencias']>0:
+				npos+=1
+				data.append(['0704','INASISTENCIAS','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['inasistencias'])),''],)
+				ndescuentos = ndescuentos+datadb['inasistencias']
+			if datadb['dscto_domi'] or datadb['dscto_domi']>0:
+				npos+=1
+				data.append(['0706','DESCUENTO DOMINICAL','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['dscto_domi'])),''],)
+				ndescuentos = ndescuentos+datadb['dscto_domi']
+			if datadb['adelantos'] or datadb['adelantos']>0:
+				npos+=1
+				data.append(['0701','ADELANTOS','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['adelantos'])),''],)
+				ndescuentos = ndescuentos+datadb['adelantos']
+			if datadb['otros_dct'] or datadb['otros_dct']>0:
+				npos+=1
+				data.append(['0706','PRESTAMOS','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['otros_dct'])),''],)
+				ndescuentos = ndescuentos+datadb['otros_dct']
+			
+			aposblue.append(npos)
+			npos+=1
+			data.append(['Aportes del trabajador','','','','','','',''],)
+
+			if datadb['onp'] or datadb['onp']>0:
+				npos+=1
+				data.append(['0607','SISTEMA NACIONAL DE PENSIONES - DL 19990','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['onp'])),''],)
+				ndescuentos = ndescuentos+datadb['onp']
+			if datadb['afp_jub'] or datadb['afp_jub']>0:
+				npos+=1
+				data.append(['0608','SISTEMA PRIVADO DE PENSIONES - APORTACION OBLIGATORIA','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['afp_jub'])),''],)
+				ndescuentos = ndescuentos+datadb['afp_jub']
+			if datadb['afp_psi'] or datadb['afp_psi']>0:
+				npos+=1
+				data.append(['0606','SISTEMA PRIVADO DE PENSIONES - PRIMA DE SEGUROS','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['afp_psi'])),''],)
+				ndescuentos = ndescuentos+datadb['afp_psi']
+			if datadb['afp_com'] or datadb['afp_com']>0:
+				npos+=1
+				data.append(['0601','SISTEMA PRIVADO DE PENSIONES - COMISIÓN PORCENTUAL','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['afp_com'])),''],)
+				ndescuentos = ndescuentos+datadb['afp_com']
+			if datadb['quinta_cat'] or datadb['quinta_cat']>0:
+				npos+=1
+				data.append(['0605','RENTA QUINTA CATEGORÍA RETENCIONES','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['quinta_cat'])),''],)
+				ndescuentos = ndescuentos+datadb['quinta_cat']
+			
+			posneto = npos
+			npos+=1
+			# montoneto1=datadb['saldo_sueldo']
+			
+			# if datadb['gratificacion'] or datadb['gratificacion']>0:
+
+			# 	montoneto1=montoneto1-datadb['gratificacion']
+				
+			
+			# if datadb['boni_grati'] or datadb['boni_grati']>0:
+			# 	if empl.fecha_cese:
+			# 		montoneto1=montoneto1-datadb['boni_grati']+tareo_line.monto_boni_grati_liq
+
+			montoneto1=ningresos-ndescuentos
+			data.append(['Neto a pagar','','','','','','',montoneto1],)	
+			
+			
+			
+			
+			
+			aposblue.append(npos)
+			npos+=1
+			data.append(['Aportes de Empleador','','','','','','',''],)
+			if datadb['essalud'] or datadb['essalud']>0:
+				npos+=1
+				data.append(['0804','ESSALUD','','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['essalud']))],)
+			if datadb['senaty'] or datadb['senaty']>0:
+				npos+=1
+				data.append(['0807','SENATI','','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['senaty']))],)
+			if datadb['eps'] or datadb['eps']>0:
+				npos+=1
+				data.append(['0810','EPS','','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['eps']))],)
+			if datadb['sctr'] or datadb['sctr']>0:
+				npos+=1
+				data.append(['0806','SCTR','','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['sctr']))],)
+
+
+			for h in range(15,npos):
+				estilo.append(('SPAN',(1,h),(4,h)))
+				estilo.append(('ALIGN',(5,h),(7,h),'RIGHT'))
+
+
+			for h in aposblue:
+				estilo.append(('SPAN',(0,h),(7,h)))
+				estilo.append(('BACKGROUND',(0,h),(7,h), colorfondo))
+
+			if posneto>0:
+				estilo.append(('SPAN',(0,posneto),(6,posneto)))
+				estilo.append(('BACKGROUND',(0,posneto),(7,posneto), colorfondo))
+
+
+			t=Table(data, colWidths=[43,43,43,43,50,43,43,43],rowHeights=10,style=estilo)		
+			elements.append(t)
+			elements.append(Spacer(0,50))
+			# elements.append(Spacer(0,50))
+			
+			dataf=[
+			['CALQUIPA S.A.C','',datadb['apellido_paterno']+' '+datadb['apellido_materno']+', '+datadb['nombre']],
+			# ['EMPLEADOR','',empl.identification_id],
+			['EMPLEADOR','',"TRABAJADOR"],
+			]
+			table4=Table(dataf,colWidths=[125,50,125])
+			table4.setStyle(TableStyle(
+				[
+				('FONTSIZE', (0, 0), (-1, -1), 8),
+				('FONT', (0, 0), (-1,-1),'Calibri'),
+				('ALIGN',(0,0),(-1,-1),'CENTER'),
+				('LINEABOVE',(0,0),(0,0),1.1,colors.black),
+				('LINEABOVE',(2,0),(2,0),1.1,colors.black),
+				]
+				))
+			elements.append(table4)
+			elements.append(FrameBreak())
+
+			di = [[I,'',I2]]
+			ti=Table(di, colWidths=[50,244,50])		
+			elements.append(ti)
+
+			data=[
+				['RUC: '+company.partner_id.type_number,'','','','','','',''],
+				['Empleador: '+company.partner_id.name,'','','','','','',''],
+				[u'Dirección: '+company.street,'','','','','','',''],
+				['Periodo : '+self.periodo.name,'','','','','','',''],
+				['','','','','','','',''],
+				['Documento de identidad','','','','','',u'Situación',''],
+				['Tipo',u'Número','Nombre y Apellidos','','','','',''],
+				[tdoc,datadb['dni'],datadb['apellido_paterno']+' '+datadb['apellido_materno']+', '+datadb['nombre'],'','','',empl.situacion,''],
+				['Ingreso','Código','Tipo de Trabajador','','Régimen Pensionario','','CUSPP',''],
+				[empl.fecha_ingreso,empl.codigo_trabajador,empl.tipo_trabajador,'',empl.afiliacion.name,'',empl.cusspp if empl.cusspp else '',''],
+				['Días \nlaborados','Días no \nLaborados','Días \nSubsidiados','Condición','Jornada Ordinaria','','Sobretiempo',''],
+				['','','','','Total Horas','Minutos','Total Horas','Minutos'],
+				[tareo_line.dias_trabajador,tareo_line.dias_suspension_perfecta,'0',empl.condicion if empl.condicion else '' ,tareo_line.dias_trabajador*8,'',tareo_line.total_horas_extras_horas,''],
+				['','','','','','','',''],
+				['Código','Conceptos','','','','Ingresos S/.','Descuentos S/.','Neto S./'],		
+			]
+			aposblue=[]
+			aposblue.append(15)
+			npos=15
+
+			data.append(['Ingresos','','','','','','',''])
+			npos+=1
+			ningresos=0
+			ndescuentos=0
+			if datadb['basica'] or datadb['basica']>0:
+				npos+=1
+				# '{:,.2f}'.format(decimal.Decimal("%0.2f" % i.mt_por_dia)
+				data.append(['0121','REMUNERACION PERMANENTE','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['basica'])),'',''])
+				ningresos = ningresos+datadb['basica']
+			if datadb['a_familiar'] or datadb['a_familiar']>0:
+				npos+=1
+				data.append(['0201','ASIGNACION FAMILIAR','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['a_familiar'])),'',''],)
+				ningresos = ningresos+datadb['a_familiar']
+			if datadb['vacaciones'] or datadb['vacaciones']>0:
+				npos+=1
+				data.append(['0118','REMUNERACION VACACIONAL','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['vacaciones'])),'',''],)
+				ningresos = ningresos+datadb['vacaciones']
+			if datadb['vacaciones_trunca'] or datadb['vacaciones_trunca']>0:
+				npos+=1
+				data.append(['0114','VACACIONES TRUNCAS','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['vacaciones_trunca'])),'',''],)
+				ningresos = ningresos+datadb['vacaciones_trunca']
+			if datadb['subsidiomaternidad'] or datadb['subsidiomaternidad']>0:
+				npos+=1
+				data.append(['0915','SUBSIDIO POR MATERNIDAD','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['subsidiomaternidad'])),'',''],)
+				ningresos = ningresos+datadb['subsidiomaternidad']
+			if datadb['subsidioincapacidad'] or datadb['subsidioincapacidad']>0:
+				npos+=1
+				data.append(['0916','SUBSIDIO DE INCAPACIDAD POR ENFERMEDAD','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['subsidioincapacidad'])),'',''],)
+				ningresos = ningresos+datadb['subsidioincapacidad']
+			if datadb['h_25'] or datadb['h_25']>0:
+				npos+=1
+				data.append(['0105','TRABAJO EN SOBRETIEMPO (HORAS EXTRAS ) 25%','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['h_25'])),'',''],)
+				ningresos = ningresos+datadb['h_25']
+			if datadb['h_35'] or datadb['h_35']>0:
+				npos+=1
+				data.append(['0106','TRABAJO EN SOBRETIEMPO (HORAS EXTRAS ) 35%','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['h_35'])),'',''],)
+				ningresos = ningresos+datadb['h_35']
+			if datadb['h_100'] or datadb['h_100']>0:
+				npos+=1
+				data.append(['0507','TRABAJO EN DÍAS FERIADO O DÍA DE DESCANSO','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['h_100'])),'',''],)
+				ningresos = ningresos+datadb['h_100']
+			if datadb['bonificacion'] or datadb['bonificacion']>0:
+				npos+=1
+				data.append(['0306','BONIFICACIONES REGULARES','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['bonificacion'])),'',''],)
+				ningresos = ningresos+datadb['bonificacion']
+			if datadb['cts'] or datadb['cts']>0:
+				npos+=1
+				data.append(['0904','CONMPENSACION POR TIEMPO DE SERVICIOS','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['cts'])),'',''],)
+				ningresos = ningresos+datadb['cts']
+			# if datadb['gratificacion'] or datadb['gratificacion']>0:
+				# if datadb['dias_trabajador']:
+					# if datadb['dias_trabajador']!=0:
+						# npos+=1
+						# data.append(['0406','GRATIFICACIONES DE FIESTAS PATRIAS Y NAVIDAD - LEY 29351','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['gratificacion'])),'',''],)
+			if datadb['gratificacion_extraordinaria'] or datadb['gratificacion_extraordinaria']>0:
+				if empl.fecha_cese:
+					npos+=1
+					data.append(['0407','GRATIFICACIONES PROPORCIONALES - LEY 29351','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['gratificacion_extraordinaria'])),'',''],)
+					ningresos = ningresos+datadb['gratificacion_extraordinaria']
+			if datadb['boni_grati'] or datadb['boni_grati']>0:
+				if empl.fecha_cese:
+					npos+=1
+					data.append(['0313','BONIFICACION EXTRAORDINARIA PROPORCIONAL - LEY 29351','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % tareo_line.monto_boni_grati_liq)),'',''],)
+					ningresos = ningresos+tareo_line.monto_boni_grati_liq
+			if datadb['comision'] or datadb['comision']>0:
+				npos+=1
+				data.append(['0103','COMISION','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['comision'])),'',''],)
+				ningresos = ningresos+datadb['comision']
+			if datadb['otros_ingreso'] or datadb['otros_ingreso']>0:
+				npos+=1
+				data.append(['0504','INDEMNIZACIÓN POR VACACIONES NO GOZADAS','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['otros_ingreso'])),'',''],)
+				ningresos = ningresos+datadb['otros_ingreso']
+
+			
+			aposblue.append(npos)
+			data.append(['Descuentos','','','','','','',''],)
+			npos+=1
+			if datadb['tardanzas'] or datadb['tardanzas']>0:
+				npos+=1
+				data.append(['0705','TARDANZAS','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['tardanzas'])),''],)
+				ndescuentos = ndescuentos+datadb['tardanzas']
+			if datadb['inasistencias'] or datadb['inasistencias']>0:
+				npos+=1
+				data.append(['0704','INASISTENCIAS','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['inasistencias'])),''],)
+				ndescuentos = ndescuentos+datadb['inasistencias']
+			if datadb['dscto_domi'] or datadb['dscto_domi']>0:
+				npos+=1
+				data.append(['0706','DESCUENTO DOMINICAL','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['dscto_domi'])),''],)
+				ndescuentos = ndescuentos+datadb['dscto_domi']
+			if datadb['adelantos'] or datadb['adelantos']>0:
+				npos+=1
+				data.append(['0701','ADELANTOS','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['adelantos'])),''],)
+				ndescuentos = ndescuentos+datadb['adelantos']
+			if datadb['otros_dct'] or datadb['otros_dct']>0:
+				npos+=1
+				data.append(['0706','PRESTAMOS','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['otros_dct'])),''],)
+				ndescuentos = ndescuentos+datadb['otros_dct']
+			
+			aposblue.append(npos)
+			npos+=1
+			data.append(['Aportes del trabajador','','','','','','',''],)
+
+			if datadb['onp'] or datadb['onp']>0:
+				npos+=1
+				data.append(['0607','SISTEMA NACIONAL DE PENSIONES - DL 19990','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['onp'])),''],)
+				ndescuentos = ndescuentos+datadb['onp']
+			if datadb['afp_jub'] or datadb['afp_jub']>0:
+				npos+=1
+				data.append(['0608','SISTEMA PRIVADO DE PENSIONES - APORTACION OBLIGATORIA','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['afp_jub'])),''],)
+				ndescuentos = ndescuentos+datadb['afp_jub']
+			if datadb['afp_psi'] or datadb['afp_psi']>0:
+				npos+=1
+				data.append(['0606','SISTEMA PRIVADO DE PENSIONES - PRIMA DE SEGUROS','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['afp_psi'])),''],)
+				ndescuentos = ndescuentos+datadb['afp_psi']
+			if datadb['afp_com'] or datadb['afp_com']>0:
+				npos+=1
+				data.append(['0601','SISTEMA PRIVADO DE PENSIONES - COMISIÓN PORCENTUAL','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['afp_com'])),''],)
+				ndescuentos = ndescuentos+datadb['afp_com']
+			if datadb['quinta_cat'] or datadb['quinta_cat']>0:
+				npos+=1
+				data.append(['0605','RENTA QUINTA CATEGORÍA RETENCIONES','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['quinta_cat'])),''],)
+				ndescuentos = ndescuentos+datadb['quinta_cat']
+			
+			posneto = npos
+			npos+=1
+			# montoneto1=datadb['saldo_sueldo']
+			
+			# if datadb['gratificacion'] or datadb['gratificacion']>0:
+
+			# 	montoneto1=montoneto1-datadb['gratificacion']
+				
+			
+			# if datadb['boni_grati'] or datadb['boni_grati']>0:
+			# 	if empl.fecha_cese:
+			# 		montoneto1=montoneto1-datadb['boni_grati']+tareo_line.monto_boni_grati_liq
+
+			montoneto1=ningresos-ndescuentos
+			data.append(['Neto a pagar','','','','','','',montoneto1],)	
+			
+			
+			
+			
+			
+			aposblue.append(npos)
+			npos+=1
+			data.append(['Aportes de Empleador','','','','','','',''],)
+			if datadb['essalud'] or datadb['essalud']>0:
+				npos+=1
+				data.append(['0804','ESSALUD','','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['essalud']))],)
+			if datadb['senaty'] or datadb['senaty']>0:
+				npos+=1
+				data.append(['0807','SENATI','','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['senaty']))],)
+			if datadb['eps'] or datadb['eps']>0:
+				npos+=1
+				data.append(['0810','EPS','','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['eps']))],)
+			if datadb['sctr'] or datadb['sctr']>0:
+				npos+=1
+				data.append(['0806','SCTR','','','','','','{:,.2f}'.format(decimal.Decimal("%0.2f" % datadb['sctr']))],)
+
+
+			for h in range(15,npos):
+				estilo.append(('SPAN',(1,h),(4,h)))
+				estilo.append(('ALIGN',(5,h),(7,h),'RIGHT'))
+
+
+			for h in aposblue:
+				estilo.append(('SPAN',(0,h),(7,h)))
+				estilo.append(('BACKGROUND',(0,h),(7,h), colorfondo))
+
+			if posneto>0:
+				estilo.append(('SPAN',(0,posneto),(6,posneto)))
+				estilo.append(('BACKGROUND',(0,posneto),(7,posneto), colorfondo))
+
+
+
+			t=Table(data, colWidths=[43,43,43,43,50,43,43,43],rowHeights=10,style=estilo)		
+			elements.append(t)
+			elements.append(Spacer(0,50))
+			dataf=[
+			['CALQUIPA S.A.C','',datadb['apellido_paterno']+' '+datadb['apellido_materno']+', '+datadb['nombre']],
+			['EMPLEADOR','',"TRABAJADOR"],
+			]
+			table4=Table(dataf,colWidths=[125,50,125])
+			table4.setStyle(TableStyle(
+				[
+				('FONTSIZE', (0, 0), (-1, -1), 8),
+				('FONT', (0, 0), (-1,-1),'Calibri'),
+				('ALIGN',(0,0),(-1,-1),'CENTER'),
+				('LINEABOVE',(0,0),(0,0),1.1,colors.black),
+				('LINEABOVE',(2,0),(2,0),1.1,colors.black),
+				]
+				))
+			elements.append(table4)
+			elements.append(PageBreak())
+		doc.build(elements)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		import sys
+		reload(sys)
+		sys.setdefaultencoding('iso-8859-1')
+		mod_obj = self.env['ir.model.data']
+		act_obj = self.env['ir.actions.act_window']
+		import os
+		direccion = self.env['main.parameter'].search([])[0].dir_create_file
+		vals = {
+			'output_name': 'Boletas.pdf',
+			'output_file': open(direccion + "reporte_boletas.pdf", "rb").read().encode("base64"),	
+		}
+		sfs_id = self.env['export.file.save'].create(vals)
+		return {
+			"type": "ir.actions.act_window",
+			"res_model": "export.file.save",
+			"views": [[False, "form"]],
+			"res_id": sfs_id.id,
+			"target": "new",
+		}
+
+	@api.one
+	def extraer_datos(self):
+		existentes = []
+		for jj in self.detalle:
+			existentes.append(jj.codigo_trabajador)
+
+		tt = self.env['hr.employee'].search( [('fecha_ingreso','<=',self.periodo.date_stop), '|',('fecha_cese','>=',self.periodo.date_start),('fecha_cese','=',False)] )
+		for i in tt:
+			if i.codigo_trabajador in existentes:
+				continue
+			monto_grati=0
+			monto_grati_real=0
+			monto_boni_grati=0
+			monto_cts=0
+			monto_5category=0
+			vacaciones=0
+			vacaciones_trunca=0
+			vacaciones_indem=0
+			prestamos=0
+			adelantos=0
+			monto_grati_trun=0
+			monto_boni_grati_liq=0
+
+			a_f = self.env['hr.parameters'].search([])[0].a_familiar if i.children_number>0 else 0
+			grati=False
+			if self.periodo.code[0:2]=='07':
+				grati=self.env['hr.reward'].search([('year','=',self.periodo.fiscalyear_id.id),('period','=','07')])
+			if self.periodo.code[0:2]=='12':
+				grati=self.env['hr.reward'].search([('year','=',self.periodo.fiscalyear_id.id),('period','=','12')])
+			gratie=False
+			if grati:
+				gratie=self.env['hr.reward.line'].search([('reward','=',grati.id),('employee_id','=',i.id)])
+			if gratie:
+				monto_grati=gratie.total_reward
+				monto_boni_grati=monto_boni_grati+gratie.plus_9
+			periodo=False
+			if self.periodo.code[0:2]=='05':
+				periodo='05'
+			if self.periodo.code[0:2]=='11':
+				periodo='11'
+			ctsheader=False
+			ctsline=False
+			ctsheader=self.env['hr.cts'].search([('year','=',self.periodo.fiscalyear_id.id),('period','=',periodo)])
+			if len(ctsheader)>0:
+				ctsline=self.env['hr.cts.line'].search([('cts','=',ctsheader.id),('employee_id','=',i.id)])
+				if len(ctsline)>0:
+					monto_cts=ctsline.cts_soles
+
+			liquidaciones=self.env['hr.liquidaciones'].search([('period_id','=',self.periodo.id)])
+			if len(liquidaciones)>0:
+				ctsliq=self.env['hr.liquidaciones.lines.cts'].search([('liquidacion_id','=',liquidaciones.id),('employee_id','=',i.id)])
+				if len(ctsliq)>0:
+					monto_cts=ctsliq.total_payment
+
+				gratiliq=self.env['hr.liquidaciones.lines.grat'].search([('liquidacion_id','=',liquidaciones.id),('employee_id','=',i.id)])
+				if len(ctsliq)>0:
+					monto_grati_trun=gratiliq.total_months				
+					monto_boni_grati=monto_boni_grati+gratiliq.bonus
+					monto_boni_grati_liq=gratiliq.bonus
+
+
+				vacailiq=self.env['hr.liquidaciones.lines.vac'].search([('liquidacion_id','=',liquidaciones.id),('employee_id','=',i.id)])
+				if len(ctsliq)>0:
+					vacaciones=vacailiq.fall_due_holidays
+					vacaciones_trunca=vacailiq.total_holidays_sinva
+					vacaciones_indem=vacailiq.compensation
+					monto_grati_real=vacailiq.income_gratification
+
+
+			prestamosheader=self.env['hr.prestamo.header'].search([('employee_id','=',i.id)])
+			if len(prestamosheader)>0:
+				for deta in prestamosheader.prestamo_lines_ids:
+					if deta.validacion=='2':
+						aperioddate=deta.fecha_pago.split('-')
+						print aperioddate[1]+'/'+aperioddate[0],self.periodo.code
+						if aperioddate[1]+'/'+aperioddate[0]==self.periodo.code:
+							prestamos=prestamos+deta.monto
+
+			adelantosheader=self.env['hr.adelanto'].search([('employee','=',i.id)])
+			if len(adelantosheader)>0:
+				for deta in adelantosheader:
+					aperioddate=deta.fecha.split('-')
+					if aperioddate[1]+'/'+aperioddate[0]==self.periodo.code:
+						adelantos=adelantos+deta.monto
+
+
+			fivecat=self.env['hr.five.category'].search([('fiscalyear','=',self.periodo.fiscalyear_id.id)])
+			if len(fivecat)>0:
+				fivecatline=self.env['hr.five.category.lines'].search([('five_category_id','=',fivecat.id),('employee_id','=',i.id)])	
+				if len(fivecatline) >0:
+					if self.periodo.code[0:2]=='01':
+						monto_5category=fivecatline.janu_amount
+					if self.periodo.code[0:2]=='02':
+						monto_5category=fivecatline.febr_amount
+					if self.periodo.code[0:2]=='03':
+						monto_5category=fivecatline.marc_amount
+					if self.periodo.code[0:2]=='04':
+						monto_5category=fivecatline.apri_amount
+					if self.periodo.code[0:2]=='05':
+						monto_5category=fivecatline.mayo_amount
+					if self.periodo.code[0:2]=='06':
+						monto_5category=fivecatline.june_amount
+					if self.periodo.code[0:2]=='07':
+						monto_5category=fivecatline.jule_amount
+					if self.periodo.code[0:2]=='08':
+						monto_5category=fivecatline.agos_amount
+					if self.periodo.code[0:2]=='09':
+						monto_5category=fivecatline.sept_amount
+					if self.periodo.code[0:2]=='10':
+						monto_5category=fivecatline.octo_amount
+					if self.periodo.code[0:2]=='11':
+						monto_5category=fivecatline.nove_amount
+					if self.periodo.code[0:2]=='12':
+						monto_5category=fivecatline.dicc_amount
+
+			vals = {
+				'dni' : i.identification_id,
+				'codigo_trabajador' : i.codigo_trabajador,
+				'apellido_paterno' : i.last_name_father,
+				'apellido_materno' : i.last_name_mother,
+				'nombre' : i.first_name_complete,
+				'cargo' : i.job_id.id,
+				'afiliacion' : i.afiliacion.id,
+				'tipo_comision' : i.c_mixta, 
+				'basica_first' :  i.basica,
+				'a_familiar_first' :  a_f,
+				'a_familiar' :  a_f,
+				'total_remunerable': i.basica + a_f,
+				'vacaciones' : vacaciones,
+				'vacaciones_trunca':vacaciones_trunca,
+				'otros_ingreso' : vacaciones_indem,
+				'quinta_cat' : monto_5category,
+				'cts' : monto_cts,
+				'gratificacion' : monto_grati ,
+				'gratificacion_extraordinaria': monto_grati_trun,
+				'gratificacion_extraordinaria_real': monto_grati_real,
+				'boni_grati' : monto_boni_grati,
+				'monto_boni_grati_liq':monto_boni_grati_liq,
+				'adelantos': adelantos,
+				'prestamos': prestamos,
+				'centro_costo' : i.dist_c.id,
+				'tareo_id': self.id,
+				
+			}
+			i=self.env['hr.tareo.line'].create(vals)
+		self.recalcular(-1)
+
+
+
+

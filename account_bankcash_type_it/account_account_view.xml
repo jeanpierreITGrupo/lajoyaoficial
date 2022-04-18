@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record model="ir.ui.view" id="view_account_form">
+            <field name="name">account.account.form</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+                 <field name="type" position="after">
+					<field name="check_liquidity" attrs="{'invisible':[('type','!=','liquidity')]}" />
+                </field>
+            </field>
+        </record>
+		
+	</data>
+</openerp>

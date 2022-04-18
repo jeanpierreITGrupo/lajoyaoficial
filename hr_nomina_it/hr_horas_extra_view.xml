@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record model="ir.ui.view" id="view_hr_horas_extra_form">
+            <field name="name">hr.horas.extra.form</field>
+            <field name="model">hr.horas.extra</field>
+            <field name="arch" type="xml">
+                <form string="Horas Extra" version="8.0" create="false" delete="false">
+                    <sheet>
+                        <group string="Horas Extra">
+                            <group>
+                                <field name="he_diurnas"/>
+                                <field name="he_nocturnas"/>
+                                <field name="he_cien_p"/>
+                                <field name="he_descansos_diurno"/>
+                                <field name="he_descansos_nocturno"/>
+                                <field name="he_feriados"/>
+                                <field name="he_fer_diur"/>
+                                <field name="he_fer_noct"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_horas_extra_tree">
+            <field name="name">hr.horas.extra.tree</field>
+            <field name="model">hr.horas.extra</field>
+            <field name="arch" type="xml">
+                <tree string="Horas Extra" create="false" delete="false">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+	</data>
+</openerp>

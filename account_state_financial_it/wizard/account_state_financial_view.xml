@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<menuitem id="menu_state_financial_it" name="Configuración Estado Financiero" parent="account.menu_finance_configuration" sequence="10" />
+		
+		<!--
+
+		<record id="view_account_config_balance" model="ir.ui.view">
+            <field name="name">account.config.balance.tree</field>
+            <field name="model">account.config.balance</field>
+            <field name="arch" type="xml">
+                <tree string="Balance General">
+                    <field name="concept" />
+                    <field name="code" />
+                    <field name="group" />
+                    <field name="order" />
+                </tree>
+
+            </field>
+        </record>
+
+
+		<record model="ir.ui.view" id="view_account_config_balance_form">
+			<field name="name">account.config.balance.form</field>
+			<field name="model">account.config.balance</field>
+			<field name="arch" type="xml">
+				<form string="Balance General" >
+						<group string="Concepto Balance">
+							<field name="concept" />
+						</group>
+						<group string="Datos">
+							<group>
+								<field name="code" />
+								<field name="group" />
+							</group>
+							<group>
+								<field name="order" />
+							</group>
+						</group>
+				</form>
+			</field>
+		</record>
+
+		<record id="account_balance_format_action" model="ir.actions.act_window">
+			<field name="name">Balance General</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.config.balance</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+        <menuitem name="Formato Balance" id="balance_format_menu"  parent="menu_state_financial_it" action="account_balance_format_action" sequence="1" />
+
+
+		<record id="view_account_config_nature" model="ir.ui.view">
+            <field name="name">account.config.nature.tree</field>
+            <field name="model">account.config.nature</field>
+            <field name="arch" type="xml">
+                <tree string="Resultado Por Naturaleza">
+                    <field name="concept" />
+                    <field name="code" />
+                    <field name="group" />
+                    <field name="order" />
+                </tree>
+
+            </field>
+        </record>
+
+
+		<record model="ir.ui.view" id="view_account_config_nature_form">
+			<field name="name">account.config.nature.form</field>
+			<field name="model">account.config.nature</field>
+			<field name="arch" type="xml">
+				<form string="Resultado Por Naturaleza" >
+						<group string="Concepto Naturaleza">
+							<field name="concept" />
+						</group>
+						<group string="Datos">
+							<group>
+								<field name="code" />
+								<field name="group" />
+							</group>
+							<group>
+								<field name="order" />
+							</group>
+						</group>
+				</form>
+			</field>
+		</record>
+
+		<record id="account_nature_format_action" model="ir.actions.act_window">
+			<field name="name">Resultado Por Naturaleza</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.config.nature</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+        <menuitem name="Formato Result. Naturaleza" id="nature_format_menu"  parent="menu_state_financial_it" action="account_nature_format_action" sequence="2" />
+
+
+
+		<record id="view_account_config_function" model="ir.ui.view">
+            <field name="name">account.config.function.tree</field>
+            <field name="model">account.config.function</field>
+            <field name="arch" type="xml">
+                <tree string="Resultado Por Función">
+                    <field name="concept" />
+                    <field name="code" />
+                    <field name="group" />
+                    <field name="order" />
+                </tree>
+
+            </field>
+        </record>
+
+
+		<record model="ir.ui.view" id="view_account_config_function_form">
+			<field name="name">account.config.function.form</field>
+			<field name="model">account.config.function</field>
+			<field name="arch" type="xml">
+				<form string="Resultado Por Función" >
+						<group string="Concepto Función">
+							<field name="concept" />
+						</group>
+						<group string="Datos">
+							<group>
+								<field name="code" />
+								<field name="group" />
+							</group>
+							<group>
+								<field name="order" />
+							</group>
+						</group>
+				</form>
+			</field>
+		</record>
+
+
+		<record id="account_function_format_action" model="ir.actions.act_window">
+			<field name="name">Resultado Por Función</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.config.function</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+        <menuitem name="Formato Result. Por Función" id="function_format_menu"  parent="menu_state_financial_it" action="account_function_format_action" sequence="3" />
+
+        <menuitem name="Formato Cambios en el Patrimonio" id="patrimonio_format_menu"  parent="menu_state_financial_it" sequence="4" />
+
+-->
+
+		<record id="view_account_config_efective" model="ir.ui.view">
+            <field name="name">account.config.efective.tree</field>
+            <field name="model">account.config.efective</field>
+            <field name="arch" type="xml">
+                <tree string="Flujos de Efectivo">
+                    <field name="concept" />
+                    <field name="code" />
+                    <field name="group" />
+                    <field name="order" />
+                </tree>
+
+            </field>
+        </record>
+
+
+		<record model="ir.ui.view" id="view_account_config_efective_form">
+			<field name="name">account.config.efective.form</field>
+			<field name="model">account.config.efective</field>
+			<field name="arch" type="xml">
+				<form string="Flujos de Efectivo" >
+						<group string="Concepto Efectivo">
+							<field name="concept" />
+						</group>
+						<group string="Datos">
+							<group>
+								<field name="code" />
+								<field name="group" />
+							</group>
+							<group>
+								<field name="order" />
+							</group>
+						</group>
+				</form>
+			</field>
+		</record>
+		
+
+		<record id="account_efective_format_action" model="ir.actions.act_window">
+			<field name="name">Flujos de Efectivo</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.config.efective</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+
+        <menuitem name="Formato Flujos de Efectivo" id="efective_format_menu"  parent="menu_state_financial_it" action="account_efective_format_action" sequence="5" />
+
+
+<!--
+
+		<record id="view_account_config_account_mio" model="ir.ui.view">
+            <field name="name">account.account.tree.mio</field>
+            <field name="model">account.account</field>
+            <field name="arch" type="xml">
+                <tree string="Configuración de Cuentas" create="false">
+                    <field name="code" />
+                    <field name="name" />
+                    <field name="balance_id" />
+                    <field name="nature_id" />
+                    <field name="function_id" />
+                    <field name="flu_e" />
+                    <field name="pat_n" />
+                </tree>
+
+            </field>
+        </record>
+
+
+		<record model="ir.ui.view" id="view_account_config_account_form_mio">
+			<field name="name">account.account.form.mio</field>
+			<field name="model">account.account</field>
+			<field name="arch" type="xml">
+				<form string="Configuración de Cuentas" >
+						<group string="Cuenta">
+							<group>
+								<field name="code" readonly="1"/>
+							</group>
+							<group>
+							<field name="name" readonly="1"/>
+							</group>
+						</group>
+						<group string="Configuración">
+							<group>
+								<field name="balance_id" />
+								<field name="nature_id" />
+								<field name="function_id" />
+							</group>
+							<group>
+								<field name="flu_e" />
+                    			<field name="pat_n" />
+							</group>
+						</group>
+				</form>
+			</field>
+		</record>
+
+
+		<record id="account_account_config_action" model="ir.actions.act_window">
+			<field name="name">Configuración de Cuentas</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.account</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="view_account_config_account_mio"/>
+		</record>
+
+
+		<record model="ir.ui.view" id="view_account_config_account_new_wizard_form">
+			<field name="name">account.config.account.wizard.form</field>
+			<field name="model">account.config.account.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Registro de Compras" version="8.0">
+						<group>
+								<label string="¿Desea Configurar las Cuentas?" />
+								
+						</group>
+
+						<footer>
+							<button string="Mostrar" name="do_rebuild" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="account_config_account_wizard_action" model="ir.actions.act_window">
+			<field name="name">Configuracion de Cuentas</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.config.account.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+
+
+        <menuitem name="Configuración de Cuentas" id="account_config_it_menu"  parent="menu_state_financial_it" action="account_config_account_wizard_action" sequence="6" />
+
+-->
+	</data>
+</openerp>

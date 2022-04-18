@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="view_account_expense_rp_asiento_wizard_form">
+			<field name="name">account.expense.rep.asiento.wizard.form</field>
+			<field name="model">account.expense.rep.asiento.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Generar Asiento de Gastos Vinculados" version="7.0">
+						<group>
+							<field name="period_ini" string="Periodo" />
+							<field name="fecha" />
+						</group>
+						<footer>
+							<button string="Generar" name="do_rebuild" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="account_expense_rep_asiento_wizard_action" model="ir.actions.act_window">
+			<field name="name">Asiento de Existencias por Gastos Vinculados</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.expense.rep.asiento.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+<!--
+		<menuitem name="Generar Asiento de G. Vinculados" id="account_expense_rep_asiento_wizard_menu"  parent="repaccount_account_analytic_it.menu_finance_move_expense" action="account_expense_rep_asiento_wizard_action" sequence="7" /> -->
+
+
+
+		<record model="ir.ui.view" id="view_account_expense_rp_wizard_form">
+			<field name="name">account.expense.rep.wizard.form</field>
+			<field name="model">account.expense.rep.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Reporte de Cuenta Corriente" version="7.0">
+						<group>
+							<field name="period_ini" />
+							<field name="period_end" />
+						</group>
+						<footer>
+							<button string="Mostrar" name="do_rebuild" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="account_expense_rep_wizard_action" model="ir.actions.act_window">
+			<field name="name">Reporte de Movimientos de Existencias por G.Vinculados</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.expense.rep.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+
+
+	</data>
+</openerp>

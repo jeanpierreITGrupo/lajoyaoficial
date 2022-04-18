@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_currency_form" model="ir.ui.view">
+            <field name="name">res.currency.form</field>
+            <field name="model">res.currency</field>
+            <field name="inherit_id" ref="base.view_currency_form"/>
+            <field name="arch" type="xml">
+                <field name="position" position="after">
+                    <field name="flag_currency_param" invisible="1" />
+                    <button name="update_rate_price" class="oe_edit_only" string="Actualizar Sunat" type="object" attrs="{'invisible': [('flag_currency_param','=', False)]}"/>
+                </field>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_res_currency_wizard_form">
+            <field name="name">res.currency.wizard.form</field>
+            <field name="model">res.currency.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Cambio Monedas Sunat" version="7.0">
+                        <group string="Actualizar Tipo de Cambio Sunat">
+                            <field name="fecha_ini" required="1"/>
+                            <field name="fecha_fin" required="1"/>
+                        </group>
+                        <footer>
+                            <button string="Actualizar" name="do_rebuild" type="object" class="oe_highlight"/>
+                            or
+                            <button string="Cancel" class="oe_link" special="cancel"/>
+                        </footer>
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

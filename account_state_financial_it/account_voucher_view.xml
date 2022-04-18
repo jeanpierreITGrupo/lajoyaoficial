@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_vendor_payment_form" model="ir.ui.view">
+            <field name="name">account.voucher.form</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_payment_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <label for="fefectivo_id" string="F. Efectivo" invisible="1"/>
+                    <field name="fefectivo_id" nolabel="1" invisible="1"/>
+                </field>
+            </field>
+        </record>
+
+
+
+        <record id="view_vendor_receipt_form" model="ir.ui.view">
+            <field name="name">account.voucher.form</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_receipt_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <label for="fefectivo_id" string="F. Efectivo" invisible="1"/>
+                    <field name="fefectivo_id" nolabel="1" invisible="1"/>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="view_vendor_payment_form" model="ir.ui.view">
+            <field name="name">account.voucher.form</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_payment_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <label for="fefectivo_id" string="F. Efectivo" invisible="1"/>
+                    <field name="fefectivo_id" nolabel="1" invisible="1"/>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="view_vendor_receipt_dialog_form" model="ir.ui.view">
+            <field name="name">account.voucher.form</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_receipt_dialog_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <label for="fefectivo_id" string="F. Efectivo" invisible="1"/>
+                    <field name="fefectivo_id" nolabel="1" invisible="1"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

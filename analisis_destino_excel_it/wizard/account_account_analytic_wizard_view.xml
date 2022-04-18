@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="view_account_excelaccount_analytic_wizard_form">
+			<field name="name">analitica.excel.analisis.wizard.form</field>
+			<field name="model">analitica.excel.analisis.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Análisis de Destino" version="7.0">
+						<group>
+							<field name="period_ini" />
+							<field name="period_end" />
+						</group>
+						<footer>
+							<button string="Mostrar" name="do_rebuild" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="account_account_analyticexcel_rep_wizard_action" model="ir.actions.act_window">
+			<field name="name">Resumen de Análisis de Destino</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">analitica.excel.analisis.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+		
+        <menuitem name="Resumen de Análisis Destinos" id="account_account_anaexcellytic_wizard_menu"  parent="repaccount_account_analytic_it.menu_finance_move_expense" action="account_account_analyticexcel_rep_wizard_action" sequence="7" />
+
+	</data>
+</openerp>

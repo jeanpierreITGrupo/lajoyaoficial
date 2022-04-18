@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="hr_distribucion_gastos_linea_view" model="ir.ui.view">
+            <field name="name">hr.distribucion.gastos.linea.tree</field>
+            <field name="model">hr.distribucion.gastos.linea</field>
+            <field name="arch" type="xml">
+                <tree string="Distribución de Gastos Lineas" editable="bottom">
+                    <field name="analitica"/>
+                    <field name="porcentaje" />
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hr_distribucion_de_gastos_form">
+            <field name="name">hr.distribucion.gastos.form</field>
+            <field name="model">hr.distribucion.gastos</field>
+            <field name="arch" type="xml">
+                <form string="Distribución de Gastos" version="8.0">
+                    <group>
+                        <group>
+                            <field name="codigo" />
+                        </group>
+                        <group>
+                            <field name="descripcion" />
+                        </group>
+                    </group>
+                    <group>
+                        <field name="distribucion_lines" nolabel="1"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="hr_distribucion_de_gastos_action">
+            <field name="name">Distribución del gasto RRHH</field>
+            <field name="res_model">hr.distribucion.gastos</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="hr_distribucion_de_gastos_action" id="menu_hr_distribucion_gastos" parent="hr.menu_hr_configuration"/>
+
+
+    </data>
+</openerp>

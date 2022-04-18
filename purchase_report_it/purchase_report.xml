@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+
+
+
+        <record id="purchase_order_form" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name="picking_type_id" position="after">
+                    <field name="aprobado_por_cc" />
+                    <field name="confirmado_por_cc" />
+                </field>
+                <field name="partner_id" position="after">
+                    <field name="contacto_id" attrs="{'readonly': [('state','!=','draft')]}" domain="[('parent_id','=',partner_id)]" />
+                    <field name="telefono_contacto" readonly="1"/>
+                    <field name="celular_contacto" readonly="1"/>
+                </field>
+            </field>
+        </record>
+
+        <template id="external_layout_header1">
+            <div class="header">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="max-height: 80px;"/>
+                    </div>
+                    <div class="col-xs-9 text-right" style="margin-top:20px;" t-field="company.rml_header1"/>
+                </div>
+                <div class="row zero_min_height">
+                    <div class="col-xs-12">
+                        <div style="border-bottom: 1px solid black;"></div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="external_layout_footer1">
+            <div class="footer">
+                <div class="text-left" style="border-top: 1px solid black;">
+                    <ul t-if="not company.custom_footer" class="list-inline" style="margin-bottom:0px;">
+                        <li t-if="company.name"><span t-field="company.name"/></li><br/>
+                        <li t-if="company.partner_id">RUC: <span t-field="company.partner_id.type_number"/></li><br/>
+                        <li t-if="company.street">Dirección: <span t-field="company.street"/></li><br/>
+                        <li t-if="company.phone">Phone: <span t-field="company.phone"/></li>
+                        <li t-if="company.fax and company.phone">&amp;bull;</li>
+                        <li t-if="company.fax">Fax: <span t-field="company.fax"/></li>
+
+                        <li t-if="company.email">&amp;bull;</li>
+                        <li t-if="company.email">Email: <span t-field="company.email"/></li>
+
+                        <li t-if="company.website">&amp;bull;</li>
+                        <li t-if="company.website">Website: <span t-field="company.website"/></li>
+                    </ul>
+
+                    <t t-if="company.custom_footer">
+                        <span t-raw="company.rml_footer"/>
+                    </t>
+
+                    <ul class="list-inline text-center">
+                        <li>Page:</li>
+                        <li><span class="page"/></li>
+                        <li>/</li>
+                        <li><span class="topage"/></li>
+                    </ul>
+                </div>
+            </div>      
+        </template>
+
+        <template id="external_layout1">
+            <!-- Multicompany -->
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"></t>
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"></t>
+            </t>
+
+            <t t-call="purchase_report_it.external_layout_header1" />
+            <t t-raw="0" />
+            <t t-call="purchase_report_it.external_layout_footer1" />
+        </template>
+
+        <template id="purchase.report_purchaseorder_document">
+            <t t-call="purchase_report_it.external_layout1">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <div class="row">
+                        <!-- <div class="col-xs-6">
+                            <strong>Shipping address:</strong>
+                            <div t-if="o.dest_address_id">
+                                <div t-field="o.dest_address_id"
+                                    t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                            </div>
+
+                            <div t-if="not o.dest_address_id and o.picking_type_id and o.picking_type_id.warehouse_id">
+                                <span t-field="o.picking_type_id.warehouse_id.name"/>
+                                <div t-field="o.picking_type_id.warehouse_id.partner_id"
+                                    t-field-options='{"widget": "contact", "fields": ["address", "phone", "fax"], "no_marker": true}'/>
+                            </div>
+                        </div> -->
+                        <div class="col-xs-6">
+                            <strong>Proveedor:</strong>
+                            <div>
+                                <div t-field="o.partner_id.name" />
+                            </div>
+                            <strong>RUC:</strong>
+                            <div>
+                                <div t-field="o.partner_id.type_number" />
+                            </div>
+                            <strong>Dirección:</strong>
+                            <div>
+                                <div t-field="o.partner_id.street" />
+                            </div>
+                            <strong t-if="o.partner_id.phone">Telefono:</strong>
+                            <div t-if="o.partner_id.phone">
+                                <div t-field="o.partner_id.phone" />
+                            </div>
+                            <strong t-if="o.partner_id.email">Correo:</strong>
+                            <div t-if="o.partner_id.email">
+                                <div t-field="o.partner_id.email" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 t-if="o.state != 'draft'">Purchase Order Confirmation N°<span t-field="o.name"/></h2>
+                    <h2 t-if="o.state == 'draft'">Request for Quotation N°<span t-field="o.name"/></h2>
+
+                    <div class="row mt32 mb32">
+                        <div t-if="o.name" class="col-xs-3">
+                            <strong>Our Order Reference:</strong>
+                            <p t-field="o.name"/>
+                        </div>
+                        <div t-if="o.partner_ref" class="col-xs-3">
+                            <strong>Your Order Reference</strong>
+                            <p t-field="o.partner_ref"/>
+                        </div>
+                        <div t-if="o.date_order" class="col-xs-3">
+                            <strong>Order Date:</strong>
+                            <p t-field="o.date_order"/>
+                        </div>
+                       <div t-if="o.confirmado_por_cc.id" class="col-xs-3">
+                            <strong>Confirmado Por:</strong>
+                            <p t-field="o.confirmado_por_cc.name"/>
+                        </div>
+                        <div t-if="o.aprobado_por_cc.id" class="col-xs-3">
+                            <strong>Aprobado Por:</strong>
+                            <p t-field="o.aprobado_por_cc.name"/>
+                        </div>                        <div t-if="o.centro_costo_id" class="col-xs-3">
+                            <strong>Centro de Costo:</strong>
+                            <p t-field="o.centro_costo_id.name"/>
+                        </div>
+                    </div>
+
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th><strong>Description</strong></th>
+                                <th><strong>Cta. Analítica</strong></th>
+                                <th class="text-right"><strong>Qty</strong></th>
+                                <th class="text-right"><strong>Unit Price</strong></th>
+                                <th class="text-right"><strong>Net Price</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.order_line" t-as="line">
+                                <td>
+                                    <span t-field="line.name"/>
+                                </td>
+                                <td>
+                                    <span t-field="line.account_analytic_id.name"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="'%.2f'% line.product_qty"/>
+                                    <span t-field="line.product_uom.name" groups="product.group_uom"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="'%.2f'% line.price_unit"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.price_subtotal"
+                                        t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row">
+                        <div class="col-xs-4 pull-right">
+                            <table class="table table-condensed">
+                                <tr class="border-black">
+                                    <td><strong>Total Without Taxes</strong></td>
+                                    <td class="text-right">
+                                        <span t-field="o.amount_untaxed"
+                                            t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Taxes</td>
+                                    <td class="text-right">
+                                        <span t-field="o.amount_tax"
+                                            t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                    </td>
+                                </tr>
+                                <tr class="border-black">
+                                    <td><strong>Total</strong></td>
+                                    <td class="text-right">
+                                        <span t-field="o.amount_total"
+                                            t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p t-field="o.notes"/>
+                    <div class="oe_structure"/>
+
+                    <div class="row mt32 mb32">
+                        <div t-if="o.contacto_id.id" class="col-xs-32">
+                            <strong>Contacto:</strong>
+                            <p t-esc="o.contacto_id.name + ( (', Telefono: ' + o.contacto_id.phone) if (o.contacto_id.phone) else ('') ) + ( (', Celular: ' + o.contacto_id.mobile) if (o.contacto_id.mobile) else ('') ) "/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+
+
+
+
+
+<template id="purchase.report_purchasequotation_document">
+    <t t-call="purchase_report_it.external_layout1">
+        <div class="page">
+            <div class="oe_structure"/>
+
+            <div class="row mt32 mb32">
+                <div class="col-xs-6">
+                    <strong>Shipping address:</strong>
+                    <div t-if="o.dest_address_id">
+                        <div t-field="o.dest_address_id"
+                            t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                    </div>
+                    <div t-if="not o.dest_address_id and o.picking_type_id.warehouse_id">
+                        <span t-field="o.picking_type_id.warehouse_id.name"/>
+                        <div t-field="o.picking_type_id.warehouse_id.partner_id"
+                            t-field-options='{"widget": "contact", "fields": ["address", "phone", "fax"], "no_marker": true}'/>
+                    </div>
+                </div>
+                <div class="col-xs-5 col-xs-offset-1">
+                    <div t-field="o.partner_id"
+                        t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                        <p t-if="o.partner_id.vat">VAT: <span t-field="o.partner_id.vat"/></p>
+                </div>
+            </div>
+
+            <h2>Request for Quotation <span t-field="o.name"/></h2>
+
+                    <div class="row mt32 mb32">
+                        <div t-if="o.centro_costo_id" class="col-xs-3">
+                            <strong>Centro de Costo:</strong>
+                            <p t-field="o.centro_costo_id.name"/>
+                        </div>
+                    </div>
+
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th><strong>Description</strong></th>
+                                <th><strong>Cta. Analítica</strong></th>
+                        <th class="text-center"><strong>Expected Date</strong></th>
+                        <th class="text-right"><strong>Qty</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="o.order_line" t-as="order_line">
+                        <td>
+                            <span t-field="order_line.name"/>
+                        </td>
+                                <td>
+                                    <span t-field="order_line.account_analytic_id.name"/>
+                                </td>
+                        <td class="text-center">
+                            <span t-field="order_line.date_planned"/>
+                        </td>
+                        <td class="text-right">
+                            <span t-esc="'%.2f'% line.product_qty"/>
+                            <span t-field="order_line.product_uom" groups="product.group_uom"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p t-field="o.notes"/>
+            <span>Regards,</span>
+            <span t-field="user.signature"/>
+
+            <div class="oe_structure"/>
+        </div>
+    </t>
+</template>
+
+
+    </data>
+</openerp>

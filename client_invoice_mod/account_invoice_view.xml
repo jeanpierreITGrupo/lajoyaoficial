@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account_invoice_series_it.invoice_form"/>
+            <field name="arch" type="xml">
+				<field name="serie_id" position="replace" >
+					<field name="serie_id" string="Serie" attrs="{'invisible':[('state','!=','draft')],'readonly':[('state','!=','draft')]}" required="1"/>
+				</field>
+
+                <field name="supplier_invoice_number" position="replace" >
+                    <field name="supplier_invoice_number" attrs="{'readonly':[('state','!=','draft')]}" nolabel="1" required="0"/>
+                </field>
+            </field>
+        </record>
+		
+	</data>
+</openerp>

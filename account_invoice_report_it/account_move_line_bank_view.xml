@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+                    
+        <record id="invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+
+                  <button name="invoice_cancel" position="after">
+                    <button name="do_imprimir_factura" states="paid,open" type="object" string="Imprimir Factura" />
+                  </button>
+            </field>
+        </record>
+
+
+
+
+        <record model="ir.ui.view" id="view_impresion_config_cheques_factura_print_wizard_form">
+            <field name="name">config.print.factura.form</field>
+            <field name="model">config.print.factura</field>
+            <field name="arch" type="xml">
+                <form string="Configuración de Impresión Facturas" version="8.0">
+                        <group colspan="4">
+                            <field name="texto_cabezera" colspan="4"/>
+                            <field name="texto_cuerpo" colspan="4"/>
+                            <field name="texto_pie" colspan="4"/>
+                        </group>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_account_config_print_factura_bank_report_tree" model="ir.ui.view">
+            <field name="name">config.print.factura.tree</field>
+            <field name="model">config.print.factura</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Config. Impresión Facturas" >
+                    <field name="texto_cabezera" />
+                    <field name="texto_cuerpo" />
+                    <field name="texto_pie" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="account_cheques_config_factura_print_wizard_action" model="ir.actions.act_window">
+            <field name="name">Conf. Impresión Facturas</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">config.print.factura</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="account_cheques_config_factura_print_wizard_action" id="menu_config_impresion_factura_cheqes" parent="account.menu_configuration_misc"/>
+
+    </data>
+</openerp>

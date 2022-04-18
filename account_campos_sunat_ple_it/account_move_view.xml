@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_move_form" model="ir.ui.view">
+            <field name="name">account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <field name="journal_id" position="after">
+                    <field name="type_journal_tmp" invisible="1" />
+                </field>
+                <xpath expr="//notebook" position="inside">
+                    
+                        <page string="PLE Compras" attrs="{'invisible':[('type_journal_tmp','not in',['purchase','purchase_refund'])]}">
+                            <group>
+                                <group>
+                                    <field name="ultimo_numero_consolidado" />
+                                    <field name="sujeto_a_retencion" />
+                                    <field name="tipo_adquisicion" />
+                                    <field name="contrato_o_proyecto" />
+                                    <field name="inconsistencia_tipo_cambio" />
+                                    <field name="proveedor_no_habido" />
+                                </group>
+                                <group>
+                                    <field name="renuncio_a_exoneracion_igv" />
+                                    <field name="inconsistencia_dni_liquidacion_comp" />
+                                    <field name="cancelado_medio_pago" />
+                                    <field name="estado_ple" invisible="1"/>
+                                    <field name="periodo_ajuste_modificacion_ple_compra" />
+                                    <field name="periodo_ajuste_modificacion_ple" invisible="1"/>
+                                </group>
+                            </group>
+                        </page>
+
+
+                        <page string="PLE Ventas" attrs="{'invisible':[('type_journal_tmp','not in',['sale','sale_refund'])]}">
+                            <group>
+                                <group>
+                                    <field name="numero_final_consolidado_cliente" />
+                                    <field name="numero_contrato_cliente" />
+                                </group>
+                                <group>
+                                    <field name="inconsistencia_tipo_cambio_cliente" />
+                                    <field name="cancelado_medio_pago_cliente" />
+                                    <field name="periodo_ajuste_modificacion_ple_venta" />
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="PLE NO DOMIC." attrs="{'invisible':[('type_journal_tmp','not in',['purchase','purchase_refund'])]}">
+                            <group>
+                                <group>
+                                    <field name="renta_bruta" />
+                                    <field name="deduccion_costo_enajenacion" />
+                                    <field name="renta_neta" />
+                                    <field name="tasa_de_retencion" />
+                                    <field name="impuesto_retenido" />
+                                </group>
+                                <group>
+                                    <field name="exoneracion_aplicada" />
+                                    <field name="tipo_de_renta" />
+                                    <field name="modalidad_servicio_prestada" />
+                                    <field name="aplica_art_del_impuesto" />
+                                    <field name="beneficiario_de_pagos" />
+                                </group>
+                            </group>
+                            
+                    <group string="Sustento Credito Fiscal">
+                        <group>
+                            <field name="tipo_sustento_credito_fiscasl" />
+                            <field name="serie_sustento_credito_fiscasl" />
+                        </group>
+                        <group>
+                            <field name="anio_sustento_credito_fiscasl" />
+                            <field name="nro_comp_sustento_credito_fiscasl" />
+                        </group>
+                    </group>
+                        </page>
+                </xpath>
+                
+            </field>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+
+		<record id="invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account_type_doc_it.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="default_description" position="after">
+                	<field name="check_daot" attrs="{'readonly':[('state','!=','draft')]}" />
+                </field>
+            </field>
+        </record>
+
+
+
+
+        <record id="invoice_supplier_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account_type_doc_it.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <field name="default_description" position="after">
+                	<field name="check_daot" attrs="{'readonly':[('state','!=','draft')]}" />
+                </field>
+            </field>
+        </record>
+
+		<record id="view_move_form" model="ir.ui.view">
+            <field name="name">account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+            	<field name="partner_id" position="after">
+            		<field name="check_daot"/>
+            	</field>
+            </field>
+        </record>
+
+		<record id="view_datos_register_form_un" model="ir.ui.view">
+            <field name="name">daot.register.form</field>
+            <field name="model">daot.register</field>
+            <field name="arch" type="xml">
+                <tree string="Daot Registros" create='false'>
+                    <field name="tipo_doc"/>
+                    <field name="divisa"/>
+                    <field name="partner_id"/>
+                    <field name="ruc"/>
+                    <field name="razonsocial"/>
+                    <field name="date_ini"/>
+                    <field name="date_fin"/>
+                    <field name="serie"/>
+                    <field name="numero"/>
+                    <field name="base"/>
+                    <field name="igv"/>
+                    <field name="total"/>
+                </tree>
+            </field>
+        </record>
+
+
+		<record id="daot_register_sunat_wizard_costo_action" model="ir.actions.act_window">
+			<field name="name">Operaciones para Daot Costo</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">daot.register</field>
+			<field name="domain">[('type_operation', '=', 'costo')]</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+		<menuitem name="Daot Costo"
+            action="daot_register_sunat_wizard_costo_action"
+            id="menu_action_register_daot_wizard_sunat_it_report_costo"
+            parent="daot_sunat_it.menu_action_daot_wizard_sunat_it_report"
+            sequence="16"
+        />
+		<record id="daot_register_sunat_wizard_ingreso_action" model="ir.actions.act_window">
+			<field name="name">Operaciones para Daot Ingreso</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">daot.register</field>
+			<field name="domain">[('type_operation', '=', 'ingreso')]</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+		<menuitem name="Daot Ingreso"
+            action="daot_register_sunat_wizard_ingreso_action"
+            id="menu_action_register_daot_wizard_sunat_it_report_ingreso"
+            parent="daot_sunat_it.menu_action_daot_wizard_sunat_it_report"
+            sequence="17"
+        />
+
+		<record model="ir.ui.view" id="view_daot_register_wizard_form">
+			<field name="name">daot.register.wizard.form</field>
+			<field name="model">daot.register.wizard</field>
+			<field name="arch" type="xml">
+				<form string="" version="8.0">
+					<group string="Agregar Operaciones Para Daot">
+						<field name="check" invisible="1" />
+						<h4 color="#0000ff">
+							<field name="mensaje" attrs="{'invisible': [('check', '=', False)]}" readonly="1" nolabel="1"/>
+						</h4>
+					</group>
+					<group>
+						<group>
+							<field name="type_operation" required="1"/>
+							<field name="partner_id" required="1"/>
+							<field name="ruc" readonly="1"/>
+							<field name="date_ini"  required="1"/>
+							<field name="serie"  required="1"/>
+							<field name="base"  required="1"/>
+							<field name="igv"  required="1"/>
+						</group>
+						<group>
+							<field name="tipo_doc" required="1" />
+							<field name="razonsocial" readonly="1"/>
+							<field name="divisa"  required="1"/>
+							<field name="date_fin"  required="1"/>
+							<field name="numero"  required="1"/>
+							<field name="total" readonly="1"/>
+						</group>
+					</group>
+					<footer>
+						<button string="Registrar" name="do_rebuild" type="object" class="oe_highlight"/>
+						or
+						<button string="Cancel" class="oe_link" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+	
+
+		<record id="daot_register_sunat_wizard_action" model="ir.actions.act_window">
+			<field name="name">Agregar Operaciones para Daot</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">daot.register.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<menuitem name="Agregar Ope. Daot"
+            action="daot_register_sunat_wizard_action"
+            id="menu_action_register_daot_wizard_sunat_it_report"
+            parent="daot_sunat_it.menu_action_daot_wizard_sunat_it_report"
+            sequence="13"
+        />
+
+
+	</data>
+</openerp>

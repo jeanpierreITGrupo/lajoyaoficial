@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data> 
+        <record id="view_hr_five_cat_prob_tree" model="ir.ui.view">
+            <field name="name">hr.five.cat.prob.tree</field>
+            <field name="model">hr.five.cat.prob</field>
+            <field name="arch" type="xml">
+                <tree string="Proyección de 5ta Categoría">
+                    <field name="employee_id"/>
+                    <field name="amount"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_hr_five_cat_prob" model="ir.actions.act_window">
+            <field name="name">Proyección de 5ta Categoría</field>
+            <field name="res_model">hr.five.cat.prob</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+         <menuitem action="action_hr_five_cat_prob" id="menu_hr_five_cat_prob" parent="hr.menu_hr_main"/>
+    </data>
+</openerp>

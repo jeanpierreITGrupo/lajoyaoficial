@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_correlativer_form" model="ir.ui.view">
+            <field name="name">correlative_renumber.form</field>
+            <field name="model">wizard.correlative.it</field>
+            <field name="arch" type="xml">
+                <form string="Guardar correlativo">
+                    <group string="General Data">
+                        <field name="fiscalyear_id"/>
+                        <field name="period_id"/>
+                    </group>
+                    <footer>
+                        <div>
+                            <button name="do_correlative" string="Guardar correlatvos" type="object" class="oe_highlight"/>
+                            or
+                            <button special="cancel" string="Cancel" class="oe_link"/>
+                        </div>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record id="view_warn_correlative" model="ir.ui.view">
+            <field name="name">warning.correlative.form</field>
+            <field name="model">warning.correlative</field>
+            <field name="arch" type="xml">
+                <form string="Alerta Guardar correlativos">
+                    <group>
+                        <label string="Si antes ya guardo los correlativos, al ejecutar este proceso esa información sera reemplazada ¿Está seguro de guardar los correlativos de este periodo? " />
+                    </group>
+                    <footer>
+                        <button name="generate_correlative" string="Guardar" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="action_correlative_renumber" model="ir.actions.act_window">
+            <field name="name">Guardar Correlativo</field>
+            <field name="res_model">wizard.correlative.it</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_correlativer_form" />
+            <field name="target">new</field>
+        </record>
+        <menuitem id="menu_account_correlative"
+                parent="account.menu_account_end_year_treatments"
+                action="action_correlative_renumber"/>
+
+    </data>
+</openerp>

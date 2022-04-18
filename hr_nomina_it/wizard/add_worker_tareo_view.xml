@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="view_add_worker_tareo">
+            <field name="name">add.worker.tareo.form</field>
+            <field name="model">add.worker.tareo</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <form string="Adicionar trabajador">
+                    <group>
+                       <field name="employee" required="1" />
+                    </group>
+					<footer>
+                        <button string="Agregar" name="new_worker" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_add_worker_tareo_view" model="ir.actions.act_window">
+            <field name="name">Nuevo trabajador</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">add.worker.tareo</field>
+            <field name="view_id" ref="view_add_worker_tareo"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+	</data>
+</openerp>

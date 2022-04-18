@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_move_picking_tree" model="ir.ui.view">
+            <field name="name">stock.move.tree</field>
+            <field name="model">stock.move</field>
+            <field name='inherit_id' ref='stock.view_move_picking_tree'/>
+            <field eval="4" name="priority"/>
+            <field name="arch" type="xml">
+                <field name="product_id" position="before">
+                    <button name="abrir_detalle_lote" icon="gtk-edit" string="Ver Detalle Costeo" type="object"/>
+                    <field name="lote_padre" />
+                </field>
+            </field>
+        </record>
+
+
+
+        <record id="costeo_detalleit_form" model="ir.ui.view">
+            <field name="name">costeo.line.it.form</field>
+            <field name="model">costeo.line.it</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <form string="Detalle Costeo">
+                <sheet string="Detalle Costeo">
+                    <div class="oe_title">
+                        <h1>
+                            <label string="Periodo" />
+                            <field name="periodo" class="oe_inline" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="lote" readonly="1"/>
+                                    <field name="producto" readonly="1"/>
+                                    <field name="toneladas_secas" readonly="1"/>
+                                    <field name="check_chancado" readonly="1"/>
+                                    <field name="zona" readonly="1"/>
+                                    <field name="costo_oro" readonly="1"/>
+                                    <field name="costo_plata" readonly="1"/>
+                        </group>
+                        <group>
+                                    <field name="costo_chancado" readonly="1"/>
+                                    <field name="costo_zona" readonly="1"/>
+                                    <field name="costo_expediente" readonly="1"/>
+                                    <field name="gastos_generales" readonly="1"/>
+                                    <field name="total_costo" readonly="1"/>
+                                    <field name="p_unit" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+
+        <record id="view_move_picking_form" model="ir.ui.view">
+            <field name="name">stock.move.form</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_form"/>
+            <field name="arch" type="xml">
+
+
+                <field name="product_uom" position="after">
+                    <field name="product_uom_static" string="Unidad de Medida" class="oe_inline" readonly="1"/>
+                </field>
+
+
+                <field name="product_uom" position="attributes">
+                        <attribute name="invisible">True</attribute>
+                </field>
+
+                <field name="product_id" position="before">
+
+                        <field name="lote_padre" />
+
+                        <label string="(Solo si el lote tiene costeo)" />
+                        <button name="abrir_detalle_lote" string="Ver Detalle Costeo" type="object" />
+
+                </field>
+            </field>
+        </record>
+
+
+        <!-- Inherited Analytic Account list for contracts -->
+        <record id="view_account_analytic_account_tree" model="ir.ui.view">
+            <field name="name">account.analytic.account.tree</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="account.view_account_analytic_account_tree"/>
+            <field name="arch" type="xml">
+                <field name="currency_id" position="before">
+                    <field name="zona_id"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="costeo_it_form" model="ir.ui.view">
+            <field name="name">costeo.it.form</field>
+            <field name="model">costeo.it</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <form string="Costeo">
+                <header>
+                        <button name="actualizar" states="draft" string="Actualizar" type="object" class="oe_highlight" />
+
+                        <button name="costo_oro_plata" states="draft" string="Costo Oro y Plata" type="object" />
+                        <button name="regresar_borrador" states="1" string="Regresar Borrador" type="object" />
+
+                        <button name="costo_chancado" states="1" string="Costo de Chancado" type="object" />
+                        <button name="regresar_plataoro" states="2" string="Regresar Costo Oro y Plata" type="object" />
+
+                        <button name="costo_zona" states="2" string="Costo Zona" type="object" />
+                        <button name="regresar_chancado" states="3" string="Regresar Costo Chancado" type="object" />
+
+                        <button name="costo_expediente" states="3" string="Costo Expediente" type="object" />
+                        <button name="regresar_zona" states="4" string="Regresar Costo Zona" type="object" />
+
+                        <button name="costo_generales" states="4" string="Gastos Generales" type="object" />
+                        <button name="regresar_expediente" states="5" string="Regresar Costo Expediente" type="object" />
+
+                        <button name="done" states="5" string="Calcular C.U." type="object" />
+                        <button name="regresar_generales" states="6" string="Regresar Gastos Generales" type="object" />
+
+
+                        <button name="finish" states="6" string="Generar Movimientos" type="object" />
+                        <button name="regresar_done" states="done" string="Regresar Calculo C.U." type="object" />
+
+                        <button name="jalar_cuentas_analiticas" states="1,2,3" string="Actualizar Cuentas Analiticas" type="object" />
+
+                        <button name="actualizar_transferencias_listado" states="1,2,3,4,5,6,done" string="Actualizar Transf." type="object" />
+                        <button name="actualizar_transferencias_montos" states="1,2,3,4,5,6,done" string="Actualizar Costos Transf." type="object" />
+                        <button name="actualizar_transferencias" states="done" string="Actualizar Transferencias P.U." type="object" />
+
+                        <button name="reporte_chancado" states="2,3,4,5,6,done" string="Reporte Chancado" type="object" />
+                        <button name="reporte_zona" states="3,4,5,6,done" string="Reporte zona" type="object" />
+                        <button name="reporte_gastosgenerales" states="5,6,done" string="Reporte Gastos Generales" type="object" />
+
+           
+                       <field name="state" widget="statusbar" />
+                </header>
+                <sheet string="Costeo">
+                    <div class="oe_title">
+                        <h1>
+                            <label string="Periodo" />
+                            <field name="periodo" class="oe_inline" options="{'no_open': True}" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Detalle">
+                            <field name="lineas" readonly="0">
+                                <tree string="Invoice lines" create="0" editable="bottom" delete="0">
+                                    <field name="periodo" readonly="1"/>
+                                    <field name="lote" readonly="1"/>
+                                    <field name="producto" readonly="1"/>
+                                    <field name="toneladas_secas" readonly="1"/>
+                                    <field name="check_chancado" />
+                                    <field name="zona" readonly="1"/>
+                                    <field name="costo_oro" readonly="1"/>
+                                    <field name="separador" readonly="1" />
+                                    <field name="costo_plata" string="Costo Plata" readonly="1"/>
+                                    <field name="separador" readonly="1" />
+                                    <field name="costo_chancado" string="Costo Chancado" readonly="1"/>
+                                    <field name="separador" readonly="1" />
+                                    <field name="costo_zona" string="Costo Zona" readonly="1"/>
+                                    <field name="separador" readonly="1" />
+                                    <field name="costo_expediente" string="Costo Expediente" readonly="1"/>
+                                    <field name="separador" readonly="1" />
+                                    <field name="gastos_generales" string="Gastos Generales" readonly="1"/>
+                                    <field name="separador" readonly="1" />
+                                    <field name="total_costo" string="Total Costo" readonly="1"/>
+                                    <field name="separador" readonly="1" />
+                                    <field name="p_unit" string="P. Unit" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Detalle Sin Costeo">
+                            <field name="lineas_editable" >
+                                <tree string="Invoice lines" create="0" editable="bottom" delete="0">
+                                    <field name="periodo" readonly="1"/>
+                                    <field name="lote" readonly="1"/>
+                                    <field name="producto" readonly="1"/>
+                                    <field name="toneladas_secas" readonly="1"/>
+                                    <field name="zona" readonly="1"/>
+                                    <field name="costo_oro" />
+                                    <field name="costo_plata" />
+                                    <field name="costo_chancado" />
+                                    <field name="costo_zona" />
+                                    <field name="costo_expediente" />
+                                    <field name="gastos_generales" />
+                                    <field name="total_costo" />
+                                    <field name="p_unit" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Transferencias">
+                            <field name="lineas_especial" >
+                                <tree string="Invoice lines" create="0" editable="bottom" delete="0">
+                                    <button name="abrir_detalle_lote" icon="gtk-edit" string="Ver Detalle Costeo" type="object"/>
+                                    <field name="periodo" readonly="1"/>
+                                    <field name="lote_padre" readonly="1"/>
+                                    <field name="lote" readonly="1"/>
+                                    <field name="producto" readonly="1"/>
+                                    <field name="toneladas_secas" readonly="1"/>
+                                    <field name="zona" readonly="1"/>
+                                    <field name="costo_oro" />
+                                    <field name="costo_plata" />
+                                    <field name="costo_chancado" />
+                                    <field name="costo_zona" />
+                                    <field name="costo_expediente" />
+                                    <field name="gastos_generales" />
+                                    <field name="total_costo" />
+                                    <field name="p_unit" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Cuentas Analiticas">
+                            <field name="analytics_ids" >
+                                <tree string="Ctas Analiticas">
+                                    <field name="analitic_id" />
+                                    <field name="monto" sum="monto" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Albaranes">
+                            <group>                                
+                                    <field name="albaranes_entrada" nolabel="1" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+    <record id="view_costeo_tree" model="ir.ui.view">
+        <field name="name">costeo.it.tree</field>
+        <field name="model">costeo.it</field>
+        <field name="arch" type="xml">
+            <tree string="Costeo de Lotes" create="1">
+                <field name="periodo" />
+                <field name="state"/>
+           </tree>
+        </field>
+    </record>
+
+
+        <record id="reporte_costeo_action" model="ir.actions.act_window">
+            <field name="name">Costeo de Lotes</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">costeo.it</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Costeo de Lotes"
+            action="reporte_costeo_action"
+            id="menu_costeo_it"
+            parent="previous_requirements_joya.submenu_production_joya"
+            sequence="0"
+        />
+
+
+        <record id="view_production_parameter_form" model="ir.ui.view">
+            <field name="name">production.parameter.form</field>
+            <field name="model">production.parameter</field>
+            <field name="inherit_id" ref="parameters_expedient.view_production_parameter_form"/>
+            <field name="arch" type="xml">
+                <field name="top_destino_chancado" position="after">
+                    <field name="account_ag_costeo" />
+                    <field name="account_chancado" />
+                    <field name="picking_type_trasferencias_costeo" />
+                    <field name="entrada_albaran" invisible="1"/>
+                    <field name="salida_albaran" invisible="1" />                    
+
+                    <field name="destino_picking_t_id">
+                        <tree editable="bottom">
+                            <field name="destino" />                            
+                            <field name="picking_type_salidas" />
+                            <field name="picking_type" />
+                        </tree>
+                    </field>
+
+                    <field name="ubicaciones_check">
+                        <tree editable="bottom">
+                            <field name="ubicacion" />
+                            <field name="check" />
+                        </tree>
+                    </field>
+                    <field name="listado_costo_analitico">
+                        <tree>
+                            <field name="name" readonly="1"/>
+                        </tree>
+                    </field>
+					<field name="destino_costeo_lote">
+						<tree>
+							<field name="name" readonly="1"/>
+						</tree>
+					</field>
+                </field>
+            </field>
+        </record>
+
+
+
+
+    <record id="view_zona_resumen_tree" model="ir.ui.view">
+        <field name="name">zona.resumen.tree</field>
+        <field name="model">zona.resumen</field>
+        <field name="arch" type="xml">
+            <tree string="Zona" create="1" editable="bottom">
+                <field name="name" />
+           </tree>
+        </field>
+    </record>
+
+
+
+        <record id="zona_resumen_action" model="ir.actions.act_window">
+            <field name="name">Zona</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">zona.resumen</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem 
+            action="zona_resumen_action" 
+            id="menu_zona_resumen" 
+            parent="previous_requirements_joya.submenu_configuration_joya"
+        />
+
+
+
+        <record id="view_account_analytic_account_form" model="ir.ui.view">
+            <field name="name">account.analytic.account.form</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+            <field name="arch" type="xml">
+                
+                <field name="partner_id" position="after">
+                    <field name="zona_id" />
+                </field>
+            </field>
+        </record>
+
+
+
+
+        <record id="product_template_only_form_view" model="ir.ui.view">
+            <field name="name">product.template.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <field name="default_code" position="after">
+                    <field name="costo_chancado" />
+                </field>            
+            </field>
+        </record>
+
+
+
+	</data>
+</openerp>

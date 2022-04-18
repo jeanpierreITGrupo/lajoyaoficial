@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record model="ir.ui.view" id="view_hr_parameters_form">
+            <field name="name">hr.parameters.form</field>
+            <field name="model">hr.parameters</field>
+            <field name="arch" type="xml">
+                <form string="Parámetros" version="8.0">
+                    <sheet>
+                        <group string="Parámetros">
+                            <group>
+                                <field name="name"/>
+                                <field name="monto"/>
+                            </group>
+                            <group>
+                                <field name="num_tipo"/>
+                                <field name="concepto_id" domain="[('mostrar_tabla','=',True)]"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_parameters_tree">
+            <field name="name">hr.parameters.tree</field>
+            <field name="model">hr.parameters</field>
+            <field name="arch" type="xml">
+                <tree string="Parámetros">
+                    <field name="name"/>
+                    <field name="monto"/>
+                </tree>
+            </field>
+        </record>
+	</data>
+</openerp>

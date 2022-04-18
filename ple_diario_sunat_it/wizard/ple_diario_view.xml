@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		
+        <record id="view_move_form" model="ir.ui.view">
+            <field name="name">account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account_move_sunat_it.view_move_form"/>
+            <field name="arch" type="xml">
+    
+
+				<group string="Comprobante Detracción" position="after">
+					<group string="PLE">
+						<group>
+							<field name="ckeck_modify_ple" invisible="1"/>
+            				<field name="period_modify_ple" attrs="{'required': [('ckeck_modify_ple','=',True)]}"/>
+
+							<field name="ple_diariomayor" string="PLE Diario"/>
+						</group>
+						<group>
+						</group>
+					</group>
+				</group>
+
+				<xpath expr="//tree/field[@name='reconcile_id']" position="before">
+					<field name="cuo_ple" />
+				</xpath>
+
+            </field>
+        </record>
+
+
+		<record id="view_account_chart_template_form" model="ir.ui.view">
+            <field name="name">account.chart.template.form</field>
+            <field name="model">account.chart.template</field>
+            <field name="inherit_id" ref="account.view_account_chart_template_form"/>
+            <field name="arch" type="xml">
+            	<field name="visible" position="after">
+            		<field name="code_sunat"/>
+            	</field>
+            </field>
+        </record>
+
+		<record model="ir.ui.view" id="view_ple_diario_wizard_form">
+			<field name="name">ple.diario.wizard.form</field>
+			<field name="model">ple.diario.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Ple Diario" version="7.0">
+						<group>
+							<field name="period" required="1" />
+							<field name="tipo" required="1" />
+						</group>
+						<footer>
+							<button string="Generar" name="do_rebuild" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+		<record id="ple_diario_wizard_action" model="ir.actions.act_window">
+			<field name="name">Ple Diario</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">ple.diario.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+		
+		<menuitem name="Libros Electrónicos" id="libro_electronico_wizard_menu"  parent="account.menu_finance_reports" sequence="7" />
+
+		<menuitem name="Ple Diario" id="ple_diario_wizard_menu"  parent="libro_electronico_wizard_menu" action="ple_diario_wizard_action" sequence="1" />
+
+
+		<record model="ir.ui.view" id="view_ple_diario_contable_wizard_form">
+			<field name="name">ple.diario.contable.wizard.form</field>
+			<field name="model">ple.diario.contable.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Ple Diario" version="7.0">
+						<group>
+							<field name="period" required="1" />
+						</group>
+						<footer>
+							<button string="Generar" name="do_rebuild" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+		<record id="ple_diario_contable_wizard_action" model="ir.actions.act_window">
+			<field name="name">Ple Diario Plan Contable</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">ple.diario.contable.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+
+		<menuitem name="Ple Plan Contable" id="ple_diario_contable_wizard_menu"  parent="libro_electronico_wizard_menu" action="ple_diario_contable_wizard_action" sequence="2" />
+
+	</data>
+</openerp>

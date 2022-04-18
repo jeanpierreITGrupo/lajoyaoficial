@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="view_account_fiscalyear_close_wizard_it_form">
+			<field name="name">account.fiscalyear.close.wizard.it.form</field>
+			<field name="model">account.fiscalyear.close.wizard.it</field>
+			<field name="arch" type="xml">
+				<form string="Crear Asiento de Apertura" version="7.0">
+						<group>
+							<group>
+								<field name="cuenta_debe" required='1' />
+								<field name="cuenta_haber" required='1'/>
+								<field name="diario" required='1'/>
+							</group>
+							<group>
+								<field name="tipo_cambio_compra" required='1'/>
+								<field name="tipo_cambio_venta" required='1'/>
+								<field name="fiscalyear_id" required='1'/>
+								<field name="periodo" required='1'/>
+							</group>
+						</group>
+						<footer>
+							<button string="Mostrar" name="do_rebuild" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="account_fiscalyear_close_wizard_it_action" model="ir.actions.act_window">
+			<field name="name">Crear Asiento de Apertura</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.fiscalyear.close.wizard.it</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+		
+		<!--<menuitem name="Cuentas Corrientes" id="account_contable_fch_wizard_menu"  parent="account.menu_finance_reports" action="account_contable_fch_wizard_action" sequence="7" /> -->
+
+		<menuitem name="Apertura Saldos" id="account_fiscalyear_close_wizard_it_menu"  parent="account.menu_finance_periodical_processing" action="account_fiscalyear_close_wizard_it_action" sequence="7" />
+
+
+        <record id="desconciliar_more_item_action" model="ir.actions.server">
+            <field name="name">Desconciliar Lineas</field>
+            <field name="model_id" ref='account.model_account_move'/>
+            <field name="state">code</field>
+            <field name="code">action=self.desconciliar_lineas(cr, uid, context.get('active_ids', []), context=context)</field>
+        </record>
+
+        <record model="ir.values" id="desconciliar_move_more_item">
+            <field eval="'client_action_multi'" name="key2"/>
+            <field eval="'account.move'" name="model"/>
+            <field name="name">Desconciliar Lineas</field>
+            <field name="value" eval="'ir.actions.server,%d'%desconciliar_more_item_action" />
+            <field name="object" eval="True"/>
+        </record>
+
+
+
+	</data>
+</openerp>

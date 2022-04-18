@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        
+
+
+        <record model="ir.ui.view" id="view_detalle_ordenfacordenkardex_compra_form_form">
+            <field name="name">detalle.cruce.fac.orden.kardex.form</field>
+            <field name="model">detalle.cruce.fac.orden.kardex</field>
+            <field name="arch" type="xml">
+                <form string="Detalle Orden de Compra" version="8.0">
+                        <group>
+                            <group>
+                                <field name="fecha_ini" required="1" />
+                                <field name="fecha_fin" required="1" />
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+
+                        <footer>
+                            <button string="Generar" name="generar_detalle" type="object" class="oe_highlight"/>
+                            or
+                            <button string="Cancel" class="oe_link" special="cancel"/>
+                        </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="detalle_orden_ordenfacordenkardexcompra_action" model="ir.actions.act_window">
+            <field name="name">Detalle Orden de Compra</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">detalle.cruce.fac.orden.kardex</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Detalle PO vs Kardex" action="detalle_orden_ordenfacordenkardexcompra_action" id="menu_detalle_ordenfacordenkardexcompra_orden_compra_it" parent="purchase.menu_procurement_management"/>
+
+
+
+        <record model="ir.ui.view" id="view_detalle_orden_compra_form_form">
+            <field name="name">detalle.orden.compra.form</field>
+            <field name="model">detalle.orden.compra</field>
+            <field name="arch" type="xml">
+                <form string="Detalle Orden de Compra" version="8.0">
+                        <group>
+                            <group>
+                                <field name="fecha_ini" required="1" />
+                                <field name="fecha_fin" required="1" />
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+
+                        <footer>
+                            <button string="Generar" name="generar_detalle_orden_compra" type="object" class="oe_highlight"/>
+                            or
+                            <button string="Cancel" class="oe_link" special="cancel"/>
+                        </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="detalle_orden_compra_action" model="ir.actions.act_window">
+            <field name="name">Detalle Orden de Compra</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">detalle.orden.compra</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Detalle Orden Compra" action="detalle_orden_compra_action" id="menu_detalle_orden_compra_it" parent="purchase.menu_procurement_management"/>
+
+
+        <record model="ir.ui.view" id="view_detalle_facturas_form">
+            <field name="name">detalle.facturas.form</field>
+            <field name="model">detalle.facturas</field>
+            <field name="arch" type="xml">
+                <form string="Detalle Facturas" version="8.0">
+                        <group>
+                            <group>
+                                <field name="fecha_ini" required="1" />
+                                <field name="fecha_fin" required="1" />
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+
+                        <footer>
+                            <button string="Generar" name="generar_detalle_orden_compra" type="object" class="oe_highlight"/>
+                            or
+                            <button string="Cancel" class="oe_link" special="cancel"/>
+                        </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="detalle_facturas_action" model="ir.actions.act_window">
+            <field name="name">Detalle Facturas</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">detalle.facturas</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Detalle Facturas" action="detalle_facturas_action" id="menu_detalle_facturas_it" parent="purchase.menu_procurement_management"/>
+
+
+
+
+    </data>
+</openerp>

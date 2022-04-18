@@ -1,0 +1,91 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * account_analytic_required
+# 
+# Translators:
+# OCA Transbot <transbot@odoo-community.org>, 2016
+# Zwygart <zwygart@gmail.com>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-30 22:27+0000\n"
+"PO-Revision-Date: 2016-09-30 22:27+0000\n"
+"Last-Translator: Zwygart <zwygart@gmail.com>, 2016\n"
+"Language-Team: French (https://www.transifex.com/oca/teams/23907/fr/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: account_analytic_required
+#: model:ir.model,name:account_analytic_required.model_account_account_type
+msgid "Account Type"
+msgstr "Type de compte"
+
+#. module: account_analytic_required
+#: code:addons/account_analytic_required/account.py:34
+#, python-format
+msgid "Always"
+msgstr "Toujours"
+
+#. module: account_analytic_required
+#: code:addons/account_analytic_required/account.py:72
+#, python-format
+msgid ""
+"Analytic policy is set to 'Always' with account %s '%s' but the analytic "
+"account is missing in the account move line with label '%s'."
+msgstr ""
+"Une politique de compte analytique est configuré à \"Toujours\" avec le "
+"compte %s '%s', mais le compte analytique est manquant dans l'écriture "
+"comptable avec le libellé '%s'. "
+
+#. module: account_analytic_required
+#: code:addons/account_analytic_required/account.py:80
+#, python-format
+msgid ""
+"Analytic policy is set to 'Never' with account %s '%s' but the account move "
+"line with label '%s' has an analytic account %s '%s'."
+msgstr ""
+"Une politique de compte analytique est configuré à \"Jamais\" avec le compte"
+" %s '%s', mais l'écriture comptable avec le libellé '%s' possède un compte "
+"analytique %s '%s'."
+
+#. module: account_analytic_required
+#: model:ir.model,name:account_analytic_required.model_account_move_line
+msgid "Journal Items"
+msgstr "Écritures comptables"
+
+#. module: account_analytic_required
+#: code:addons/account_analytic_required/account.py:35
+#, python-format
+msgid "Never"
+msgstr "Jamais"
+
+#. module: account_analytic_required
+#: code:addons/account_analytic_required/account.py:33
+#, python-format
+msgid "Optional"
+msgstr "Optionnel"
+
+#. module: account_analytic_required
+#: field:account.account.type,analytic_policy:0
+msgid "Policy for analytic account"
+msgstr "Politique pour les comptes analytiques"
+
+#. module: account_analytic_required
+#: help:account.account.type,analytic_policy:0
+msgid ""
+"Set the policy for analytic accounts : if you select 'Optional', the "
+"accountant is free to put an analytic account on an account move line with "
+"this type of account ; if you select 'Always', the accountant will get an "
+"error message if there is no analytic account ; if you select 'Never', the "
+"accountant will get an error message if an analytic account is present."
+msgstr ""
+"Configurez la politique pour les comptes analytiques : si vous sélectionnez "
+"'Optionnel', le comptable est libre de saisir ou non un compte analytique "
+"sur une ligne comptable avec ce type de compte de comptabilité générale ; si"
+" vous sélectionnez 'Toujours', le comptable aura un message d'erreur si il "
+"n'y a pas de compte analytique ; si vous sélectionnez 'Jamais', le comptable"
+" aura un message d'erreur si un compte analytique est présent."

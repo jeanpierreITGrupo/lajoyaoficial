@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_account_move_line_filter" model="ir.ui.view">
+            <field name="name">account.move.line.filter.pay_rec</field>
+            <field name="model">account.move.line</field>
+            <field name="type">search</field>
+            <field name="inherit_id" ref="deliveries_to_pay_it.view_account_move_line_filter"/>
+            <field name="arch" type="xml">
+              <xpath expr="/search/filter[@string='Unreconciled']" position="after">
+                  <separator orientation="vertical"/>
+                <filter name="filter_receivable" string="Cuentas por cobrar" domain="[('account_id.type','=','receivable')]"/>
+                <filter name="filter_payable" string="Cuentas por pagar" domain="[('account_id.type','=','payable')]"/>
+                <filter name="filter_others"  string="Otras cuentas" domain="[('account_id.type','not in',['payable','receivable'])]"/>
+                
+              </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

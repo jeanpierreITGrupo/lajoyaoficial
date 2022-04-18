@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_expenses_without_record_tree" model="ir.ui.view">
+            <field name="name">expenses.without.record.tree</field>
+            <field name="model">expenses.without.record</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Gastos sin Expediente" >
+                    <field name="period_id" />
+                    <field name="amount" />
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_expenses_without_record_form">
+            <field name="name">expenses.without.record.form</field>
+            <field name="model">expenses.without.record</field>
+            <field name="arch" type="xml">
+                <form string="Gastos sin Expediente" version="8.0"> 
+                   <header>
+                        <button name="actualizar"  string="Actualizar" type="object" class="oe_highlight" />
+                    </header>
+                    <group>
+                        <group>
+                            <field name="period_id"/>
+                            <field name="analytic_id" />
+                        </group>
+                        <group>
+                            <field name="amount" />
+                            <field name="warehouse_id" domain="[('usage','=','internal')]" />
+
+                        </group>
+                    </group>
+
+
+                    <group>
+                        <notebook>
+                            <page string="Detalle">
+                                <field name="lines" readonly="1">
+                                    <tree editable="bottom">
+                                        <field name="expedient_id" />
+                                        <field name="gold_espectative" />
+                                        <field name="porcentaje_gastos" />
+                                        <field name="monto_proporcional" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="expenses_without_record_action" model="ir.actions.act_window">
+            <field name="name">Gastos Sin Expediente</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">expenses.without.record</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem 
+            id="menu_expenses_without_record" 
+            name="Gastos Sin Expediente"
+            parent="previous_requirements_joya.submenu_production_joya"
+            action="expenses_without_record_action"
+        />
+    </data>
+</openerp>

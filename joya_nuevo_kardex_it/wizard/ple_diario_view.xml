@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="view_reporte_kardex_joya_form">
+			<field name="name">reporte.kardex.joya.form</field>
+			<field name="model">reporte.kardex.joya</field>
+			<field name="arch" type="xml">
+				<form string="Kardex Lotes" version="7.0">
+						<group>
+							<field name="period_ini" required="1" />
+							<field name="period_fin" required="1" />
+							<field name="tipo" invisible="1" />
+						</group>
+						<footer>
+							<button string="Generar" name="do_rebuild" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="reporete_kardex_joya_action1" model="ir.actions.act_window">
+			<field name="name">Kardex Lote</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">reporte.kardex.joya</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="context">{'default_tipo':'1'}</field>
+			<field name="target">new</field>
+		</record>
+
+		<record id="reporete_kardex_joya_action2" model="ir.actions.act_window">
+			<field name="name">Kardex Ruma</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">reporte.kardex.joya</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="context">{'default_tipo':'2'}</field>
+			<field name="target">new</field>
+		</record>
+
+		<record id="reporete_kardex_joya_action3" model="ir.actions.act_window">
+			<field name="name">Kardex Productos Terminados</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">reporte.kardex.joya</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="context">{'default_tipo':'3'}</field>
+			<field name="target">new</field>
+		</record>
+
+		<record id="reporete_kardex_joya_action4" model="ir.actions.act_window">
+			<field name="name">Kardex Productos en Proceso</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">reporte.kardex.joya</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="context">{'default_tipo':'4'}</field>
+			<field name="target">new</field>
+		</record>
+
+
+		<menuitem name="Reportes" id="reporte_gg_joya"  parent="previous_requirements_joya.menu_production_joya" sequence="31" />
+
+
+		<menuitem name="Kardex Lote" id="new_kardex_joya_wizard_menu1"  parent="reporte_gg_joya" action="reporete_kardex_joya_action1" sequence="2" />
+		<menuitem name="Kardex Ruma" id="new_kardex_joya_wizard_menu2"  parent="reporte_gg_joya" action="reporete_kardex_joya_action2" sequence="2" />
+		<menuitem name="Kardex Productos Terminados" id="new_kardex_joya_wizard_menu3"  parent="reporte_gg_joya" action="reporete_kardex_joya_action3" sequence="2" />
+		<menuitem name="Kardex Productos en Proceso" id="new_kardex_joya_wizard_menu4"  parent="reporte_gg_joya" action="reporete_kardex_joya_action4" sequence="2" />
+
+	</data>
+</openerp>

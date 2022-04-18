@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<!-- session form view -->
+        <record model="ir.ui.view" id="it_means_payment_form">
+            <field name="name">Medio Pago Usado</field>
+            <field name="model">it.means.payment</field>
+            <field name="arch" type="xml">
+                <form string="Medio Pago Usado" version="8.0">
+					<group>
+						<field name="code" />
+						<field name="description" />
+					</group>
+                </form>
+            </field>
+        </record>
+
+
+		<record id="it_means_payment_view" model="ir.ui.view">
+            <field name="name">Medio Pago Usado</field>
+            <field name="model">it.means.payment</field>
+            <field name="arch" type="xml">
+                <tree string="Medio Pago Usado" editable="bottom">
+                    <field name="code" />
+                    <field name="description" />
+                </tree>
+
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="it_means_payment_action">
+            <field name="name">Medio Pago Usado</field>
+            <field name="res_model">it.means.payment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="it_means_payment_menu" name="Medio Pago Usado"
+                  parent="it_table_sunat"
+                  action="it_means_payment_action"/>
+    </data>
+</openerp>

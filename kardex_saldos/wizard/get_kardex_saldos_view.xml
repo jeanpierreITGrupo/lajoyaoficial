@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="view_get_kardex_saldos_form">
+			<field name="name">get.kardex.saldos.form</field>
+			<field name="model">get.kardex.saldos</field>
+			<field name="arch" type="xml">
+				<form string="Saldos" version="8.0">
+						<group>
+							<field name="date" required="1" />
+						</group>
+						<footer>
+							<button string="Mostrar" name="action_procesar_resumen" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="get_kardex_saldos_action" model="ir.actions.act_window">
+			<field name="name">Saldos</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">get.kardex.saldos</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+<!--         <menuitem action="get_kardex_saldos_action"
+            id="menu_get_kardex_saldos_wizard"
+            parent="kardex.kardex_main_menu"
+            sequence="14"
+        /> -->
+        <menuitem action="get_kardex_saldos_action"
+            id="menu_get_kardex_saldos_stock_wizard"
+            parent="stock.menu_stock_inventory_control"
+            sequence="14"
+        />
+
+
+	</data>
+</openerp>

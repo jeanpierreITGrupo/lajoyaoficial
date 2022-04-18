@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+
+        <record id="view_main_parameter_form" model="ir.ui.view">
+            <field name="name">main.parameter.form</field>
+            <field name="model">main.parameter</field>
+            <field name="inherit_id" ref="account_parameter_it.view_main_parameter_form"/>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <group string="Diarios para Asistentes" position="inside">
+                        <field name="journal_distribucion_pagos" />
+                </group>
+
+            </field>
+        </record>
+
+
+        <record id="invoice_supplier_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account_type_doc_it.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <field name="payment_term" position="after">
+                    <label for="move_distribucion_id" />
+                    <field name="move_distribucion_id" nolabel="1" readonly="1"/>
+                </field>
+                <field name="account_analytic_id" position="before">
+                    <field name="distribucion_gasto_id" options='{"no_open": True, "no_create": True}'/>
+                </field>
+                <button name="invoice_cancel" position="before">
+                    <field name="ver_estado_buttom_distrib" invisible="1"/>
+                    <button name="create_distribucion_gastos"  type="object" string="Distribuir Gastos" attrs="{'invisible': [('ver_estado_buttom_distrib','!=',2)] }"/>
+                    <button name="remove_distribucion_gastos"  type="object" string="Cancelar Dis. Gastos" attrs="{'invisible':  [('ver_estado_buttom_distrib','!=',1)] }"/>
+                </button>
+                        
+            </field>
+        </record>
+
+
+
+
+        <record model="ir.ui.view" id="it_distribucion_de_gastos_linea_form">
+            <field name="name">Distribución de Gastos Lineas</field>
+            <field name="model">distribucion.gastos.linea</field>
+            <field name="arch" type="xml">
+                <form string="Distribución de Gastos Lineas" version="8.0">
+                    <group>
+                        <group>
+                            <field name="cuenta" />
+                        </group>
+                        <group>
+                            <field name="porcentaje" />
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="it_distribucion_gastos_linea_view" model="ir.ui.view">
+            <field name="name">Distribución de Gastos Lineas</field>
+            <field name="model">distribucion.gastos.linea</field>
+            <field name="arch" type="xml">
+                <tree string="Distribución de Gastos Lineas" editable="bottom">
+                    <field name="cuenta" />
+                    <field name="analitica"/>
+                    <field name="porcentaje" />
+                </tree>
+            </field>
+        </record>
+
+
+
+
+        <record model="ir.ui.view" id="it_distribucion_de_gastos_form">
+            <field name="name">Distribución de Gastos</field>
+            <field name="model">distribucion.gastos</field>
+            <field name="arch" type="xml">
+                <form string="Distribución de Gastos" version="8.0">
+                    <group>
+                        <group>
+                            <field name="codigo" />
+                        </group>
+                        <group>
+                            <field name="descripcion" />
+                        </group>
+                    </group>
+                    <group>
+                        <field name="distribucion_lines" />
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="it_distribucion_gastos_view" model="ir.ui.view">
+            <field name="name">Distribución de Gastos</field>
+            <field name="model">distribucion.gastos</field>
+            <field name="arch" type="xml">
+                <tree string="Distribución de Gastos">
+                    <field name="codigo" />
+                    <field name="descripcion" />
+                </tree>
+
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="distribucion_de_gastos_action">
+            <field name="name">Distribución de Gastos</field>
+            <field name="res_model">distribucion.gastos</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="distribucion_de_gastos_action" id="menu_distribucion_gastos_form" parent="account.account_account_menu"/>
+
+
+    </data>
+</openerp>

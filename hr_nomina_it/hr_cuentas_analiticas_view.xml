@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_hr_cuentas_analiticas_tree" model="ir.ui.view">
+            <field name="name">hr.cuentas.analiticas.tree</field>
+            <field name="model">hr.cuentas.analiticas</field>
+            <field name="arch" type="xml">
+                <tree string="Cuentas Analiticas">
+                    <field name="name"/>
+                    <field name="code" />
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_cuentas_analiticas_form">
+            <field name="name">hr.cuentas.analiticas.form</field>
+            <field name="model">hr.cuentas.analiticas</field>
+            <field name="arch" type="xml">
+                <form string="Cuentas Analiticas" version="8.0">
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="code" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="hr_cuentas_analiticas_action">
+            <field name="name">Cuentas Analíticas</field>
+            <field name="res_model">hr.cuentas.analiticas</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="hr_cuentas_analiticas_action" id="menu_hr_cuentas_analiticas" parent="hr.menu_hr_configuration"/>
+
+
+    </data>
+</openerp>

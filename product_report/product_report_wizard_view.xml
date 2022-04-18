@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+    <openerp>
+        <data>
+            <record model='ir.ui.view' id='pos_sale_report_view'>
+                <field name='name'>Reporte de Producto</field>
+                <field name='model'>product.report.wizard</field>
+                <field name='arch' type='xml'>
+                <form string="Reporte de Productos" version="8.0">
+                    <group>
+                        <group>
+                            <field name="label"/>
+                        </group>                    
+                    </group> 
+                    <footer>
+                        <button string="Generar" type="object" name="gen_report" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+                </field>
+            </record>
+
+            <record id='action_product_report_wizard_view' model='ir.actions.act_window'>
+                <field name="name">Reporte de Producto</field>
+                <field name="res_model">product.report.wizard</field>
+                <field name="view_type">form</field>
+                <field name="view_mode">form</field>
+                <field name="view_id" ref="pos_sale_report_view"/>
+                <field name="target">new</field>
+            </record>
+
+            
+        <!-- Accion por Click-->
+       <menuitem id="it_product_report_menu" name="Reporte de Productos"
+          parent="purchase.menu_procurement_management_product"
+          action="action_product_report_wizard_view"/>
+
+        
+        
+        </data>
+    </openerp>
+

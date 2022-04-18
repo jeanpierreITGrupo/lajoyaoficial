@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="costeo_it_form" model="ir.ui.view">
+            <field name="name">costeo.it.form</field>
+            <field name="model">costeo.it</field>
+            <field name="inherit_id" ref="costeo_it.costeo_it_form" />
+            <field name="arch" type="xml">
+                <field name="state" position="before">
+                    <button name="do_rebuild" string="Excel" type="object" class="oe_highlight" />
+                </field>
+            </field>
+        </record>
+
+        
+        <record model="ir.ui.view" id="view_armado_ruma_form">
+            <field name="name">armado.ruma.form</field>
+            <field name="model">armado.ruma</field>
+            <field name="inherit_id" ref="build_ruma_joya.view_armado_ruma_form" />
+            <field name="arch" type="xml">
+                <field name="state" position="before">
+                    <button name="do_rebuild" string="Excel" type="object" class="oe_highlight" />
+                </field>
+
+                <field name="nuevo_c_uni" position="after">
+                    <field name="f_costo_oro" />
+                    <field name="f_costo_plata" />
+                    <field name="f_costo_chancado" />
+                    <field name="f_costo_zona" />
+                    <field name="f_costo_expediente" />
+                    <field name="f_gastos_generales" />
+                    <field name="f_total_costo" />
+                </field>
+            </field>
+        </record>
+
+
+        <record id="costeo_ruma_form" model="ir.ui.view">
+            <field name="name">costeo.ruma.form</field>
+            <field name="model">costeo.ruma</field>
+            <field name="inherit_id" ref="build_ruma_joya.costeo_ruma_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="do_rebuild" string="Excel" type="object" class="oe_highlight" />                    
+                </xpath>
+
+
+                <field name="p_unit" position="after">
+                    <field name="f_costo_oro" />
+                    <field name="f_costo_plata" />
+                    <field name="f_costo_chancado" />
+                    <field name="f_costo_zona" />
+                    <field name="f_costo_expediente" />
+                    <field name="f_gastos_generales" />
+                                    <field name="gastos_armados" />
+                    <field name="f_total_costo" />
+                </field>                
+            </field>
+        </record>
+
+
+	</data>
+</openerp>

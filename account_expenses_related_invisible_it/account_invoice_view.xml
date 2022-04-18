@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+
+        <record id="invoice_supplier_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account_expenses_related_it.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+
+                <button name="create_expente_related" position="replace">
+                </button>
+                <button name="redirec_expente_related" position="replace">
+                </button>
+                
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>

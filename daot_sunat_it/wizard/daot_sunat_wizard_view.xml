@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="view_daot_sunat_wizard_form">
+			<field name="name">daot.sunat.wizard.form</field>
+			<field name="model">daot.sunat.wizard</field>
+			<field name="arch" type="xml">
+				<form string="" version="8.0">
+						<group string="DAOT SUNAT">
+							<field name="type"/>
+						</group>
+						<group string="Compra" attrs="{'invisible':[ ('type', '!=', 'compra')]}">
+						</group>
+						<group string="Venta" attrs="{'invisible':[ ('type', '!=', 'venta')]}">
+						</group>
+						<group attrs="{'invisible':[ ('type', 'not in', ('compra','venta'))]}">
+                			<group>
+                				<field name="fiscal_id"/>
+                			</group>
+                			<group>
+                				<field name="amount"/>
+                			</group>
+                		</group>
+                		<label for="type_document_ids" attrs="{'invisible':[ ('type', 'not in', ('compra','venta'))]}"/>
+                    	<field name="type_document_ids" mode="tree" nolabel="1" attrs="{'invisible':[ ('type', 'not in', ('compra','venta'))]}">
+                            <tree>
+                                <field name="code"/>
+                                <field name="description"/>
+                            </tree>
+                        </field>
+						<footer>
+							<button string="Generar Txt" name="do_rebuild" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="daot_sunat_wizard_action" model="ir.actions.act_window">
+			<field name="name">Daot Sunat</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">daot.sunat.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<menuitem id="menu_sunat_daot_it" name="Sunat" parent="account.menu_finance_reports" sequence="14" />
+
+        <menuitem name="DAOT"
+            id="menu_action_daot_wizard_sunat_it_report"
+            parent="menu_sunat_daot_it"
+            sequence="11"
+        />
+        <menuitem name="Generar DAOT"
+            action="daot_sunat_wizard_action"
+            id="menu_action_ver_daot_wizard_sunat_it_report"
+            parent="menu_action_daot_wizard_sunat_it_report"
+            sequence="11"
+        />
+
+
+
+	</data>
+</openerp>

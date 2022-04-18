@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record id="view_hr_actualizar_proyecciones_wizard_form" model="ir.ui.view">
+            <field name="name">hr.actualizar.proyecciones.wizard.form</field>
+            <field name="model">hr.actualizar.proyecciones.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="month"/>
+                        </group>
+                        <group></group>
+                    </group>
+                    <group>
+                        <field name="lines" nolabel="1" context="{'concepts':context['concepts'], 'active_id':context['line_id']}">
+                            <tree editable="bottom">
+                                <field name="concept_id" domain="[('id','in',context['concepts'])]"/>
+                                <field name="monto"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button string="Aceptar" type="object" name="do_rebuild" class="oe_highlight"/>
+                        o
+                        <button string="Cancelar" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+	</data>
+</openerp>

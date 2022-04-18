@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="view_selection_wizard_form">
+			<field name="name">selection.wizard.form</field>
+			<field name="model">selection.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Seleccionar ajustes" version="7.0">
+					<group>
+						<field name="period_id" strin="Periodo" required="1"/>
+						<field name="type_show" strin="Tipo" required="1"/>
+						<!--<field name="currency_id" />-->
+					</group>
+					<footer>
+						<button string="Buscar" name="print_report" type="object" class="oe_highlight"/>
+						<!--<button string="Generar TXT (PLE)" name="make_txt_ple" type="object" default_focus="1" class="oe_highlight"/>-->
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                	</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="make_selection_wizard_action" model="ir.actions.act_window">
+	        <field name="name">Ajuste Dif. Cambio</field>
+	        <field name="type">ir.actions.act_window</field>
+	        <field name="res_model">selection.wizard</field>
+			<field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="target">new</field>
+	    </record>
+		
+		<!-- <menuitem parent="fleet.fleet_vehicles" name="Vehiculos por Contrato" id="vehicles_contract_show_menu" action="make_contract_vehicle_action" sequence="99"/> -->
+		<menuitem id='ajuste_exchange_diff_config_menu' parent='account.menu_multi_currency' action="make_selection_wizard_action" />
+		
+	</data>
+</openerp>

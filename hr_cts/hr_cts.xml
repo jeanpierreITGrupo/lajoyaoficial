@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_employee_form">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr_nomina_it.view_employee_form"/>
+            <field name="arch" type="xml">
+                <field name="cta_cts" position="after">
+                    <field name="currency"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_cts_line_form">
+            <field name="name">hr.cts.line.form</field>
+            <field name="model">hr.cts.line</field>
+            <field name="arch" type="xml">
+                <form string="CTS" version="8.0">
+                    <group string="CTS">
+                        <field name="conceptos_lines" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="concepto_id"/>
+                                <field name="monto"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button string="Cerrar" name="set_concepts" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_cts_form">
+            <field name="name">hr.cts.form</field>
+            <field name="model">hr.cts</field>
+            <field name="arch" type="xml">
+                <form string="CTS" version="8.0" col="4" colspan="4">
+                    <header col="4" colspan="4">
+                        <button string="Calcular" type="object" name="get_cts"/>
+                        <button string="Exportar Excel" type="object" name="get_excel"/>
+                        <button string="Generar Reportes" type="action" name="%(action_cts_wizard)d"/>
+                        <button string="Generar Boleta" type="object" name="get_pdf" invisible="1"/>
+                        <button string="Resumen Pago" type="object" name="resumen_pago"/>
+                    </header>
+                    <group string="CTS" col="4" colspan="4">
+                        <group>
+                            <field name="year"/>
+                            <field name="period_id"/>
+                            <field name="period"/>
+                            <field name="previous_period_id"/>
+                        </group>
+                        <group>
+                            <field name="reward_id"/>
+                            <field name="change"/>
+                            <field name="deposit_date"/>
+                        </group>
+                    </group>
+                    <notebook col="4" colspan="4">
+                        <page string="Trabajadores" col="4" colspan="4">
+                            <!-- <field name="cts_lines1" col="4" colspan="4" attrs="{'invisible' : [('period','=','05')]}">
+                                <tree create="0" delete="0" editable="bottom">
+                                    <field name="order"/>
+                                    <field name="nro_doc"/>
+                                    <field name="code"/>
+                                    <field name="last_name_father"/>
+                                    <field name="last_name_mother"/>
+                                    <field name="names"/>
+                                    <field name="in_date"/>
+                                    <field name="basic_amount" sum=""/>
+                                    <field name="a_familiar" sum=""/>
+                                    <field name="reward_amount" sum=""/>
+                                    <field name="overtime_night5" sum=""/>
+                                    <field name="overtime_night6" sum=""/>
+                                    <field name="overtime_night7" sum=""/>
+                                    <field name="overtime_night8" sum=""/>
+                                    <field name="overtime_night9" sum=""/>
+                                    <field name="overtime_night10" sum=""/>
+                                    <field name="overtime_total" sum=""/>
+                                    <field name="overtime_6" sum=""/>
+                                    <field name="comision" sum=""/>
+                                    <field name="bonus" sum=""/>
+                                    <field name="base_amount" sum=""/>
+                                    <field name="monthly_amount" sum=""/>
+                                    <field name="dayly_amount" sum=""/>
+                                    <field name="absences5" sum=""/>
+                                    <field name="absences6" sum=""/>
+                                    <field name="absences7" sum=""/>
+                                    <field name="absences8" sum=""/>
+                                    <field name="absences9" sum=""/>
+                                    <field name="absences10" sum=""/>
+                                    <field name="absences_total" sum=""/>
+                                    <field name="months"/>
+                                    <field name="days"/>
+                                    <field name="amount_x_month" sum=""/>
+                                    <field name="amount_x_day" sum=""/>
+                                    <field name="cts_soles" sum=""/>
+                                    <field name="change"/>
+                                    <field name="cts_dolars" sum=""/>
+                                    <field name="account"/>
+                                    <field name="bank"/>
+                                </tree>
+                            </field> -->
+                            <field name="cts_lines2" col="4" colspan="4" attrs="{'invisible' : [('period','=',False)]}">
+                                <tree editable="bottom">
+                                    <field name="order"/>
+                                    <field name="nro_doc"/>
+                                    <field name="last_name_father"/>
+                                    <field name="last_name_mother"/>
+                                    <field name="names"/>
+                                    <field name="in_date"/>
+                                    <field name="basic_amount"/>
+                                    <field name="comision" sum=""/>
+                                    <field name="bonus" sum=""/>
+                                    <field name="a_familiar"/>
+                                    <field name="feriados"/>
+                                    <field name="reward_amount"/>
+                                    <field name="overtime_night11"/>
+                                    <field name="overtime_night12"/>
+                                    <field name="overtime_night1"/>
+                                    <field name="overtime_night2"/>
+                                    <field name="overtime_night3"/>
+                                    <field name="overtime_night4"/>
+                                    <field name="overtime_night5"/>
+                                    <field name="overtime_night6"/>
+                                    <field name="overtime_night7"/>
+                                    <field name="overtime_night8"/>
+                                    <field name="overtime_night9"/>
+                                    <field name="overtime_night10"/>
+                                    <field name="overtime_total"/>
+                                    <field name="overtime_6"/>
+                                    <field name="base_amount"/>
+                                    <field name="monthly_amount"/>
+                                    <field name="dayly_amount"/>
+                                    <field name="absences11"/>
+                                    <field name="absences12"/>
+                                    <field name="absences1"/>
+                                    <field name="absences2"/>
+                                    <field name="absences3"/>
+                                    <field name="absences4"/>
+                                    <field name="absences5"/>
+                                    <field name="absences6"/>
+                                    <field name="absences7"/>
+                                    <field name="absences8"/>
+                                    <field name="absences9"/>
+                                    <field name="absences10"/>
+                                    <field name="absences_total"/>
+                                    <field name="months"/>
+                                    <field name="days"/>
+                                    <field name="previous_days"/>
+                                    <field name="amount_x_month"/>
+                                    <field name="amount_x_day"/>
+                                    <field name="absences_discount"/>
+                                    <field name="cts_soles"/>
+                                    <field name="interes"/>
+                                    <field name="otros_dsc"/>
+                                    <field name="cts_a_pagar"/>
+                                    <field name="change"/>
+                                    <field name="cts_dolars"/>
+                                    <field name="account"/>
+                                    <field name="bank"/>
+                                    <button name="open_concepts" string="Conceptos" icon="gtk-edit" type="object"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_hr_reward_tree">
+            <field name="name">hr.cts.tree</field>
+            <field name="model">hr.cts</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="year"/>
+                    <field name="period"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_cts" model="ir.actions.act_window">
+            <field name="name">CTS</field>
+            <field name="res_model">hr.cts</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="CTS"
+            action="action_cts"
+            id="menu_hr_cts"
+            parent="hr.menu_hr_main"
+        />
+    </data>
+</openerp>

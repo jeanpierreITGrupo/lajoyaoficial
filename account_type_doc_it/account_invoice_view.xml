@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="fiscal_position" position="after">
+                    <label for="type_document_id" string="Tipo de Documento"/>
+                    <field name="type_document_id" attrs="{'readonly':[('state','not in',('draft','cancel'))]}" required="1" nolabel="1" context="{'td_description':'1'}" options="{'no_create': True}"/>
+                    <label for="supplier_invoice_number" string="Número de Comprobante"/>
+                    <field name="supplier_invoice_number" attrs="{'readonly':[('state','not in',('draft','cancel'))]}" nolabel="1" required="1"/>
+                </field>
+                <field name="journal_id" position="attributes">
+                    <attribute name="attrs"></attribute>
+                </field>
+                <xpath expr="//notebook/page[@string='Other Info']/group/group[2]/field[@name='move_id']" position="after">
+                    
+                        <field name="default_description"/>
+                </xpath> 
+
+                <field name="move_id" position="replace">                    
+                </field>
+                <field name="supplier_invoice_number" position="after">
+                    <label for="move_id" />
+                    <field name="move_id" nolabel="1"/>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="view_voucher_tree" model="ir.ui.view">
+            <field name="name">account.voucher.tree</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_voucher_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="colors" >blue:state == 'draft';black:state in ('proforma','posted');red:state == 'cancel'</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="invoice_tree" model="ir.ui.view">
+            <field name="name">account.invoice.tree</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="colors" >blue:state == 'draft';black:state in ('proforma','proforma2','open');red:state == 'cancel'</attribute>
+                </xpath>
+
+                <field name="date_invoice" position="replace">
+                </field>
+                <field name="date_due" position="replace">
+                </field>
+
+
+<!-- number antes era Voucher-->
+                <field name="number" position="attributes">
+                    <attribute name="string">Referencia</attribute>
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="number" position="before">
+                    <field name="journal_code" string="Libro" invisible="1"/>
+                </field>
+                <field name="journal_code" position="before">
+                    <field name="period_id" string="Periodo"/>
+                </field>
+                
+                <field name="number" position="after">
+                    <field name="type_document_code" string="Tipo"/>
+                </field>
+                <field name="type_document_code" position="after">
+                    <field name="supplier_invoice_number" string="Comprobante"/>
+                </field>
+                <field name="supplier_invoice_number" position="after">
+                    <field name="date_invoice" string="Fecha de Emisión"/>
+                </field>
+                <field name="date_invoice" position="after">
+                    <field name="date_due" string="Fecha De Vencimiento"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_account_invoice_filter" model="ir.ui.view">
+            <field name="name">account.invoice.select</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+                <filter name="group_by_partner_id" position="after">
+                    <filter string="Tipo" context="{'group_by':'type_document_code'}"/>
+                    <filter string="Libro" context="{'group_by':'journal_code'}"/>
+                </filter>
+            </field>
+        </record>
+
+        <record id="invoice_supplier_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <field name="origin" position="after">
+                    <label for="type_document_id" string="Tipo de Documento"/>
+                    <field name="type_document_id" attrs="{'readonly':[('state','not in',('draft','cancel'))]}" required="1" nolabel="1" context="{'td_description':'1'}" options="{'no_create': True}"/>
+                </field>
+                <field name="supplier_invoice_number" position="attributes">
+                    <attribute name="string">Número de Comprobante</attribute>
+                    <attribute name="attrs">{'readonly':[('state','not in',('draft','cancel'))]}</attribute>
+                </field>
+                <field name="move_id" position="replace">                    
+                </field>
+                
+                <field name="reference_type" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="reference" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <label for="reference_type" position="replace">
+                </label>
+
+                <field name="supplier_invoice_number" position="attributes">
+                    <attribute name="required">"1"</attribute>
+                </field>
+                <field name="journal_id" position="attributes">
+                    <attribute name="attrs"></attribute>
+                </field>
+                <xpath expr="//notebook/page[@string='Other Info']/group/group[2]/field[@name='period_id']" position="after">
+                    
+                        <field name="default_description"/>
+                </xpath> 
+                <field name="supplier_invoice_number" position="after">
+                    <label for="move_id" />
+                    <field name="move_id" nolabel="1"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

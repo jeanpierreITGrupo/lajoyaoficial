@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+
+        <record model="ir.ui.view" id="view_hr_prestamos_form">
+            <field name="name">hr.prestamos.form</field>
+            <field name="model">hr.prestamos</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <form string="Prestamos">
+                    <group>
+                        <group>
+                            <field name="employee" required="1" />
+                            <field name="monto" required="1" />
+                        </group>
+                        <group>
+                            <field name="fecha" required="1" />
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <!--Vista Form-->
+
+
+
+        <!--Vista Tree-->
+        <record model="ir.ui.view" id="view_hr_prestamos_tree">
+            <field name="name">hr.prestamos.tree</field>
+            <field name="model">hr.prestamos</field>
+            <field name="arch" type="xml">
+                <tree string="Prestamos" >
+                    <field name="employee"/>
+                    <field name="fecha"/>
+                    <field name="monto"/>
+                </tree>
+            </field>
+        </record>  
+
+       
+
+
+	</data>
+</openerp>

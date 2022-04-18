@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record model="ir.ui.view" id="view_hr_concepto_remunerativo_tree">
+            <field name="name">hr.concepto.remunerativo.tree</field>
+            <field name="model">hr.concepto.remunerativo</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <tree string="Concepto Remunerativo" delete="0" create="0">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_concepto_remunerativo_form">
+            <field name="name">hr.concepto.remunerativo.form</field>
+            <field name="model">hr.concepto.remunerativo</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <form string="Concepto Remunerativo" delete="0" create="0">
+                    <group col="4">
+                        <notebook>
+                            <page string="Conceptos Remunerativos">
+                                <field name="line_id" nolabel="1">
+                                    <tree string="Concepto Remunerativo" editable="bottom">
+                                        <field name="concepto" domain="[('mostrar_tabla','=',False)]"/>
+                                        <field name="onp"/>
+                                        <field name="afp_fon_pen"/>
+                                        <field name="afp_pri_se"/>
+                                        <field name="afp_co_va"/>
+                                        <field name="afp_co_mix"/>
+                                        <field name="quinta_categ"/>                   
+                                        <field name="essalud_vida"/>                                
+                                        <field name="jubilacion"/>
+                                        <field name="essalud"/>
+                                        <field name="eps_sctr_salud"/>
+                                        <field name="scrt"/>
+                                        <field name="senati"/>
+                                        <field name="afp_2p"/>
+                                        <field name="rmb"/>
+                                        <field name="neto_vac"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </group>
+                </form>
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hr_lista_conceptos_tree">
+            <field name="name">hr.lista.conceptos.tree</field>
+            <field name="model">hr.lista.conceptos</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <tree string="Conceptos">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="sunat_code"/>
+                    <field name="payroll_group"/>
+                    <field name="position"/>
+                    <field name="account_debe_id"/>
+                    <field name="account_haber_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hr_lista_conceptos_form">
+            <field name="name">hr.lista.conceptos.form</field>
+            <field name="model">hr.lista.conceptos</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <form string="Conceptos">
+                    <sheet>
+                        <group col="4" string="Concepto">
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="mostrar_tabla"/>
+                                <field name="check_boleta"/>
+                                <field name="check_liquida"/>
+                                <field name="sunat_code"/>
+                                <field name="payroll_group"/>
+                                <field name="position"/>
+                            </group>
+                            <group>
+                                <field name="account_debe_id"/>
+                                <field name="account_haber_id"/>
+                            </group>
+                        </group>
+                        <group string="Distribución">
+                            <field name="cuentas_line" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="analytic_id"/>
+                                    <field name="account_id"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_hr_planilla1_tree_concepts" model="ir.ui.view">
+            <field name="name">hr.planilla1.tree</field>
+            <field name="model">hr.planilla1</field>
+            <field name="inherit_id" ref="hr_nomina_it.view_hr_planilla1_tree"/>
+            <field name="arch" type="xml">
+                <field name="tipo_comision" position="after">                    
+                </field>
+            </field>
+        </record>
+
+	</data>
+</openerp>

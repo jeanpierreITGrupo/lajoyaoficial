@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="adelantos_importador_tree_view">
+			<field name="name">adelantos.importador.tree</field>
+			<field name="model">adelantos.importador</field>
+			<field name="arch" type="xml">
+				<tree string="Parametros">
+					<field name="period_id"/>
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="adelantos_importador_form_view">
+			<field name="name">adelantos.importador.form</field>
+			<field name="model">adelantos.importador</field>
+			<field name="arch" type="xml">
+				<form string="Parametros">
+					<header>
+						<button 
+							string="Archivo" 
+							name="show_file_fields" 
+							type="object" 
+							attrs="{'invisible': [('state','not in',('draft'))]}"
+						/>					
+						<button 
+							string="Importar Archivo"
+							name="import_adelantos" 
+							type="object"
+							attrs="{'invisible': ['|',('imported','=',False),('state','in',('draft'))]}" 
+							confirm="Ya se realizó una importación para este periodo. ¿Desea volver a importar?"
+						/>
+						<button 
+							string="Importar Archivo"
+							name="import_adelantos" 
+							type="object"
+							attrs="{'invisible': ['|',('imported','=',True),('state','in',('draft'))]}"
+						/>
+						<button 
+							string="Importar Errores" 
+							name="procesar" 
+							type="object" 
+							attrs="{'invisible': [('state','in',('draft'))]}"
+						/>
+						<button string="Limpiar Errores" name="clean" type="object" attrs="{'invisible': [('state','in',('draft'))]}" invisible="1"/>
+						<field name="state" widget="statusbar"/>
+					</header>
+					<sheet>
+						<group>
+							<group string="Importación">
+								<field name="name" invisible="1"/>
+								<field name="period_id"/>
+								<field name="product_file" attrs="{'invisible':[('state','in','draft')]}"/>
+								<field name="delimiter" attrs="{'invisible':[('state','in','draft')]}"/>
+								<field name="imported" invisible="1"/>
+				            </group>
+			                <group>
+			                </group>
+						</group>
+						<group>
+							<notebook string="param">
+								<page string="Errores">
+									<group>
+										<field name="noimp_lines" nolabel="1">
+											<tree editable="bottom">
+												<field name="period_id"/>
+												<field name="dni"/>
+												<field name="motivo"/>
+												<field name="monto"/>
+												<field name="fecha"/>
+												<field name="observacion_1"/>
+												<field name="observacion_2"/>
+												<field name="adelanto_id"/>
+												<field name="account_id"/>
+												<field name="detalle"/>
+											</tree>
+										</field>
+									</group>
+								</page>
+							</notebook>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="adelantos_importador_action" model="ir.actions.act_window">
+			<field name="name">Importar Adelantos</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">adelantos.importador</field>
+			<!--<field name="groups_id" eval="[(6,0,[ref('group_parametros_menu')])]"/>-->
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+	
+		<!-- <menuitem id="menu_hr_importaciones" name="Importaciones" parent="hr.menu_hr_configuration"/> -->
+		<menuitem action="adelantos_importador_action" id="menu_adelantos_importador" parent="hr_importadores_it.menu_hr_importaciones" sequence="0"/>
+
+	</data>
+</openerp>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="account_state_financial_it.view_account_estate_nature_wizard_form">
+			<field name="name">account.state.nature.wizard.form</field>
+			<field name="model">account.state.nature.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Resultado por Naturaleza" >
+						<group>
+							<field name="check_comparative" />
+						</group>
+						<group>
+							<group>
+								<field name="currency_id" />
+							</group>
+							<group>
+								<field name="type_show" />
+							</group>
+						</group>
+						<group>
+							<group>
+								<notebook>
+			                        <page string="Año 1">
+			                        	<group>
+				                    		<field name="fiscalyear_id" />
+											<field name="periodo_ini" />
+											<field name="periodo_fin" />        
+										</group>
+			                        </page>
+			                        <page string="Año 2" attrs="{'invisible': [('check_comparative','!=',True)] }">
+			                        	<group>
+				                    		<field name="fiscalyear_c_id" attrs="{'invisible': [('check_comparative','!=',True)],'required': [('check_comparative','=',True)] }"/>
+											<field name="periodo_ini_c" attrs="{'invisible': [('check_comparative','!=',True)] ,'required': [('check_comparative','=',True)] }"/>
+											<field name="periodo_fin_c" attrs="{'invisible': [('check_comparative','!=',True)] ,'required': [('check_comparative','=',True)] }"/>
+										</group>
+			                        </page>
+			                    </notebook>
+							</group>
+						</group>
+						<footer>
+							<button string="Mostrar" name="do_rebuild" type="object" class="oe_highlight" attrs="{'invisible': [('check_comparative','=',True)] }"/>
+							<button string="Comparar" name="do_rebuild_C" type="object" class="oe_highlight" attrs="{'invisible': [('check_comparative','!=',True)] }"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+
+
+
+		<record id="view_account_state_nature_c_tree" model="ir.ui.view">
+            <field name="name">account.state.nature.tree</field>
+            <field name="model">account.state.nature</field>
+            <field name="arch" type="xml">
+                <tree string="Situación Naturaleza" create="false">
+                    <field name="name" />
+                    <field name="grupo" />
+                    <field name="saldo" string="Saldo Año 1"/>
+                    <field name="saldoc" string="Saldo Año 2"/>
+                    <field name="orden" />
+                </tree>
+            </field>
+        </record>
+
+		
+
+	</data>
+</openerp>

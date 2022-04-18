@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="seq_purchase_costing_type" model="ir.sequence.type">
+            <field name="name">Costing Sequence type</field>
+            <field name="code">purchase.costing</field>
+        </record>
+
+        <record id="seq_purchase_costing" model="ir.sequence">
+            <field name="name">Costing</field>
+            <field name="code">purchase.costing</field>
+            <field name="prefix">EXP-</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+</openerp>

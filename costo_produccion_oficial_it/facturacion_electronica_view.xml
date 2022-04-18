@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+    	<record model="ir.ui.view" id="view_costo_produccion_it_form">
+			<field name="name">costo.produccion.it.form</field>
+			<field name="model">costo.produccion.it</field>
+			<field name="arch" type="xml">
+				<form string="Costo de Produccion" version="7.0">                    
+                    <group>
+                        <group>
+                            <field name="periodo" required="1"/>
+                            <field name="fecha" required="1"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                     	<button name="do_rebuild" string="Print" type="object" class="oe_highlight"/>
+                     	or
+                    	 <button string="Cancel" class="oe_link" special="cancel"/>
+                	</footer>
+				</form>
+
+			</field>
+		</record>
+
+
+		<record id="costo_produccion_it_action" model="ir.actions.act_window">
+	        <field name="name">Costo de Produccion</field>
+	        <field name="type">ir.actions.act_window</field>
+	        <field name="res_model">costo.produccion.it</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="target">new</field>
+	    </record>
+
+
+		<menuitem name="Costo de Produccion" id="costo_de_produccion_it_menu"
+	    parent="kardex.kardex_main_menu" action="costo_produccion_it_action" sequence="7" />
+	
+
+
+
+	</data>
+</openerp>

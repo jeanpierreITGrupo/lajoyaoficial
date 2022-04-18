@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_move_line_book_tree" model="ir.ui.view">
+            <field name="name">account.move.line.tree</field>
+            <field name="model">account.move.line</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Journal Items" create="false">
+                    <field name="period_id" string="Periodo"/>
+                    <field name="name" string="Libro"/>
+                    <field name="move_id" string="Voucher"/>
+                    <field name="account_id" string="Cuenta"/>
+                    <field name="debit" string="Debit" />
+                    <field name="credit" string="Credit" />
+                    <field name="currency_id" string="Divisa" />
+                    <field name="currency_rate_it" string="Tipo de Cambio" />
+                    <field name="tax_amount" string="Importe Divisa" />
+                    <field name="codigo_partner" string="Código" />
+                    <field name="partner_id" string="Partner" />
+                    <field name="type_document_id" string="Tipo de Documento" />
+                    <field name="nro_comprobante" string="Número" />
+                    <field name="date" string="Fecha Emisión" />
+                    <field name="date_maturity" string="Fecha Vencimiento" />
+                    <field name="name" string="Glosa" />
+                    <field name="analytic_account_id" string="Cta. Analítica" />
+                    <field name="reconcile_ref" string="Referencia Conciliación" />
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_account_moves_all_it" model="ir.actions.act_window">
+            <field name="name">Libro Diario</field>
+            <field name="res_model">account.move.line</field>
+            <field name="view_id" ref="view_move_line_book_tree"/>
+            <field name="view_mode">tree_account_move_line_quickadd,form</field>
+        </record>
+
+        <menuitem
+            action="action_account_moves_all_it"
+            id="menu_action_account_moves_all_it"
+            parent="account.menu_finance_entries"
+            sequence="11"
+        />
+        
+
+    </data>
+</openerp>

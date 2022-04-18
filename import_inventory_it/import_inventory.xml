@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record id="view_import_inventory_form" model="ir.ui.view">
+            <field name="name">import.inventory.form</field>
+            <field name="model">import.inventory</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button string="Procesar" type="object" name="pre_process_data" states="draft" class="oe_highlight"/>
+                        <button string="Importar" type="object" name="import_data" states="process_exception,ready" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,process_exception,ready"/>
+                    </header>
+                    <sheet>
+                        <group string="Datos de Importación">
+                            <group>
+                                <field name="import_date"/>
+                                <field name="reason"/>
+                                <field name="picking_type"/>
+                            </group>
+                            <group>
+                                <field name="binary_file" filename="file_name"/>
+                                <field name="file_name"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Líneas inválidas" attrs="{'invisible':[('state','in',['draft,done'])]}">
+                                <field name="lines"/>
+                            </page>
+                            <page string="Líneas válidas" attrs="{'invisible':[('state','in',['draft,done'])]}">
+                                <field name="lines2" readonly="1"/>
+                            </page>
+                            <page string="Saldos Importados">
+                                <field name="lines3" readonly="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_import_inventory_tree" model="ir.ui.view">
+            <field name="name">import.inventory.tree</field>
+            <field name="model">import.inventory</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="import_date"/>
+                    <field name="state"/>
+                    <field name="file_name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_import_inventory_line_tree" model="ir.ui.view">
+            <field name="name">import.inventory.line.tree</field>
+            <field name="model">import.inventory.line</field>
+            <field name="arch" type="xml">
+                <tree delete="0" editable="top" create="0">
+                    <field name="code"/>
+                    <field name="qty"/>
+                    <field name="price_unit"/>
+                    <field name="observations"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_import_inventory_view" model="ir.actions.act_window">
+            <field name="name">Importar Inventario Inicial</field>
+            <field name="res_model">import.inventory</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem 
+            name="Importar Inventario Inicial"
+            action="action_import_inventory_view" 
+            id="menu_import_inventory" 
+            parent="stock.menu_stock_configuration"
+        />
+	</data>
+</openerp>

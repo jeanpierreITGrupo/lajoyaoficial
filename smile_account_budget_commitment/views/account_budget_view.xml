@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+        <!--
+        <record id="account_budget_post_commitment_limit_form_view" model="ir.ui.view">
+            <field name="name">account.budget.post.commitment_limit.tree</field>
+            <field name="model">account.budget.post.commitment_limit</field>
+            <field name="arch" type="xml">
+                <tree string="Budgetary Position Commitment Limit" editable="top">
+                	<field name="budget_post_id" invisible="context.get('budget_pos_view')"/>
+                	<field name="user_id" invisible="context.get('res_users_view')"/>
+                	<field name="amount_limit"/>
+                </tree>
+            </field>
+        </record>
+    -->
+    
+        <!--
+        <record model="ir.ui.view" id="view_budget_post_form">
+            <field name="name">account.budget.post.form</field>
+            <field name="model">account.budget.post</field>
+            <field name="inherit_id" ref="account_budget.view_budget_post_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+	                <page string="Commitment Limits">
+	                	<field name="commitment_limit_ids"
+	                		context="{'budget_pos_view': True, 'default_budget_post_id': active_id}"/>
+	                </page>
+                </notebook>
+				<xpath expr="//field[@name='crossovered_budget_line']/tree/field[@name='practical_amount']" position="before">
+	                <field name="commitment_amount" sum="Commitment Amount"/>
+	                <field name="available_amount" sum="Available Amount"/>
+				</xpath>
+            </field>
+        </record>
+        -->
+
+        <record model="ir.ui.view" id="crossovered_budget_view_form">
+            <field name="name">crossovered.budget.form</field>
+            <field name="model">crossovered.budget</field>
+            <field name="inherit_id" ref="repair_budget_wizard_it.crossovered_budget_view_form"/>
+            <field name="arch" type="xml">
+				<xpath expr="//field[@name='crossovered_budget_line']/tree/field[@name='porcentaje_real']" position="after">
+                	<button name="action_open_analytic_lines" type="object" icon="STOCK_JUMP_TO" string="View details"/>
+				</xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_crossovered_budget_line_tree">
+            <field name="name">crossovered.budget.lines.tree</field>
+            <field name="model">crossovered.budget.lines</field>
+            <field name="inherit_id" ref="account_budget.view_crossovered_budget_line_tree"/>
+            <field name="arch" type="xml">
+                <field name="date_from" position="before">
+	                <field name="commitment_amount" invisible="1" />
+	                <field name="available_amount" invisible="1" />
+                </field>
+                <field name="paid_date" position="replace" >
+                    <field name="paid_date" invisible="1"/>
+                </field>
+                <field name="practical_amount" position="replace">
+                    <field name="practical_amount" invisible="1" />
+                </field>
+                <field name="theoritical_amount" position="replace">
+                    <field name="theoritical_amount" invisible="1" />
+                </field>
+                <field name="planned_amount" position="after">
+                    <field name="practical_amount" invisible="1" />
+                    <field name="importe_real" sum="Importe Real" />
+                    <field name="desviacion" />
+                    <field name="porcentaje_real" />
+                    <button name="action_open_analytic_lines" type="object" icon="STOCK_JUMP_TO" string="View details" invisible="1"/>
+                </field>
+
+                <field name="percentage" position="replace">
+                    <field name="percentage" invisible="1" />
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_crossovered_budget_line_form">
+            <field name="name">crossovered.budget.lines.form</field>
+            <field name="model">crossovered.budget.lines</field>
+            <field name="inherit_id" ref="account_budget.view_crossovered_budget_line_form"/>
+            <field name="arch" type="xml">
+                <field name="practical_amount" position="before">
+	                <field name="commitment_amount"/>
+	                <field name="available_amount"/>
+                </field>
+				<field name="company_id" position="after">
+					<notebook colspan="4">
+						<page string="Details">
+							<field name="analytic_line_ids" nolabel="1"/>
+						</page>
+					</notebook>
+				</field>
+	        </field>
+        </record>
+
+       <record id="view_crossovered_budget_line_search" model="ir.ui.view">
+            <field name="name">account.budget.line.search</field>
+            <field name="model">crossovered.budget.lines</field>
+            <field name="inherit_id" ref="account_budget.view_crossovered_budget_line_search"/>
+            <field name="arch" type="xml">
+                <field name="analytic_account_id" position="attributes">
+					<attribute name="domain">[('type','!=','view')]</attribute>                	
+                </field>
+                <field name="analytic_account_id" position="after">
+                    <field name="crossovered_budget_id"/>
+                    <field name="general_budget_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Budget" context="{'group_by':'crossovered_budget_id'}"/>
+                        <filter string="Budgetary Position" context="{'group_by':'general_budget_id'}"/>
+                        <filter string="Analytic Account" context="{'group_by':'analytic_account_id'}"/>
+                        <filter string="Date from" context="{'group_by':'date_from'}"/>
+                        <filter string="Date to" context="{'group_by':'date_to'}"/>
+                    </group>
+	            </field>
+            </field>
+        </record>
+
+        <menuitem parent="account_budget.next_id_31" sequence="50"
+            id="menu_act_crossovered_budget_lines_view" name="Lineas de Presupuesto"
+            action="account_budget.act_crossovered_budget_lines_view" />
+
+<!--
+        <record model="ir.ui.view" id="view_account_analytic_account_form_inherit_budget">
+            <field name="name">account.analytic.account.form</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="account_budget.view_account_analytic_account_form_inherit_budget"/>
+            <field name="arch" type="xml">
+				<xpath expr="//field[@name='crossovered_budget_line']/tree/field[@name='practical_amount']" position="before">
+	                <field name="commitment_amount" sum="Commitment Amount"/>
+	                <field name="available_amount" sum="Available Amount"/>
+				</xpath>
+				<xpath expr="//field[@name='crossovered_budget_line']/form/field[@name='planned_amount']" position="after">
+	                <field name="commitment_amount"/>
+	                <field name="available_amount"/>
+				</xpath>
+            </field>
+        </record>
+    -->    
+
+
+
+
+
+        <record model="ir.ui.view" id="view_report_budget_wizard_it">
+            <field name="name">report.budget.line.wizard.form</field>
+            <field name="model">report.budget.line.wizard</field>
+            <field name="arch" type="xml">
+                <form string="" version="8.0">
+                    <group>
+                        <group>
+                            <field name="fiscalyear_id" />
+                            <field name="type_show" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>                    
+                    <footer>
+                        <button string="Imprimir" name="do_rebuild" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_account_report_budget_wizard_line" model="ir.actions.act_window">
+            <field name="name">Imprimir PDF</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">report.budget.line.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem parent="account_budget.next_id_31" sequence="50"
+            id="menu_nuevo_it_act_crossovered_budget_lines_view" name="Presupuesto Anual"
+            action="action_account_report_budget_wizard_line" />
+
+
+
+
+        <record id="view_account_analytic_line_tree" model="ir.ui.view">
+            <field name="name">account.analytic.line.tree</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="account_move_analytic_it.view_account_analytic_line_tree"/>
+            <field name="arch" type="xml">
+                
+                    <field name="amount" position="attributes">
+                        <attribute name="string">Monto</attribute>
+                    </field>
+            </field>
+        </record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<template id="report_crossoveredbudget_it">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="report.internal_layout">
+                <div class="page">
+                    <h2>Presupuesto</h2>
+
+                    <div class="row mt32">
+                        <div class="col-xs-3">
+                            <strong>Análisis de:</strong>
+                            <p><span t-esc="formatLang(data['form']['date_from'], date=True)"/> hasta
+                            <span t-esc="formatLang(data['form']['date_to'], date=True)"/></p>
+                        </div>
+                        <div class="col-xs-3">
+                            <strong>Presupuesto:</strong>
+                            <p t-esc="o.name"/>
+                        </div>
+                        <div class="col-xs-3">
+                            <strong>Moneda:</strong>
+                            <p t-esc="res_company.currency_id.name"/>
+                        </div>
+                    </div>
+
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Descripción</th>
+                                <th class="text-right">Importe previsto</th>
+                                <th class="text-right">Importe Real</th>
+                                <th class="text-right">Desviación</th>
+                                <th class="text-center">Porc(%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="funct(o, data['form'])" t-as="line">
+                                <td>
+                                    <span style="color: white;" t-esc="'... '*(line['status'] - 1)"/>
+                                    <span t-esc="line['name']"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="formatLang(line['theo'], dp='Account', currency_obj=res_company.currency_id)"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="formatLang(line['pln'], dp='Account', currency_obj=res_company.currency_id)"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="formatLang(line['prac'], dp='Account', currency_obj=res_company.currency_id)"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="formatLang(line['perc'],digits=2)"/> %
+                                </td>
+                            </tr>
+                            <tr t-foreach="funct_total(data['form'])" t-as="tot">
+                                <td>
+                                  <strong>Total:</strong>
+                                </td>
+                                <td class="text-right">
+                                    <strong t-esc="formatLang(tot['tot_theo'], dp='Account', currency_obj=res_company.currency_id)"/>
+                                </td>
+                                <td class="text-right">
+                                    <strong t-esc="formatLang(tot['tot_pln'], dp='Account', currency_obj=res_company.currency_id)"/>
+                                </td>
+                                <td class="text-right">
+                                    <strong t-esc="formatLang(tot['tot_prac'], dp='Account', currency_obj=res_company.currency_id)"/>
+                                </td>
+                                <td class="text-center">
+                                    <strong t-esc="formatLang(tot['tot_perc'], digits=2)"/> %
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+
+        <report
+            id="action_report_crossovered_budget_it" 
+            model="crossovered.budget"
+            string="Budgets"
+            report_type="qweb-pdf"
+            name="smile_account_budget_commitment.report_crossoveredbudget_it" 
+            file="smile_account_budget_commitment.report_crossoveredbudget_it" 
+            menu="False"
+        />
+        
+
+        <record id="account_budget_crossvered_summary_report_it_view" model="ir.ui.view">
+             <field name="name">account.budget.crossvered.summary.report.it.form</field>
+             <field name="model">account.budget.crossvered.summary.report.it</field>
+             <field name="arch" type="xml">
+                 <form string="Select Dates Period">
+                    <group string="Este asistente es utilizado para imprimir el resúmen de los presupuestos">
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                     <footer>
+                         <button name="check_report" string="Imprimir" type="object" default_focus="1" class="oe_highlight"/>
+                         or
+                         <button string="Cancelar" class="oe_link" special="cancel"/>
+                     </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_account_budget_crossvered_summary_report_it" model="ir.actions.act_window">
+            <field name="name">Imprimir Resumen</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.budget.crossvered.summary.report.it</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account_budget_crossvered_summary_report_it_view"/>
+            <field name="target">new</field>
+        </record>
+
+        <record model="ir.values" id="account_budget_crossvered_summary_report_values_it">
+            <field name="name">Imprimir Resumen</field>
+            <field name="key2">client_print_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_account_budget_crossvered_summary_report_it'))" />
+            <field name="key">action</field>
+            <field name="model">crossovered.budget</field>
+        </record>
+
+
+        <record id="account_budget_crossvered_report_it_view" model="ir.ui.view">
+             <field name="name">account.budget.crossvered.report.it.form</field>
+             <field name="model">account.budget.crossvered.report.it</field>
+             <field name="arch" type="xml">
+                 <form string="Selecionar las fechas">
+                    <group string="Este asistente es usado para imprimir Presupuestos" col="4">
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                     <footer>
+                         <button name="check_report" string="Imprimir" type="object" default_focus="1" class="oe_highlight"/>
+                         or
+                         <button string="Cancelar" class="oe_link" special="cancel"/>
+                     </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_account_budget_crossvered_report_it" model="ir.actions.act_window">
+            <field name="name">Imprimir Presupuestos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.budget.crossvered.report.it</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account_budget_crossvered_report_it_view"/>
+            <field name="target">new</field>
+        </record>
+
+        <record model="ir.values" id="account_budget_crossvered_report_values_it">
+            <field name="name">Imprimir Presupuestos</field>
+            <field name="key2">client_print_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_account_budget_crossvered_report_it'))" />
+            <field name="key">action</field>
+            <field name="model">crossovered.budget</field>
+        </record>
+
+
+        <record model="ir.values" id="account_budget.account_budget_crossvered_report_values">
+            <field name="name">Imprimir Presupuestos</field>
+            <field name="key2">client_print_multi</field>
+            <field name="key">action</field>
+            <field name="model">crossovered.budget</field>
+        </record>
+
+
+        <record model="ir.values" id="account_budget.account_budget_crossvered_summary_report_values">
+            <field name="name">Imprimir Resumen</field>
+            <field name="key2">client_print_multi</field>
+            <field name="key">action</field>
+            <field name="model">crossovered.budget</field>
+        </record>
+
+    </data>
+</openerp>

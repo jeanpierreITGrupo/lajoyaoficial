@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_kardex_resume_tree" model="ir.ui.view">
+            <field name="name">kardex.resume.tree</field>
+            <field name="model">kardex.resume</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">        
+                <tree string="Kardex: Resumen X Cta." create="false" delete="false">
+                    <field name="periodo" strng="Periodo"/>
+                    <field name="cta" string="Cuenta"/>
+                    <field name="monto" string="Monto Kardex"/>
+                    <field name="contable" string="Monto Contabilidad"/>
+                    <field name="dif" string="Diferencia"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_kardex_resume_filter" model="ir.ui.view">
+            <field name="name">kardex.resume.search</field>
+            <field name="model">kardex.resume</field>
+            <field name="arch" type="xml">
+                <search string="Search Kardex resumen">
+                    <field name="periodo"/>
+                    <field name="cta"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Periodo" icon="terp-partner" domain="[]" context="{'group_by':'periodo'}"/>
+                        <filter string="cuenta" icon="terp-folder-orange" domain="[]" context="{'group_by':'cta'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+
+
+
+
+
+        <record id="kardex_resume_tree_action" model="ir.actions.act_window">
+            <field name="name">Resumen X Cta.</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">kardex.resume</field>
+            <field name="view_mode">form,tree</field>
+            <field name="view_type">tree</field>
+            <field name="multi">True</field>
+        </record>
+
+
+    </data>
+</openerp>

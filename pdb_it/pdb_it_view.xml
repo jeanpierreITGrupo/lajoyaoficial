@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record model="ir.ui.view" id="view_pdb_compra_wizard_form">
+            <field name="name">pdb.compra.it.form</field>
+            <field name="model">pdb.compra.it</field>
+            <field name="arch" type="xml">
+                <form string="PDB compra" version="8.0">
+                    <group>
+                        <group>
+                            <field name="period_id" required="1" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button string="Generar" name="generar_pdb_compra" type="object" class="oe_highlight"/>
+                        <!-- <button string="Actualizar" name="actualizarsaldoinicial" type="object" class="oe_highlight"/> -->
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="pdb_compra_it_wizard_action" model="ir.actions.act_window">
+            <field name="name">PDB Compra</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pdb.compra.it</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem name="PDB"
+            id="menu_action_pdb_menu_it"
+            parent="account.menu_finance_reports"
+            sequence="11"
+        />
+
+        <menuitem name="PDB Compra"
+            action="pdb_compra_it_wizard_action"
+            id="menu_action_pdb_compra_it"
+            parent="menu_action_pdb_menu_it"
+            sequence="1"
+        />
+
+
+        <record model="ir.ui.view" id="view_pdb_venta_wizard_form">
+            <field name="name">pdb.venta.it.form</field>
+            <field name="model">pdb.venta.it</field>
+            <field name="arch" type="xml">
+                <form string="PDB Venta" version="8.0">
+                    <group>
+                        <group>
+                            <field name="period_id" required="1" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button string="Generar" name="generar_pdb_venta" type="object" class="oe_highlight"/>
+                        <!-- <button string="Actualizar" name="actualizarsaldoinicial" type="object" class="oe_highlight"/> -->
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="pdb_venta_it_wizard_action" model="ir.actions.act_window">
+            <field name="name">PDB Venta</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pdb.venta.it</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem name="PDB Venta"
+            action="pdb_venta_it_wizard_action"
+            id="menu_action_pdb_venta_it"
+            parent="menu_action_pdb_menu_it"
+            sequence="2"
+        />
+
+
+
+
+        <record model="ir.ui.view" id="view_pdb_caja_wizard_form">
+            <field name="name">pdb.caja.it.form</field>
+            <field name="model">pdb.caja.it</field>
+            <field name="arch" type="xml">
+                <form string="Excel para PDB" version="8.0">
+                    <group>
+                        <group>
+                            <field name="period_id" required="1" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button string="Generar" name="generar_pdb_caja" type="object" class="oe_highlight"/>
+                        <!-- <button string="Actualizar" name="actualizarsaldoinicial" type="object" class="oe_highlight"/> -->
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="pdb_caja_it_wizard_action" model="ir.actions.act_window">
+            <field name="name">Excel para PDB</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pdb.caja.it</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem name="Excel para PDB"
+            action="pdb_caja_it_wizard_action"
+            id="menu_action_pdb_caja_it"
+            parent="menu_action_pdb_menu_it"
+            sequence="2"
+        />
+
+
+<!--
+        <menuitem name="Reporte PDB Pagos"
+            id="menu_action_factura_cajas_padre_it"
+            parent="menu_action_pdb_menu_it"
+            sequence="2"
+        />
+    -->    
+
+        <record model="ir.ui.view" id="view_factura_pagos_wizard_form">
+            <field name="name">factura.pagos.form</field>
+            <field name="model">factura.pagos</field>
+            <field name="arch" type="xml">
+                <form string="PDB Caja" version="8.0">
+                    <group>
+                        <group>
+                            <field name="period_id" required="1" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button string="Generar" name="generar_factura_pagos" type="object" class="oe_highlight"/>
+                        <!-- <button string="Actualizar" name="actualizarsaldoinicial" type="object" class="oe_highlight"/> -->
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="factura_pagos_it_wizard_action" model="ir.actions.act_window">
+            <field name="name">Análisis de Caja</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">factura.pagos</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+<!--
+        <menuitem name="Basado Caja"
+            action="factura_pagos_it_wizard_action"
+            id="menu_action_factura_cajas2_it"
+            parent="menu_action_factura_cajas_padre_it"
+            sequence="2"
+        />
+    -->    
+
+
+        <record model="ir.ui.view" id="view_factura_pagos3_wizard_form">
+            <field name="name">pagos.factura.form</field>
+            <field name="model">pagos.factura</field>
+            <field name="arch" type="xml">
+                <form string="PDB Caja" version="8.0">
+                    <group>
+                        <group>
+                            <field name="period_id" required="1" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button string="Generar" name="generar_factura_pagos" type="object" class="oe_highlight"/>
+                        <!-- <button string="Actualizar" name="actualizarsaldoinicial" type="object" class="oe_highlight"/> -->
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="factura_pagos_it_wizard3_action" model="ir.actions.act_window">
+            <field name="name">Análisis de Caja</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pagos.factura</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+<!--
+        <menuitem name="Basado Pagos"
+            action="factura_pagos_it_wizard3_action"
+            id="menu_action_factura_cajas3_it"
+            parent="menu_action_factura_cajas_padre_it"
+            sequence="2"
+        /> -->
+
+
+
+
+        <record model="ir.ui.view" id="view_pdb_excel_it_form">
+            <field name="name">pdb.excel.it.form</field>
+            <field name="model">pdb.excel.it</field>
+            <field name="arch" type="xml">
+                <form string="PDB Caja" version="8.0">
+                    <group>
+                        <group>
+                            <field name="period_id" required="1" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button string="Generar" name="generar_pdb_excel" type="object" class="oe_highlight"/>
+                        <!-- <button string="Actualizar" name="actualizarsaldoinicial" type="object" class="oe_highlight"/> -->
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="pdb_excel_it_wizard_action" model="ir.actions.act_window">
+            <field name="name">PDB Caja</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pdb.excel.it</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem name="PDB Caja"
+            action="pdb_excel_it_wizard_action"
+            id="menu_action_pdb_excel_it"
+            parent="menu_action_pdb_menu_it"
+            sequence="2"
+        />
+	</data>
+</openerp>

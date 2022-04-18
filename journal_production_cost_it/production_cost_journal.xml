@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="export_file1" model="ir.ui.view">
+            <field name="name">export.sale.file.save</field>
+            <field name="model">export.file.save</field>
+            <field name="arch" type="xml">
+                <form string="Archivo con Categorías Nulas" version="7.0">
+                    <field name="output_name" invisible="1"/>
+                    <div >
+                        <h2>Alerta!</h2>
+                        <p>No se ha podido generar el asiento debido a que existen Movimientos sin Centro de Costo.</p>
+                        <p>Puede revisar los movimientos en conflicto en el siguiente archivo de descarga: <field name="output_file" readonly="1" filename="output_name"/></p>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_production_cost_journal_tree">
+            <field name="name">production.cost.journal.tree</field>
+            <field name="model">production.cost.journal</field>
+            <field name="arch" type="xml">
+                <tree create='0' delete='0' editable='0'>
+                    <field name="analytic_account"/>
+                    <field name="product_id"/>
+                    <field name="valued_rest"/>
+                    <field name="a_debit"/>
+                    <field name="a_credit"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_sale_cost_journal_form">
+            <field name="name">production.cost.journal.form</field>
+            <field name="model">production.cost.journal</field>
+            <field name="arch" type="xml">
+                <form create='0'>
+                    <group>
+                        <field name="analytic_account"/>
+                        <field name="product_id"/>
+                        <field name="valued_rest"/>
+                        <field name="a_debit"/>
+                        <field name="a_credit"/>
+                        <field name="period_id" invisible='1'/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_make_production_journal" model="ir.actions.server">
+            <field name="name">Crear asiento</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_production_cost_journal"/>
+            <field name="state">code</field>
+            <field name="code">action = self.make_production_journal(cr,uid,context.get('active_ids'),context)</field>
+        </record>
+
+        <record model="ir.values" id="make_production_journal_more">
+            <field name="name">Crear asiento</field>
+            <field name="key2">client_action_multi</field>
+            <field name="action_id" ref="action_make_production_journal"/>
+            <field name="value" eval="'ir.actions.server,' + str(ref('action_make_production_journal'))" />
+            <field name="model_id" ref="model_production_cost_journal"/>
+            <field name="key">action</field>
+            <field name="model">production.cost.journal</field>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record model="ir.ui.view" id="view_aax_periodo_wizard_form">
+            <field name="name">periodo.aanalitica.it.form</field>
+            <field name="model">periodo.aanalitica.it</field>
+            <field name="arch" type="xml">
+                <form string="Report Analitico x Periodos" version="8.0">
+                    <group>
+                        <group>
+                            <field name="period_ini" required="1" />
+                            <field name="period_fin" required="1" />
+                            <field name="mostrar" required="1" invisible="1" />
+                            <field name="tipo" required="1" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button string="Generar" name="do_rebuild" type="object" class="oe_highlight"/>
+                        <!-- <button string="Actualizar" name="actualizarsaldoinicial" type="object" class="oe_highlight"/> -->
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="aax_periodo_it_wizard_action" model="ir.actions.act_window">
+            <field name="name">Reporte Analitico X Periodos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">periodo.aanalitica.it</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+<!--
+        <menuitem name="PDB"
+            id="menu_action_pdb_menu_it"
+            parent="account.menu_finance_reports"
+            sequence="11"
+        />
+-->
+        <menuitem name="Reporte Analítico"
+            id="menu_aax_periodo_it"
+            parent="account.menu_finance_reports"
+            sequence="1"
+        />
+
+        <menuitem name="Por Periodos"
+            action="aax_periodo_it_wizard_action"
+            id="menu_aax_periodo1_it"
+            parent="menu_aax_periodo_it"
+            sequence="1"
+        /> 
+
+
+        <record model="ir.ui.view" id="view_aax_fecha_wizard_form">
+            <field name="name">fecha.aanalitica.it.form</field>
+            <field name="model">fecha.aanalitica.it</field>
+            <field name="arch" type="xml">
+                <form string="Report Analitico x Fecha" version="8.0">
+                    <group>
+                        <group>
+                            <field name="date_ini" required="1" />
+                            <field name="date_fin" required="1" />
+                            <field name="mostrar" required="1" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button string="Generar" name="do_rebuild" type="object" class="oe_highlight"/>
+                        <!-- <button string="Actualizar" name="actualizarsaldoinicial" type="object" class="oe_highlight"/> -->
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="aax_fecha_it_wizard_action" model="ir.actions.act_window">
+            <field name="name">Reporte Analitico X Fecha</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fecha.aanalitica.it</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem name="Por Fechas"
+            action="aax_fecha_it_wizard_action"
+            id="menu_aax_pfecha1_it"
+            parent="menu_aax_periodo_it"
+            sequence="1"
+        /> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
+        <record model="ir.ui.view" id="view_aax_periodokardex_wizard_form">
+            <field name="name">periodo.kardex.analitica.it.form</field>
+            <field name="model">periodo.kardex.analitica.it</field>
+            <field name="arch" type="xml">
+                <form string="Report Analitico x Kardex" version="8.0">
+                    <group>
+                        <group>
+                            <field name="period_ini" required="1" />
+                            <field name="period_fin" required="1" />
+                            <field name="mostrar" required="0" invisible="1" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button string="Generar" name="do_rebuild" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="aax_periodo_itkardex_wizard_action" model="ir.actions.act_window">
+            <field name="name">Reporte Analitico X Kardex</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">periodo.kardex.analitica.it</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="PDB"
+            id="menu_action_pdb_menu_it"
+            parent="account.menu_finance_reports"
+            sequence="11"
+        />
+
+        <menuitem name="Analisis Analitico"
+            action="aax_periodo_itkardex_wizard_action"
+            id="menu_aax_perikardexodo1_it"
+            parent="menu_aax_periodo_it"
+            sequence="3"
+        /> 
+
+-->
+	</data>
+</openerp>

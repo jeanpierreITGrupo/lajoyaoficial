@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	<record model="ir.ui.view" id="view_raw_print_form">
+		<field name="name">raw.print.form</field>
+		<field name="model">raw.print</field>
+		<field name="arch" type="xml">
+			<form string="raw_print" version="7.0">
+				<sheet>
+					<group>
+						<group>
+							<button name="imprimir" string="Imprimir" type="object"/>
+							<field name="texto"/>
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+
+	<record model="ir.ui.view" id="view_raw_print_tree">
+		<field name="name">raw.print.tree</field>
+		<field name="model">raw.print</field>
+		<field name="arch" type="xml">
+			<tree string="raw_print">
+				<field name="texto"/>
+			</tree>
+		</field>
+	</record>
+
+	<record model="ir.actions.act_window" id="action_raw_print">
+		<field name="name">Print</field>
+		<field name="res_model">raw.print</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+	<menuitem name="rawprint" id="menu_raw_print" parent="mrp.menu_mrp_configuration"  sequence="0"  action="action_raw_print"/>
+
+
+	</data>
+</openerp>

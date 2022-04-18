@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data> 
+        
+        <record id="view_hr_uit_historical_form" model="ir.ui.view">
+            <field name="name">hr.uit.historical.form</field>
+            <field name="model">hr.uit.historical</field>
+            <field name="arch" type="xml">
+                <form string="Histórico de UIT" version="8.0">
+                    <sheet>
+                        <h1>Histórico de UIT</h1>
+                        <group>
+                            <field name="fiscalyear_id" required="1"/>
+                            <field name="date_ini" string="Inicio de vigencia" required="1"/>
+                            <field name="date_end" string="Fin de vigencia" required="0"/>
+                            <field name="amount" string="Monto UIT" required="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_hr_uit_historical_tree" model="ir.ui.view">
+            <field name="name">hr.uit.historical.tree</field>
+            <field name="model">hr.uit.historical</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Histórico de UIT">
+                    <field name="fiscalyear_id"/>
+                    <field name="date_ini" string="Inicio de vigencia"/>
+                    <field name="date_end" string="Fin de vigencia"/>
+                    <field name="amount" string="Monto UIT"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_hr_uit_historical" model="ir.actions.act_window">
+            <field name="name">Histórico de UIT</field>
+            <field name="res_model">hr.uit.historical</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem action="action_hr_uit_historical" id="menu_hr_uit_historical" parent="menu_hr_5category"/>
+    </data>
+</openerp>

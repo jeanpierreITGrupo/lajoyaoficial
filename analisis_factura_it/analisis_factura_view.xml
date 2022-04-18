@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+
+        <record model="ir.ui.view" id="it_analisis_factura_form">
+            <field name="name">analisis.factura.form</field>
+            <field name="model">analisis.factura</field>
+            <field name="arch" type="xml">
+                <form string="Analisis Factura" version="8.0">
+                    <header>
+                        <button name="conciliacion_button"  string="Conciliar" type="object" class="oe_highlight" />
+                        <button name="desconciliacion_button"  string="Desconciliar" type="object" class="oe_highlight" />
+                    </header>
+                    <group string="Análisis Factura">
+                        <group>
+                            <field name="personal" required="1"/>
+                            <field name="comprobante_auto" string="Facturas" domain="[('partner_id','=',personal)]" options='{"no_open": True, "no_create": True}' required="1"/>
+                        </group>
+                        <group>
+                            <field name="saldo_deuda_soles" readonly="1" />
+                            <field name="saldo_deuda_dolar" readonly="1" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Apuntes Contables">
+                            
+                            <field name="desembolso_lines" nolabel="1" readonly="1">
+                                <tree string="Apuntes Contables" create="false" edit="false">
+                                    <field name="period_id" string="Periodo" readonly="1"/>
+                                    <field name="journal_id" string="Libro" readonly="1"/>
+                                    <field name="move_id" string="Asiento" readonly="1"/>
+                                    <field name="name" string="Descripción" readonly="1"/>
+                                    <field name="partner_id" readonly="1" string="Empresa"/>
+                                    <field name="nro_comprobante" readonly="1" invisible="1"/>
+                                    <field name="account_id" readonly="1"/>
+                                    <field name="date" readonly="1" string="Fecha"/>
+                                    <field name="date_maturity" readonly="1"/>
+                                    <field name="debit" readonly="1" string="Debe"/>
+                                    <field name="credit" readonly="1" string="Haber"/>
+                                    <field name="amount_currency" readonly="1"/>
+                                    <field name="currency_rate_it" readonly="1" string="Tipo de Cambio"/>
+                                    <field name="means_payment_id" readonly="1"/>
+                                    <field name="fefectivo_id" readonly="1" invisible="1"/>
+                                    <field name="reconcile_ref" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="it_analisis_factura_view" model="ir.ui.view">
+            <field name="name">Analisis Factura</field>
+            <field name="model">analisis.factura</field>
+            <field name="arch" type="xml">
+                <tree string="Análisis Factura">
+                            <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="analisis_factura_action">
+            <field name="name">Análisis Factura</field>
+            <field name="res_model">analisis.factura</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="analisis_factura_action" id="menu_analisis_factura" parent="account.menu_finance_bank_and_cash"/>
+
+    </data>
+</openerp>

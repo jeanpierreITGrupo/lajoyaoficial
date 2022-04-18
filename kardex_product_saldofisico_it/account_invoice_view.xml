@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record model="ir.ui.view" id="view_detalle_simple_fisico_total_d_wizard_form">
+            <field name="name">detalle.simple.fisico.total.d.wizard.form</field>
+            <field name="model">detalle.simple.fisico.total.d.wizard</field>
+            <field name="arch" type="xml">                
+                <form string="Wizard">
+                    <group>
+                        <group>
+                            <field name="fiscalyear_id"/>
+                        </group>
+                        <group></group>
+                    </group>                    
+                    <separator/>
+                    <footer>
+                        <button string="Generar" name="do_rebuild" type="object" class="oe_highlight"/>
+                        o
+                        <button string="Cancelar" special="cancel" class="oe_link"/>                        
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record id="view_kardex_fisico_d" model="ir.ui.view">
+            <field name="name">detalle.simple.fisico.total.d.tree</field>
+            <field name="model">detalle.simple.fisico.total.d</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">        
+                <tree string="Saldos" create="false" delete="false">
+                    <field name="producto" />
+                    <field name="almacen" />
+                    <field name="saldo" />
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_kardex_fisico_dm_filter" model="ir.ui.view">
+            <field name="name">detalle.simple.fisico.total.d.select</field>
+            <field name="model">detalle.simple.fisico.total.d</field>
+            <field name="arch" type="xml">
+                <search string="Saldos">
+                   <field name="producto"/>
+                    <field name="almacen" />
+                   <group expand="0" string="Group By">
+                       <filter string="Producto" icon="terp-personal" domain="[]" context="{'group_by' : 'producto'}" />
+                   </group>
+               </search>
+            </field>
+        </record>
+
+
+
+        <record id="kardex_fisico_dmc_actionn" model="ir.actions.act_window">
+            <field name="name">Saldos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">detalle.simple.fisico.total.d.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem name="Saldos" id="kardex_fisicomc_menu"
+                 parent="kardex.kardex_main_menu" action="kardex_fisico_dmc_actionn"
+                 sequence="3" />
+
+        <menuitem name="Saldos" id="kardex_fisicoma_menu"
+                 parent="stock.menu_stock_inventory_control" action="kardex_fisico_dmc_actionn"
+                 sequence="3" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        <record model="ir.ui.view" id="product_template_form_view_procurement_button">
+            <field name="name">product.template_procurement</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
+            <field name="arch" type="xml">
+                <button name="action_open_quants" position="replace">
+                </button>
+            </field>
+        </record>
+
+        
+
+        <record id="view_template_property_form" model="ir.ui.view">
+            <field name="name">product.template.stock.property.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.view_template_property_form"/>
+            <field name="arch" type="xml">
+                <group string="Stock and Expected Variations" position="attributes">
+                    <attribute name="attrs"/>
+                    <attribute name="invisible">1</attribute>
+                </group>
+
+                <group name="status" position="before">
+                    
+                    <group string="Existencias y variaciones esperadas" attrs="{'invisible': [('type', '=', 'service')]}" >
+                        <label for="saldo_kardexfisico"/>
+                            <div>
+                                <field name="saldo_kardexfisico" class="oe_inline"/>
+                                <button name="get_saldo_kardexfisico" string="⇒ Detalle"
+                                    type="object"
+                                    class="oe_link"/>
+                            </div>
+                    </group>
+
+                </group>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_detalle_simple_kfisico_form">
+            <field name="name">detalle.simple.kfisico.form</field>
+            <field name="model">detalle.simple.kfisico</field>
+            <field name="arch" type="xml">
+                <form string="Detalle" version="8.0">
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <field name="lineas" readonly="1">
+                            <tree>
+                                <field name="almacen"/>
+                                <field name="saldo"/>
+                            </tree>
+                        </field>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_detalle_simple_kfisicot_form">
+            <field name="name">detalle.simple.kfisicot.form</field>
+            <field name="model">detalle.simple.kfisicot</field>
+            <field name="arch" type="xml">
+                <form string="Detalle" version="8.0">
+                        <group>
+                            <group>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <field name="lineas" readonly="1">
+                            <tree>
+                                <field name="almacen"/>
+                                <field name="producto"/>
+                                <field name="saldo"/>
+                            </tree>
+                        </field>
+                </form>
+            </field>
+        </record>
+
+
+
+
+        <record model="ir.ui.view" id="view_picking_form">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">              
+
+                <xpath expr="//header/button[@name='action_assign']" position="after">
+                    <button name="get_disponibilidad_kfisico" string="Ver Disponibilidad" type="object" class="oe_highlight"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

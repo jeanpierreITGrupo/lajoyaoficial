@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record id="view_tax_code_form" model="ir.ui.view">
+            <field name="name">account.tax.code.form</field>
+            <field name="model">account.tax.code</field>
+            <field name="inherit_id" ref="account.view_tax_code_form"/>
+            <field name="arch" type="xml">
+                <field name="sign" position = "after">
+                    <field name="record_shop"/>
+                    <field name="record_sale"/>
+                    <field name="record_fees"/>
+                    <field name="record_pdb"/>
+                    <field name="record_pdb_venta" />                    
+                </field>
+            </field>
+        </record>
+
+        <record id="view_currency_form" model="ir.ui.view">
+            <field name="name">res.currency.form</field>
+            <field name="model">res.currency</field>
+            <field name="inherit_id" ref="base.view_currency_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="cod_pdb" />
+                </field>
+            </field>
+        </record>
+
+	</data>
+</openerp>

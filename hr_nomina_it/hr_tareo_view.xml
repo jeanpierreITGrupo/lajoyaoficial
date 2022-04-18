@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_hr_tareo_line_form">
+            <field name="name">hr.tareo.line.wizard.form</field>
+            <field name="model">hr.tareo.line</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                
+                <form string="Wizard" create="0" delete="0">
+                    <header>
+                        <button name="actualizar_resumen" type="object" string="Actualizar Provisiones" class="oe_highlight"/>
+                    </header>
+                    <field name="tareo_id" invisible="1" />
+                    <notebook>
+                        <page string="Empleado">
+                            <group string="Datos Personales">
+                                <group>
+                                    <group>
+                                        <field name="dni" readonly="1" />
+                                        <field name="apellido_paterno" readonly="1"/>                                    
+                                    </group>
+                                    <group>
+                                        <field name="nombre" readonly="1"/>
+                                        <field name="apellido_materno" readonly="1"/>
+                                    </group>                                    
+                                </group>
+                            </group>
+                            <group string="Afiliación">
+
+                                <group>
+                                    <group>
+                                        <field name="cargo" readonly="1"/>
+                                        <field name="afiliacion" readonly="1" />                                   
+                                    </group>
+                                    <group>
+                                        <field name="tipo_comision" readonly="1"/>
+                                        <field name="zona" readonly="1" />  
+                                    </group>                                    
+                                </group>
+
+                            </group>
+                        </page>
+
+                        <page string="Ingresos">
+                            <group string="Ingresos">
+                                <group col="3">
+                                    <group>
+                                        <field name="basica_first" readonly="1"/>
+                                        <field name="dias_mes"/>
+                                        <field name="a_familiar_first" readonly="1"/>
+                                        <field name="dias_trabajador" required="1" />
+                                        <field name="horas_ordinarias_trabajadas"/>
+                                        <field name="dias_vacaciones"/>
+                                        <field name="num_days_subs"/>
+                                        <field name="num_days_subs_mater"/>
+                                        <field name="num_days_not_subs"/>
+                                    </group>
+                                    <group>
+                                        <field name="vacaciones_inicio"/>
+                                        <field name="horas_extra_diurna"/>                                        
+                                        <field name="horas_extra_nocturna"/>
+                                        <field name="horas_extra_descanso"/>
+                                        <field name="dias_feriados_trabajados"/>
+                                        <field name="horas_extra_feriado_diur" invisible="1"/>
+                                        <field name="horas_extra_feriado_noct" invisible="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="vacaciones_retorno"/>
+                                        <field name="horas_extra_feriado" invisible="1"/>
+                                        <field name="horas_extra_descanso_diurnas" invisible="1"/>
+                                        <field name="horas_extra_descanso_nocturnas" invisible="1"/>
+
+                                        <field name="total_ingresos" readonly="1"/>
+                                    </group>
+                                </group>
+                            </group>
+
+                            <group>
+                                <field name="conceptos_ingresos_lines" nolabel="1">
+                                    <tree editable="bottom" create="0" delete="0">
+                                        <field name="concepto_id"/>
+                                        <field name="monto" sum="monto"/>
+                                    </tree>
+                                </field>
+                            </group>
+
+                        </page>
+
+                        <page string="Descuentos de la Base">
+                            <group string="Descuentos Base">
+                                <group>
+                                    <field name="dias_suspension_perfecta"/>
+                                    <field name="dias_suspension_imperfecta"/>
+                                    <field name="tardanza_horas"/>
+                                </group>
+                                <group>
+                                    <field name="permisos"/>
+                                    <field name="descansos"/>
+                                    <field name="licencia_goce"/>
+                                    <field name="licencia_sin_goce"/>
+                                    <field name="total_descuentos_base" readonly="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="conceptos_descuentos_base_lines" nolabel="1">
+                                    <tree editable="bottom" create="0" delete="0">
+                                        <field name="concepto_id"/>
+                                        <field name="monto" sum="monto"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+
+                        <page string="Aportes Trabajador">
+                            <group>
+                                <group>
+                                    <field name="total_aportes_trabajador" readonly="1"/>
+                                </group>
+                            </group>
+                            <group string="Aportes Trabajador">
+                                <field name="conceptos_aportes_trabajador_lines" nolabel="1">
+                                    <tree editable="bottom" create="0" delete="0">
+                                        <field name="concepto_id"/>
+                                        <field name="monto" sum="monto"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+
+                        <page string="Aportes Empleador">
+                            <group>
+                                <group>
+                                    <field name="total_aportes_empleador" readonly="1"/>
+                                </group>
+                            </group>
+                            <group string="Aportes Empleador">
+                                <field name="conceptos_aportes_empleador_lines" nolabel="1">
+                                    <tree editable="bottom" create="0" delete="0">
+                                        <field name="concepto_id"/>
+                                        <field name="monto" sum="monto"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+
+                        <page string="Descuentos del Neto">
+                            <group>
+                                <group>
+                                    <field name="total_descuento_neto" readonly="1"/>
+                                </group>
+                            </group>
+                            <group string="Descuentos Neto">
+                                <field name="conceptos_descuentos_neto_lines" nolabel="1">
+                                    <tree editable="bottom" create="0" delete="0">
+                                        <field name="concepto_id"/>
+                                        <field name="monto" sum="monto"/>
+                                    </tree>
+                                </field>                                  
+                            </group>
+                        </page>
+
+                        <page string="Neto">
+                            <group>
+                                <group>
+                                    <field name="importe_vac"/>
+                                </group>
+                            </group>
+                            <group string="Neto">
+                                <field name="conceptos_neto_lines" nolabel="1">
+                                    <tree editable="bottom" create="0" delete="0">
+                                        <field name="concepto_id"/>
+                                        <field name="monto" sum="monto"/>
+                                    </tree>
+                                </field>                                 
+                            </group>
+                        </page>
+
+                        <page string="Neto por Pagar">
+                            <group string="Detalle del Neto">
+                                <field name="conceptos_detalle_neto_lines" nolabel="1">
+                                    <tree editable="bottom" create="0" delete="0">
+                                        <field name="concepto_id"/>
+                                        <field name="monto" sum="monto"/>
+                                    </tree>
+                                </field>                                 
+                            </group>
+                        </page>
+
+                        <page string="Provisiones">
+                            <group string="Resumen Provisiones">
+                                <field name="resumen_provisiones_lines" nolabel="1">
+                                    <tree editable="bottom" create="0" delete="0" edit="0">
+                                        <field name="tareo_id"/>
+                                        <field name="concept_type"/>
+                                        <field name="dni"/>
+                                        <field name="pagado"/>
+                                        <field name="acumulado"/>
+                                        <field name="diferencia"/>
+                                    </tree>
+                                </field>                                 
+                            </group>
+                        </page>
+                    </notebook>
+                    
+                    <separator/>
+                    <footer>
+                        <button string="Registrar" name="save_data" type="object" class="oe_highlight"/>
+                        <!-- o
+                        <button string="Cancelar" special="cancel" class="oe_link"/> -->
+                        o
+                        <button string="Actualizar" name="refresh_data" type="object"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <!--Vista Form-->
+        <record model="ir.ui.view" id="view_hr_tareo_form">
+            <field name="name">hr.tareo.form</field>
+            <field name="model">hr.tareo</field>
+            <field name="arch" type="xml">
+                <form string="Tareo" >
+                    <header>
+                        <button name="close_tareo" type="object" string="Cerrar" class="oe_highlight" states='open'/>
+                        <button name="open_tareo" type="object" string="Reabrir" class="oe_highlight" states='close' />
+                        <button name="extraer_datos" type="object" string="Extraer Nómina" class="oe_highlight" />
+                        <button name="recalcular" type="object" string="Recalcular tareo" class="oe_highlight" />
+                        <button name="make_account_move2" type="object" string="Generar asiento contable" class="oe_highlight" />
+                        <button name="make_account_move2_asiento2" type="object" string="Generar asiento distribuido" class="oe_highlight" invisible="1"/>
+                        <button name="make_plame" type="object" string="Generar PLAME" class="oe_highlight" />
+                        <button name="make_plame_practicante" type="object" string="Generar practicante PLAME" class="oe_highlight" />
+                        <button name="make_plame_hours" type="object" string="Generar Horas PLAME" class="oe_highlight" />
+                        <button name="open_boleta_empleado_wizard" string="Imprimir boleta" type="object"/>
+                        <button name="open_email_boleta_wizard" string="Enviar boletas por email" type="object" confirm="¿Desea enviar boletas?"/>
+                        <button name="%(action_add_worker_tareo_view)d" type="action"  targer="new" string="Agregar Trabajador"/>
+                        <button name="actualizar_resumen_todo" type="object" string="Actualizar Provisiones" class="oe_highlight"/>
+                        <button name="resumen_pago" type="object" string="Resumen Pago" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="open,close"/>
+                    </header>
+                    <sheet>
+                        <group string="Tareo">
+                            <group>
+                                <field name="periodo"/>
+                                <field name="calendary_days"/>
+                                <field name="sundays"/>
+                                <field name="sunat_hours"/>
+                            </group>
+                            <group>
+                                <field name="asiento"/>
+                                <field name="d_asiento" invisible="1"/>
+                                <field name="fecha_deposito"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page>
+                                <field name="detalle" readonly="0">
+                                    <tree editable="bottom">
+                                        <field name="state" invisible="1"/>
+                                        <field name="codigo_trabajador" readonly="1"/>
+                                        <field name="dni" readonly="1"/>
+                                        <field name="apellido_paterno" readonly="1"/>
+                                        <field name="apellido_materno" readonly="1"/>
+                                        <field name="nombre" readonly="1"/>
+                                        <field name="basica" readonly="1"/>
+                                        <field name="a_familiar" readonly="1"/>
+                                        <field name="vacaciones" readonly="1"/>
+                                        <field name="subsidiomaternidad" readonly="1"/>
+                                        <field name="subsidioincapacidad" readonly="1"/>
+                                        <field name="neto" readonly="1"/>
+                                        <button name="open_wizard" type="object" string="Icon" icon="gtk-edit" states='open'/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record> 
+
+        <!--Vista Tree-->
+        <record model="ir.ui.view" id="view_tareo_tree">
+            <field name="name">hr.tareo.tree</field>
+            <field name="model">hr.tareo</field>
+            <field name="arch" type="xml">
+                <tree string="Tareo" >
+                    <field name="periodo"/>
+                    <field name="deta_cant"/>
+                    <field name="asiento"/>
+                    <field name="state" string="Estado"/>
+                    
+                </tree>
+            </field>
+        </record>  
+    </data>
+</openerp>

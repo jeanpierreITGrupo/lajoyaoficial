@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record model="ir.ui.view" id="view_hr_table_membership_form">
+            <field name="name">hr.table.membership.form</field>
+            <field name="model">hr.table.membership</field>
+            <field name="arch" type="xml">
+                <form string="Tabla Afiliación">
+                    <sheet string="Tabla Afiliación">
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>                      
+                                <field name="account_id"/>
+                                <field name="mem_type"/>
+                            </group>
+                            <group></group>
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_table_membership_tree">
+            <field name="name">hr.table.membership.tree</field>
+            <field name="model">hr.table.membership</field>
+            <field name="arch" type="xml">
+                <tree string="Tabla Afiliación">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="account_id"/>
+                    <field name="mem_type"/>
+                </tree>
+            </field>
+        </record>
+	</data>
+</openerp>

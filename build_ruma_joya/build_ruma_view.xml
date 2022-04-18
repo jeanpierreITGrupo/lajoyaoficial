@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+
+        <record id="view_armado_ruma_tree" model="ir.ui.view">
+            <field name="name">armado.ruma.tree</field>
+            <field name="model">armado.ruma</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Armado de Ruma" >
+                    <field name="period_id" />
+                    <field name="name" />
+                    <field name="toneladas" />
+                    <field name="oro_expectativa" />
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_armado_ruma_form">
+            <field name="name">armado.ruma.form</field>
+            <field name="model">armado.ruma</field>
+            <field name="arch" type="xml">
+                <header>
+                    <button name="actualizar" states='draft,updated' string="Actualizar" type="object" class="oe_highlight" />
+                    <button name="armar_ruma" states='updated' string="Armar Ruma" type="object" class="oe_highlight" />
+                    <button string="Cancelar Última" name="cancel_last" type="object" states='draft,updated,transfered,done'/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,updated,transfered,done"/>
+                </header>
+                <sheet>
+                    <form string="Armado de Ruma" version="8.0">
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="toneladas" />
+                                <field name="oro_expectativa" invisible="1" />
+                                <field name="fecha_creacion" />
+                            </group>
+                            <group>
+                                <field name="total_costo_armado" />
+                                <field name="period_id" />
+                                <field name="analytic_id"  invisible="1"/>
+                            </group>
+                        </group>
+
+
+                        <group>
+                            <notebook>
+                                <page string="Detalle">
+                                    <field name="lines" >
+                                        <tree editable="bottom">
+                                            <field name="nro_expediente" />
+                                            <field name="nro_lote" />
+                                            <field name="exp_oro" invisible="1"/>
+                                            <field name="product_id" />
+                                            <field name="tn" />
+                                            <field name="valor" invisible="1" />
+                                            <field name="por" invisible="1"/>
+                                            <field name="nueva_valor" invisible="1"/>
+                                            <field name="nuevo_c_uni" invisible="1"/>
+                                        </tree>
+                                    </field>
+                                </page>
+                                <page string="Movimientos">
+                                    <group>
+                                            <field name="picking_1" readonly="1" />
+                                            <field name="picking_2" readonly="1" />
+                                    </group>
+                                </page>
+                            </notebook>
+                        </group>
+                    </form>
+                </sheet>
+            </field>
+        </record>
+
+        <record id="armado_ruma_action" model="ir.actions.act_window">
+            <field name="name">Armado de Ruma</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">armado.ruma</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="menu_armado_ruma"
+            name="Armado Ruma"
+            parent="previous_requirements_joya.submenu_production_joya"
+            action="armado_ruma_action"
+        />
+
+
+
+
+        <record id="view_purchase_liquidation_form" model="ir.ui.view">
+            <field name="name">purchase.liquidation.form</field>
+            <field name="model">purchase.liquidation</field>
+            <field name="inherit_id" ref="purchase_liquidation_it.view_purchase_liquidation_form"/>
+            <field name="arch" type="xml">
+              <!--  <button name="update" position="after">
+                        <button string="Reasignar Nro. Lote" type="object" name="reasignar_name" />
+                </button>    -->
+                <field name="mineral_type" position="before">
+                    <field name="ruma_relation_id" attrs="{'readonly':['|',('state','!=','draft'),('check_balanza','=',True)]}"/>
+                    <field name="fecha_consumo" attrs="{'readonly':['|',('state','!=','draft'),('check_balanza','=',True)]}" />
+                </field>
+            </field>
+        </record>
+
+
+
+
+        <record id="view_purchase_liquidation_tree" model="ir.ui.view">
+            <field name="name">purchase.liquidation.tree</field>
+            <field name="model">purchase.liquidation</field>
+            <field name="inherit_id" ref="purchase_liquidation_it.view_purchase_liquidation_tree"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="ruma_relation_id"/>
+                    <field name="fecha_consumo" />
+                </field>
+            </field>
+        </record>
+
+    <record id="purhchase_liquidation_search" model="ir.ui.view">
+        <field name="name">purchase.liquidation.search</field>
+        <field name="model">purchase.liquidation</field>
+        <field name="arch" type="xml">
+            <search string="Entries Analysis">
+				<field name="name"/>
+                <field name="ruma_relation_id"/>
+                <field name="fecha_consumo"/>
+                <field name="in_date" string="Fecha Recepcion" />
+                <field name="mes" />                
+                <field name="source_zone"/>
+                <field name="supplier_id"/>
+                <field name="material"/>
+                <field name="state"/>
+                <group expand="1" string="Group By">
+                    <filter string="Ruma" context="{'group_by':'ruma_relation_id'}"/>
+                    <filter string="Fecha Consumo" context="{'group_by':'fecha_consumo'}"/>
+                    <filter string="Fecha Recepcion" context="{'group_by':'in_date'}"/>
+                    <filter string="Origen" context="{'group_by':'source_zone'}"/>
+                    <filter string="Mes" context="{'group_by':'mes'}"/>
+                    <filter string="Estado" context="{'group_by':'state'}"/>
+                    <filter string="Proveedor" context="{'group_by':'supplier_id'}"/>
+                    <filter string="Material" context="{'group_by':'material'}"/>
+                 </group>
+            </search>
+        </field>
+    </record>
+
+
+
+        <record id="costeo_ruma_form" model="ir.ui.view">
+            <field name="name">costeo.ruma.form</field>
+            <field name="model">costeo.ruma</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <form string="Costeo">
+                <header>
+                        <button name="actualizar" string="Actualizar" type="object" class="oe_highlight" />
+                        <button name="calcular" string="Calcular" type="object" />
+                </header>
+                <sheet string="Costeo">
+                    <div class="oe_title">
+                        <h1>
+                            <label string="Periodo" />
+                            <field name="periodo" class="oe_inline" />
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Detalle">
+                            <field name="lineas" readonly="1">
+                                <tree string="Invoice lines">
+                                    <field name="ruma_id" />
+                                    <field name="toneladas" />
+                                    <field name="valor_materia_prima" invisible="1"/>
+                                    <field name="factor" />
+                                    <field name="total" invisible="1" />
+                                    <field name="p_unit" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Cuentas Analiticas">
+                            <field name="cuentas" />
+                        </page>
+                    </notebook>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="costo_rumas_action" model="ir.actions.act_window">
+            <field name="name">Costeo de Rumas</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">costeo.ruma</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="menu_armadocosteo_ruma"
+            name="Costeo de Rumas"
+            parent="previous_requirements_joya.submenu_production_joya"
+            action="costo_rumas_action"
+        />
+
+
+    </data>
+</openerp>

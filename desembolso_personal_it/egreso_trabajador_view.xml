@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+
+        <record model="ir.ui.view" id="it_egreso_trabajador_form">
+            <field name="name">Egresos Trabajador</field>
+            <field name="model">egreso.trabajador</field>
+            <field name="arch" type="xml">
+                <form string="Egresos Trabajador" version="8.0">
+                    <group>
+                        <field name="name" />
+                        <field name="cta_soles" />
+                        <field name="cta_dolares" />
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="it_egreso_trabajador_view" model="ir.ui.view">
+            <field name="name">Egresos Trabajador</field>
+            <field name="model">egreso.trabajador</field>
+            <field name="arch" type="xml">
+                <tree string="Egresos Trabajador">
+                    <field name="name" />
+                    <field name="cta_soles" />
+                    <field name="cta_dolares" />
+                </tree>
+
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="egreso_trabajador_action">
+            <field name="name">Egresos Trabajador</field>
+            <field name="res_model">egreso.trabajador</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="egreso_trabajador_action" id="menu_egreso_trabajador" parent="account.menu_configuration_misc"/>
+
+
+
+
+        <record model="ir.ui.view" id="it_desembolso_personal_form">
+            <field name="name">Desembolso Personal</field>
+            <field name="model">desembolso.personal</field>
+            <field name="arch" type="xml">
+                <form string="Desembolso Personal" version="8.0">
+                    <header>
+                        <button name="entregar_button" states="draft" string="Entregar" type="object" class="oe_highlight" />
+                        <button name="cancelar_button" states="done" string="Cancelar" type="object" />
+                        <button name="borrador_button" states="cancel" string="Volver Borrador" type="object" class="oe_highlight" />
+                        <button name="pagar_button" states="done" string="Pago" type="object" class="oe_highlight" />
+                        <button name="conciliacion_button" states="done" string="Conciliar" type="object" class="oe_highlight" />
+                        <button name="desconciliacion_button" states="done" string="Desconciliar" type="object" class="oe_highlight" />
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <label for="name" class="oe_edit_only" attrs="{'invisible':[('name','=',False)]}"/>
+                    <h1>
+                        <field name="name" readonly="True" attrs="{'invisible':[('name','=',False)]}"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="tipo_egreso" required="1" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                            <field name="fecha_entrega" required="1" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                            <field name="personal" required="1" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                            <field name="caja_banco" required="1" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                            <field name="medio_pago" required="1" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="comprobante_nro" required="1" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                            <field name="memoria" required="1" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                            <field name="fecha_ven" required="1" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                            <field name="monto_entregado" required="1" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                            <field name="saldo_deuda" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Desembolso Lineas">
+                            
+                            <field name="desembolso_lines" nolabel="1" readonly="1">
+                                <tree string="Apuntes Contables" create="false" edit="false">
+                                    <field name="name" readonly="1"/>
+                                    <field name="partner_id" readonly="1" string="Trabajador"/>
+                                    <field name="nro_comprobante" readonly="1" invisible="1"/>
+                                    <field name="account_id" readonly="1"/>
+                                    <field name="date" readonly="1" string="Fecha"/>
+                                    <field name="date_maturity" readonly="1"/>
+                                    <field name="debit" readonly="1" string="Entrega"/>
+                                    <field name="credit" readonly="1" string="Pago"/>
+                                    <field name="amount_currency" readonly="1"/>
+                                    <field name="currency_rate_it" readonly="1" string="Tipo de Cambio"/>
+                                    <field name="means_payment_id" readonly="1"/>
+                                    <field name="fefectivo_id" readonly="1" invisible="1"/>
+                                    <field name="reconcile_ref" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="it_desembolso_personal_view" model="ir.ui.view">
+            <field name="name">Desembolso Personal</field>
+            <field name="model">desembolso.personal</field>
+            <field name="arch" type="xml">
+                <tree string="Desembolso Personal">
+                    <field name="personal" />
+                    <field name="name" />
+                    <field name="periodo_id"/>
+                    <field name="fecha_entrega" />
+                    <field name="fecha_ven" />
+                    <field name="monto_entregado" />
+                    <field name="saldo_pagado" />
+                    <field name="saldo_deuda" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_desembolso_personal_search" model="ir.ui.view">
+            <field name="name">desembolso.personal.search</field>
+            <field name="model">desembolso.personal</field>
+            <field name="arch" type="xml">
+                <search string="Desembolso Personal">
+                    <group expand="0" string="Group By">
+                        <filter string="Periodo" context="{'group_by': 'periodo_id'}" />
+                        <filter string="Partner" context="{'group_by': 'personal'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+
+        <record model="ir.actions.act_window" id="desembolso_personal_action">
+            <field name="name">Desembolso Personal</field>
+            <field name="res_model">desembolso.personal</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="desembolso_personal_action" id="menu_desembolso_personal" parent="account.menu_finance_bank_and_cash"/>
+
+
+
+
+
+        <record model="ir.ui.view" id="it_desembolso_personal_wizard_form">
+            <field name="name">Desembolso Personal Pago</field>
+            <field name="model">desembolso.personal.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Desembolso Personal Pago" version="8.0">
+                    <group>
+                        <group>
+                            <field name="fecha" required="1"/>
+                            <field name="metodo_pago" required="1"/>
+                            <field name="medio_pago" required="1"/>
+                        </group>
+                        <group>
+                            <field name="monto" required="1"/>
+                            <field name="memoria" required="1"/>
+                            <field name="flujo_efectivo" />
+                        </group>
+                    </group>
+                        <footer>
+                            <button string="Aceptar" name="do_rebuild" type="object" class="oe_highlight"/>
+                            or
+                            <button string="Cancel" class="oe_link" special="cancel"/>
+                        </footer>
+                </form>
+            </field>
+        </record>
+ 
+
+
+        <record id="view_main_parameter_form" model="ir.ui.view">
+            <field name="name">main.parameter.form</field>
+            <field name="model">main.parameter</field>
+            <field name="inherit_id" ref="account_parameter_it.view_main_parameter_form"/>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+
+                <group string="Secuencias para Asistentes" position="inside">
+                        <field name="sequence_desembolso_personal" />
+                </group>
+                
+
+            </field>
+        </record>
+
+    </data>
+</openerp>

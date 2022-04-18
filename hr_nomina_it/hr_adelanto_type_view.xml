@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+
+        <record model="ir.ui.view" id="view_hr_adelanto_type_form">
+            <field name="name">hr.adelanto.type.form</field>
+            <field name="model">hr.adelanto.type</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <form string="Adelanto">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="code"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <!--Vista Form-->
+
+
+
+        <!--Vista Tree-->
+        <record model="ir.ui.view" id="view_hr_adelanto_type_tree">
+            <field name="name">hr.adelanto.type.tree</field>
+            <field name="model">hr.adelanto.type</field>
+            <field name="arch" type="xml">
+                <tree string="Tipo de adelanto" >
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record> 
+
+        <record id="view_hr_adelanto_type_filter" model="ir.ui.view">
+            <field name="name">hr.adelanto.type.select</field>
+            <field name="model">hr.adelanto.type</field>
+            <field name="arch" type="xml">
+                <search string="Buscar tipos de adelanto">
+                    <field name="name"/>
+                    <field name="code"/>
+               </search>
+            </field>
+        </record>
+
+
+        <record id="hr_adelanto_type_action" model="ir.actions.act_window">
+            <field name="name">Tipos de adelanto</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.adelanto.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+       
+        <menuitem 
+            action="hr_adelanto_type_action"
+            id="menu_hr_adelanto_type"
+            parent="hr.menu_hr_configuration"
+            sequence="99"
+        />
+
+
+
+         <!--Vista Tree-->
+        <record model="ir.ui.view" id="view_hr_adelanto_type_employee_tree">
+            <field name="name">hr.adelanto.type.employee.tree</field>
+            <field name="model">hr.adelanto.type.employee</field>
+            <field name="arch" type="xml">
+                <tree string="Tipos de adelantos" >
+                    <field name="adelanto_type_id"/>
+                    <field name="account_id"/>
+                </tree>
+            </field>
+        </record> 
+
+
+	</data>
+</openerp>

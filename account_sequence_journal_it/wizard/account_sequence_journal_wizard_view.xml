@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_account_sequence_journal_wizard_form">
+            <field name="name">account.sequence.journal.wizard.form</field>
+            <field name="model">account.sequence.journal.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generar Secuencias" version="8.0">
+                        <group>
+                            <field name="fiscal_id"/>
+                            <field name="period_ini"/>
+                            <field name="period_end"/>
+                            <field name="journal_ids"/>
+                        </group>
+                        <footer>
+                            <button string="Mostrar" name="do_rebuild" type="object" class="oe_highlight"/>
+                            or
+                            <button string="Cancel" class="oe_link" special="cancel"/>
+                        </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="account_sequence_journal_wizard_action" model="ir.actions.act_window">
+            <field name="name">Generar Secuencias</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.sequence.journal.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem action="account_sequence_journal_wizard_action" id="menu_main_sequence_fiscal_unique" parent="account.menu_configuration_misc"/>
+    </data>
+</openerp>

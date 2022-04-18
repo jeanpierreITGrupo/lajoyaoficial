@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name="active"  position="after">
+                    <field name="tipo_proveedor" />
+                </field>               
+            </field>
+        </record>
+
+
+        <record id="view_account_contable_fch_wizard_form" model="ir.ui.view">
+            <field name="name">account.contable.fch.wizard.form</field>
+            <field name="model">account.contable.fch.wizard</field>
+            <field name="inherit_id" ref="repaccount_contable_period_it.view_account_contable_fch_wizard_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id"  position="before">
+                    <field name="type_partner" />
+                </field>               
+            </field>
+        </record>
+
+        <record id="view_saldo_comprobante_empresa_wizard_form" model="ir.ui.view">
+            <field name="name">saldo.comprobante.empresa.wizard.form</field>
+            <field name="model">saldo.comprobante.empresa.wizard</field>
+            <field name="inherit_id" ref="analisis_saldos_comprobantes_empresa_it.view_saldo_comprobante_empresa_wizard_form"/>
+            <field name="arch" type="xml">
+                <field name="empresa"  position="before">
+                    <field name="type_partner" />
+                </field>               
+            </field>
+        </record>
+
+
+
+        <record id="view_saldo_comprobante_wizard_form" model="ir.ui.view">
+            <field name="name">saldo.comprobante.wizard.form</field>
+            <field name="model">saldo.comprobante.wizard</field>
+            <field name="inherit_id" ref="analisis_saldos_comprobantes_it.view_saldo_comprobante_wizard_form"/>
+            <field name="arch" type="xml">
+                <field name="empresa"  position="before">
+                    <field name="type_partner" />
+                </field>               
+            </field>
+        </record>
+
+
+
+        <record id="view_saldo_comprobante_periodo_wizard_form" model="ir.ui.view">
+            <field name="name">saldo.comprobante.periodo.wizard.form</field>
+            <field name="model">saldo.comprobante.periodo.wizard</field>
+            <field name="inherit_id" ref="analisis_saldos_comprobantes_periodo_it.view_saldo_comprobante_periodo_wizard_form"/>
+            <field name="arch" type="xml">
+                <field name="empresa"  position="before">
+                    <field name="type_partner" />
+                </field>               
+            </field>
+        </record>
+
+
+	</data>
+</openerp>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="warehouse_parameters_form_view">
+			<field name="name">warehouse.parameters.form</field>
+			<field name="model">warehouse.parameters</field>
+			<field name="inherit_id" ref="warehouse_parameters.warehouse_parameters_form_view"/>
+			<field name="arch" type="xml">
+				<xpath expr="//form[@string='Parametros']/sheet/group/notebook/page[@string='Configuración']/group[1]" position="inside">
+					<group string="Alerta Sobrantes">
+						<field name="s_rotation"/>
+	                    <field name="s_warehouse_id"/>
+	                    <field name="s_user_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+	                </group>
+	                <group string="Alerta Faltantes">
+						<field name="f_rotation"/>
+	                    <field name="f_warehouse_id"/>
+	                    <field name="f_user_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+	                </group>
+				</xpath>
+			</field>
+		</record>
+
+    </data>
+</openerp>
+
+		

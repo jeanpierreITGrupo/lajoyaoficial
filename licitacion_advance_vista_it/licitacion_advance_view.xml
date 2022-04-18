@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <!-- VISTA -->
+        <record id="view_licitacion_advance_view_tree" model="ir.ui.view">
+            <field name="name">licitacion.advance.view.tree</field>
+            <field name="model">licitacion.advance.view</field>
+            <field name="arch" type="xml">
+                <tree string="Licitaciones" delete="0" create="0" edit="0">
+                    <field name="linea_id" invisible="1"/>
+
+                    <field name="licitacion_id"/>
+                    <field name="date"/>
+                    <field name="employee_id"/>
+                    <field name="area_id"/>
+                    <field name="analytic_id"/>
+                    <field name="product_id"/>
+                    <field name="description"/>
+                    <field name="uom_id"/>
+                    <field name="justification"/>
+                    <field name="priority"/>
+                    <field name="required_qty" sum="required_qty"/>
+                    <field name="order_qty" sum="order_qty"/>
+                    <field name="order_stock" sum="order_stock"/>
+                    <field name="arrival_date"/>
+                    <field name="partner_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="licitacion_advance_view_search" model = "ir.ui.view">
+            <field name="name">licitacion.advance.view.search</field>
+            <field name="model">licitacion.advance.view</field>
+            <field name="arch" type="xml">
+                <search string="buscar">
+                    <field name="licitacion_id"/>
+                    <field name="date"/>
+                    <field name="employee_id"/>
+                    <field name="area_id"/>
+                    <field name="product_id"/>
+                    <field name="priority"/>
+                    <field name="partner_id"/>
+
+                    <!-- <filter icon="terp-go-year" string="Nombre" name="nombre"/> -->
+
+                    <separator/>
+
+                    <group expand="1" string="Group By...">
+                        <filter string="Licitación" name="licitacion_id" icon="terp-partner" context="{'group_by':'licitacion_id'}"/>
+                        <filter string="Solicitante" name="employee_id" icon="terp-partner" context="{'group_by':'employee_id'}"/>
+                        <filter string="Area" name="area_id" icon="terp-partner" context="{'group_by':'area_id'}"/>
+                        <filter string="Prioridad" name="priority" icon="terp-partner" context="{'group_by':'priority'}"/>
+                        <filter string="Proveedor" name="partner_id" icon="terp-partner" context="{'group_by':'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="licitacion_advance_view_action" model="ir.actions.act_window">
+            <field name="name">Licitaciones con Saldo</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">licitacion.advance.view</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('order_stock','>',0)]</field>
+        </record>
+        
+        <!-- REPORTE -->
+        <record id="action_export_excel" model="ir.actions.server">
+            <field name="name">Generar Reporte</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_licitacion_advance_view" />
+            <field name="state">code</field>
+            <field name="code">action = self.export_excel(cr, uid, context.get('active_ids', []), context=context)</field>
+        </record>
+
+
+        <record id="exportalicitacionexcel_action" model="ir.actions.server">
+            <field name="name">Generar Reporte</field>
+            <field name="model_id" ref='model_licitacion_advance_view'/>
+            <field name="state">code</field>
+            <field name="code">action=self.export_excel(cr, uid, context.get('active_ids', []), context=context)</field>
+        </record>
+
+        <record model="ir.values" id="exportacionlicitacionexcel_more_item">
+            <field eval="'client_action_multi'" name="key2"/>
+            <field eval="'licitacion.advance.view'" name="model"/>
+            <field name="name">Test Item</field>
+            <field name="value" eval="'ir.actions.server,%d'%exportalicitacionexcel_action" />
+            <field name="object" eval="True"/>
+        </record>
+
+        <!-- MENU DESPLEGABLE -->
+		
+		
+		<menuitem
+            id="menu_purchase_report"
+            name="Reportes"
+            sequence="2"
+            parent="base.menu_purchase_root" 
+        />
+        <!--<menuitem
+            id="menu_licitacion_saldo"
+            name="Licitaciones con Saldo"
+            sequence="2"
+            parent="purchase.menu_procurement_management"
+        />-->
+
+        <!-- VISTA -->
+        <menuitem 
+            id="menu_licitacion_advance_view" 
+            sequence="1" 
+            action="licitacion_advance_view_action" 
+            parent="menu_purchase_report"
+        />
+
+
+
+
+
+        <record model="ir.ui.view" id="view_licitacion_report_wizard_form">
+            <field name="name">licitacion.advance.view.reporte.form</field>
+            <field name="model">licitacion.advance.view.reporte</field>
+            <field name="arch" type="xml">
+                <form string="Licitación Vencimiento" version="7.0">
+                        <group>
+                            <field name="fecha" required="1"/>
+                        </group>
+                        <footer>
+                            <button string="Mostrar" name="do_rebuild" type="object" class="oe_highlight"/>
+                            or
+                            <button string="Cancel" class="oe_link" special="cancel"/>
+                        </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="reporte_vencimiento_licitacion_view_action" model="ir.actions.act_window">
+            <field name="name">Reporte de Vencimiento</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">licitacion.advance.view.reporte</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem 
+            id="menu_reporte_vencimiento_licitacion_view" 
+            sequence="1" 
+            action="reporte_vencimiento_licitacion_view_action" 
+            parent="menu_purchase_report"
+        />
+
+        <!-- REPORTE 
+        <menuitem 
+            id="menu_licitacion_advance_view_export_excel" 
+            sequence="2" 
+            action="action_export_excel" 
+            parent="menu_licitacion_saldo"
+        /> -->
+
+    </data>
+</openerp>

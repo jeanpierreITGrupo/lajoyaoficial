@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	  <record id="view_move_picking_form" model="ir.ui.view">
+			<field name="name">stock.move.form</field>
+			<field name="model">stock.move</field>
+			<field name="inherit_id" ref="stock.view_move_picking_form"/>
+			<field name="arch" type="xml">
+				<field name="name" position="after">
+					<field name="partner_id"/>
+					<field name="price_unit"/>
+					<field name="invoice_id" domain="[('partner_id','=',partner_id),('state','in',('open','paid'))]"/>
+					<!--<field name="analitic_id" domain="[('type','=','normal'),]"/>-->
+				</field>
+			</field>
+		</record>
+
+		<record id="view_move_picking_tree_it" model="ir.ui.view">
+			<field name="name">stock.move.tree</field>
+			<field name="model">stock.move</field>
+			<field name="inherit_id" ref="stock_picking_partner.view_move_picking_tree_it"/>
+			<field eval="4" name="priority"/>
+			<field name="arch" type="xml">
+
+				<field name="name" position="after">
+					<field name="partner_id" string="Dirección de destino" invisible="1"/>
+                    <field name="price_unit" string="Precio un." />
+                    <field name="invoice_id" string="Factura"  invisible="1"/>
+                    
+                    <field name="analitic_id" string="Centro de Costo" />
+				</field>
+				<field name="state" position="before">
+					<field name="invoice_id" string="Factura" domain="[('partner_id','=',parent.partner_id),]"/>
+					<!-- <button name="%(action_set_invoice)d"
+                    string="Fatura asociada"
+                    icon="gtk-find-and-replace"/> 
+					<field name="analitic_id" domain="[('type','=','normal'),]"/>-->
+				</field>
+			</field>
+		</record>
+
+
+
+
+        <record id="view_sm_add_invoice_form" model="ir.ui.view">
+            <field name="name">Asignar factura</field>
+            <field name="model">stock.move.invoice</field>
+            <field name="arch" type="xml">
+            <form string="Stock Moves" version="7.0">
+                <group>
+                    <group>
+                        <field name="invoice_id" />
+                    </group>
+                </group>
+                <footer>
+                    <button name="set_invoice" string="Aceptar" type="object" class="oe_highlight"/>
+	                 or
+	                <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+            </field>
+        </record>
+
+		<record id="action_set_invoice" model="ir.actions.act_window">
+            <field name="name">Factura relacionada</field>
+            <field name="res_model">stock.move.invoice</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_sm_add_invoice_form"/>
+            <field name="context">{}</field>
+        </record>
+	</data>
+</openerp>

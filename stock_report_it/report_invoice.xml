@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_picking" inherit_id="stock.report_picking">
+            
+            <xpath expr="//thead[1]" position="replace">
+                <thead>
+                <tr>
+                                    <th><strong>Pedido (Origen)</strong></th>
+                                    <th><strong>Departamento</strong></th>
+                                    <th><strong>Fecha Kardex</strong></th>
+                                    <th name="td_sched_date_h"><strong>Fecha Prevista</strong></th>
+                                </tr>
+                            </thead>
+            </xpath>
+        </template>
+
+
+    </data>
+</openerp>

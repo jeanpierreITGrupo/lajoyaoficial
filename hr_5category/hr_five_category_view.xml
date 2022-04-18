@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data> 
+        <record id="view_hr_five_category_tree" model="ir.ui.view">
+            <field name="name">hr.five.category.tree</field>
+            <field name="model">hr.five.category</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="5ta Categoría">
+                    <field name="period_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_five_category_form" model="ir.ui.view">
+            <field name="name">hr.five.category.form</field>
+            <field name="model">hr.five.category</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="5ta Categoría">
+                    <header>
+                        <button string="Procesar" type="object" name="procesar" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <group>
+                           <field name="period_id"/> 
+                        </group>
+                        <notebook>
+                            <page string="Cálculo del Impuesto">
+                                <field name="five_lines">
+                                    <tree>
+                                        <field name="employee_id"/>
+                                        <field name="monto" sum="monto" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_hr_five_category" model="ir.actions.act_window">
+            <field name="name">5ta Categoría</field>
+            <field name="res_model">hr.five.category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+         <menuitem action="action_hr_five_category" id="menu_hr_five_category" parent="hr.menu_hr_main"/>
+
+        <record id="view_hr_five_category_lines_form" model="ir.ui.view">
+            <field name="name">hr.five.category.lines.form</field>
+            <field name="model">hr.five.category.lines</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="5ta Categoría">
+                    <header>
+                        <button string="Generar Excel" name="make_excel" type="object" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="employee_id"/>
+                            </group>
+                            <group>
+                                <field name="monto_man" invisible="1"/>
+                            </group>
+                        </group>
+                        <!-- <group>
+                            <group>
+                                <field name="bonificacion_ex"/>
+                            </group>
+                            <group></group>
+                        </group> -->
+                        <notebook>
+                            <page string="Calculo del Impuesto" attrs="{'invisible':[('monto_man','=',True)]}">
+                                <field name="calculo_lines" nolabel="1">
+                                    <tree editable="botton" create="0" delete="0">
+                                        <field name="sueldo_anual" readonly="1"/>
+                                        <field name="gratificacion_j"/>
+                                        <field name="bonificacion_j" readonly="1"/>
+                                        <field name="gratificacion_d"/>
+                                        <field name="bonificacion_d" readonly="1"/>
+                                        <field name="bonificacion_ex" readonly="1"/>
+                                        <field name="renta_bruta" readonly="1"/>
+                                        <field name="otras_rentas"/>
+                                        <field name="total_rentas" readonly="1"/>
+                                        <field name="deduccion_uit" readonly="1"/>
+                                        <field name="renta_neta" readonly="1"/>
+                                        <field name="impuesto_anual"/>
+                                        <field name="otras_retencion"/>
+                                        <field name="retencion_men" readonly="1"/>
+                                        <field name="bon_extra_per"/>
+                                        <field name="ret_por_bon_ext" readonly="1"/>
+                                        <field name="total_imponible" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Remuneraciones">
+                                <field name="remuneracion_lines" nolabel="1">
+                                    <tree editable="botton" create="0" delete="0">
+                                        <field name="enero"/>
+                                        <field name="febrero"/>
+                                        <field name="marzo"/>
+                                        <field name="abril"/>
+                                        <field name="mayo"/>
+                                        <field name="junio"/>
+                                        <field name="julio"/>
+                                        <field name="agosto"/>
+                                        <field name="septiembre"/>
+                                        <field name="octubre"/>
+                                        <field name="noviembre"/>
+                                        <field name="diciembre"/>
+                                        <field name="total"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Descuentos" attrs="{'invisible':[('monto_man','=',True)]}">
+                                <field name="descuento_lines" nolabel="1" readonly="1">
+                                    <tree editable="botton" create="0" delete="0">
+                                        <field name="enero" readonly="1"/>
+                                        <field name="febrero" readonly="1"/>
+                                        <field name="marzo" readonly="1"/>
+                                        <field name="abril" readonly="1"/>
+                                        <field name="mayo" readonly="1"/>
+                                        <field name="junio" readonly="1"/>
+                                        <field name="julio" readonly="1"/>
+                                        <field name="agosto" readonly="1"/>
+                                        <field name="septiembre" readonly="1"/>
+                                        <field name="octubre" readonly="1"/>
+                                        <field name="noviembre" readonly="1"/>
+                                        <field name="diciembre" readonly="1"/>
+                                        <field name="total"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Monto Manual" attrs="{'invisible':[('monto_man','=',False)]}">
+                                <field name="manual_lines" nolabel="1">
+                                    <tree editable="botton" create="0" delete="0">
+                                        <field name="enero"/>
+                                        <field name="febrero"/>
+                                        <field name="marzo"/>
+                                        <field name="abril"/>
+                                        <field name="mayo"/>
+                                        <field name="junio"/>
+                                        <field name="julio"/>
+                                        <field name="agosto"/>
+                                        <field name="septiembre"/>
+                                        <field name="octubre"/>
+                                        <field name="noviembre"/>
+                                        <field name="diciembre"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_hr_five_category_devolucion_tree" model="ir.ui.view">
+            <field name="name">hr.five.category.devolucion.tree</field>
+            <field name="model">hr.five.category.devolucion</field>
+            <field name="arch" type="xml">
+                <tree string="Devolución 5ta Categoría">
+                    <field name="period_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_five_category_devolucion_form" model="ir.ui.view">
+            <field name="name">hr.five.category.devolucion.form</field>
+            <field name="model">hr.five.category.devolucion</field>
+            <field name="arch" type="xml">
+                <form string="5ta Categoría">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="period_id"/> 
+                            </group>
+                            <group></group>
+                        </group>
+                        <group>
+                            <field name="devolucion_lines" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="employee_id"/>
+                                    <field name="fecha_ingreso" readonly="0"/>
+                                    <field name="fecha_cese" readonly="0"/>
+                                    <field name="ingresos_afectos"/>
+                                    <field name="otras_rentas"  readonly="0"/>
+                                    <field name="total_ingresos"/>
+                                    <field name="deduccion_uit"/>
+                                    <field name="renta_neta"/>
+                                    <field name="impuesto_anual"/>
+                                    <field name="retencion_efectuada"/>
+                                    <field name="monto_devolver"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_hr_five_category_devolucion" model="ir.actions.act_window">
+            <field name="name">Devolución de Renta de Quinta</field>
+            <field name="res_model">hr.five.category.devolucion</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+         <menuitem action="action_hr_five_category_devolucion" id="menu_hr_five_category_devolucion" parent="hr.menu_hr_main"/>
+    </data>
+</openerp>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="report_invoice_document" inherit_id="account.report_invoice_document">
+            <xpath expr="//div[@class='col-xs-4 pull-right']/table" position="inside">
+                <tr class="border-black">
+                            <td><strong>Balance</strong></td>
+                            <td class="text-right">
+                                 <span t-field="o.residual" t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                            </td>
+                        </tr>
+            </xpath>
+
+            <xpath expr="//div[@class='col-xs-6']" position="inside">
+                <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Monto Detracción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-right">
+                                    <span t-field="o.monto_detraccion"
+                                        t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </xpath>
+        </template>
+
+
+    </data>
+</openerp>

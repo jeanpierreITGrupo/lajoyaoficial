@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="view_hr_certificado_trabajo_wizard_form">
+            <field name="name">hr.certificado.trabajo.wizard.form</field>
+            <field name="model">hr.certificado.trabajo.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Certificado">
+                	<group col="2">
+                        <group>
+                    	   <field name="date"/>                            
+                        </group>
+                        <group></group>
+                    </group>
+                    <group>
+                        <field name="employee_ids" nolabel="1" domain="[('id','in',context['employees'])]">
+                            <tree editable="bottom">
+                                <field name="name_related"/>
+                            </tree>
+                        </field>                        
+                    </group>
+                    <footer>
+                        <button string="Generar" type="object" name="do_rebuild" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+	</data>
+</openerp>

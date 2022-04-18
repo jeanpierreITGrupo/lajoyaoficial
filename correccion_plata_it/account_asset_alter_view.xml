@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+
+        <record model="ir.ui.view" id="view_actualizar_plata_form">
+            <field name="name">actualizar.plata.wizard.form</field>
+            <field name="model">actualizar.plata.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Actualizar Plata" version="8.0">
+                    <group>
+                        <group>
+                            <field name="period_id" required="1" />
+                            <field name="account_id" required="1" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button string="Actualizar" name="do_rebuild" type="object" class="oe_highlight"/>
+                        <!-- <button string="Actualizar" name="actualizarsaldoinicial" type="object" class="oe_highlight"/> -->
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="plata_actualizacion_action" model="ir.actions.act_window">
+            <field name="name">Actualizar Plata</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">actualizar.plata.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Actualizar Plata"
+            action="plata_actualizacion_action"
+            id="actualizar_plata_menu"
+            parent="previous_requirements_joya.submenu_production_joya"
+            sequence="110"
+        />
+
+
+    </data>
+</openerp>

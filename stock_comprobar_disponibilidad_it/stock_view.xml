@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="view_picking_form">
+			<field name="name">stock.picking.form</field>
+			<field name="model">stock.picking</field>
+			<field name="inherit_id" ref="stock.view_picking_form"/>
+			<field name="arch" type="xml">				
+
+				<xpath expr="//header/button[@name='action_assign']" position="after">
+					<button name="get_disponibilidad" states="confirmed" string="Disponibilidad" type="object" class="oe_highlight"/>
+				</xpath>
+				<xpath expr="//header/button[@name='action_assign']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+
+				<xpath expr="//header/button[@name='force_assign']" position="before">
+					<button name="get_disponibilidad" states="partially_available" string="Disponibilidad" type="object" class="oe_highlight"/>
+				</xpath>
+				<xpath expr="//header/button[@name='rereserve_pick']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+
+				<xpath expr="//header/button[@name='force_assign']" position="before">
+					<button name="clean_confirmed" states="partially_available" string="Limpiar no Disponibles" type="object"/>
+				</xpath>
+
+				<xpath expr="//header/button[@name='force_assign']" position="after">
+					<field name="forzar" invisible="1"/>
+					<field name="check_forced" invisible="1"/>
+				</xpath>
+				<xpath expr="//header/button[@name='force_assign']" position="replace">
+					<button name="force_assign" attrs="{'invisible': [('forzar','=', False)]}" string="Force Availability" type="object" groups="base.group_user"/>
+				</xpath>
+
+				<xpath expr="//header/button[@name='do_enter_transfer_details']" position="attributes">
+					<attribute name="states">assigned</attribute>
+					<!--<attribute name="state">partially_available</attribute>
+					<attribute name="invisible">1</attribute>-->
+				</xpath>	
+
+			</field>
+		</record>
+
+		<record id="view_move_form" model="ir.ui.view">
+			<field name="name">stock.move.form</field>
+			<field name="model">stock.move</field>
+			<field name="inherit_id" ref="stock.view_move_form"/>
+			<field name="arch" type="xml">
+				<field name="location_dest_id" position="after">
+					<field name="disponibilidad"/>
+				</field>
+				<!-- <field name="string_availability_info" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</field> -->
+			</field>
+		</record>
+
+		<record id="view_move_picking_tree" model="ir.ui.view">
+			<field name="name">stock.move.tree</field>
+			<field name="model">stock.move</field>
+			<field name="inherit_id" ref="stock.view_move_picking_tree"/>
+			<field name="arch" type="xml">
+
+				<field name="location_dest_id" position="after">
+					<field name="disponibilidad"/>
+				</field>
+				
+				<xpath expr="//tree[@string='Stock Moves']/field[@name='string_availability_info']" position="replace">
+					<field name="string_availability_info" invisible="1"/>
+				</xpath>
+			</field>
+		</record>
+
+		<record id="view_stock_move_clean_wizard_form" model="ir.ui.view">
+			<field name="name">stock.move.clean.wizard.form</field>
+            <field name="model">stock.move.clean.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Aviso" version="8.0">
+                        <group>
+                                <field name="aviso" nolabel="1" readonly="1"/>                               
+                        </group>
+
+                        <footer>
+                            <button string="Aceptar" name="do_rebuild" type="object" class="oe_highlight"/>
+                            or
+                            <button string="Cancelar" class="oe_link" special="cancel"/>
+                        </footer>
+                </form>
+            </field>
+		</record>
+
+		<record id="view_stock_enter_transfer_details" model="ir.ui.view">
+			<field name="name">Enter transfer details</field>
+            <field name="model">stock.transfer_details</field>
+            <field name="inherit_id" ref="stock.view_stock_enter_transfer_details"/>
+            <field name="arch" type="xml">
+                <field name="picking_destination_location_id" position="after">
+                	<field name="stock_picking_id" invisible="1"/>
+                </field>
+            </field>
+		</record>
+
+
+	</data>
+</openerp>

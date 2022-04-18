@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+
+
+        <record model="ir.ui.view" id="crossovered_budget_view_form">
+            <field name="name">crossovered.budget.view.form</field>
+            <field name="model">crossovered.budget</field>
+            <field name="inherit_id" ref="account_budget.crossovered_budget_view_form"/>
+            <field name="arch" type="xml">
+                <button name='confirm' position="after" >
+                    <button string="Agregar Linea" name="do_create_line" states="draft" type="object" class="oe_highlight"/>
+                    <button string="Cancelar" name="budget_cancel_hecho" states="done" type="object" class="oe_highlight"/>
+                </button>
+                <field name="code" position="after">
+                    <field name="period_id" required="1" />
+                </field>
+                            <field name="crossovered_budget_line" position="replace">
+                                <field name="crossovered_budget_line" colspan="4" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}" context="{'date_from_p': date_from,'date_to_p':date_to}">
+                                    <tree string="Budget Lines" editable="bottom">
+                                        <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
+                                        <field name="general_budget_id"/>
+                                        <field name="date_from" invisible="1" />
+                                        <field name="date_to" invisible="1"/>
+
+                                        <field name="paid_date" invisible="1" />
+                                        <field name="planned_amount" sum="Planned Amount"/>
+                                        <field name="importe_real" sum="Importe Real" />
+                                        <field name="practical_amount" sum="Practical Amount" invisible="1"/>
+                                        <field name="theoritical_amount" sum="Theoretical Amount" invisible="1"/>
+                                        <field name="desviacion" />
+                                        <field name="porcentaje_real" />
+                                        <field name="percentage" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </field>
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="view_crossover_budget_lines_wizard_it">
+            <field name="name">crossovered.budget.lines.wizard.form</field>
+            <field name="model">crossovered.budget.lines.wizard</field>
+            <field name="arch" type="xml">
+                <form string="" version="8.0">
+                    <group string="Agregar Linea">
+                        <group>
+                            <group>
+                                <field name="analytic_account_id" />
+                                <field name="general_budget_id" />
+                                <field name="planned_amount" />
+                            </group>
+                            <group>
+
+                            </group>
+                        </group>
+                    </group>                    
+                    <footer>
+                        <button string="Agregar" name="do_rebuild" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>

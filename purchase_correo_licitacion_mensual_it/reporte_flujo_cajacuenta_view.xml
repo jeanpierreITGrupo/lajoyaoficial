@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <record id="view_purchase_parameter_form" model="ir.ui.view">
+            <field name="name">purchase.parameter.form</field>
+            <field name="model">purchase.parameter</field>
+            <field name="inherit_id" ref="licitacion_advance_it.view_purchase_parameter_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[@string='Configuración']" position="inside">
+                    <group string="Licitaciones Mensuales">
+                        <field name="activar_correo_licitaciones"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+	</data>
+</openerp>

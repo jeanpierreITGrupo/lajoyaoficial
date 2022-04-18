@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_purchase_costingdetalle_form" model="ir.ui.view">
+            <field name="name">purchase.costing.detalle.form</field>
+            <field name="model">purchase.costing.detalle</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button string="Obtener Datos" name="find_data" type="object" class="oe_highlight" states='draft'/>
+                        <button string="Calcular" name="calculate" type="object" class="oe_highlight" states='draft'/>
+                        <button string="Actualizar Kardex" name="update_kardex" type="object" class="oe_highlight" states='calculated'/>
+                        <button string="Generar Asientos" class="oe_highlight" states='updated'/>
+                        <button string="Cancelar Última" name="cancel_last" type="object" states='calculated,updated,done'/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,calculated,updated,done"/>
+                    </header>
+                    <sheet>
+                        <h1>
+                            <label string="Costeo" />
+                            <field name="name" class="oe_inline" readonly="0"/>
+                        </h1>
+                        <group>
+                			<group>
+                				<field name="expedient_expenses" readonly="1"/>
+                                <field name="no_expedient_expenses_part" readonly="1"/>
+                                <field name="expedient_total_expected" readonly="1"/>
+                			</group>
+                			<group>
+                                <field name="period_id"/>
+                                <field name="journal_id"/>
+                                <field name="location_id" domain="[('usage','=','internal')]" />
+                			</group>
+                		</group>
+                        <field name="lines" readonly="1"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_purchase_costingdetalle_tree" model="ir.ui.view">
+            <field name="name">purchase.costing.detalle.tree</field>
+            <field name="model">purchase.costing.detalle</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="period_id"/>
+                    <field name="name"/>
+                    <field name="expedient_expenses"/>
+                    <field name="no_expedient_expenses_part"/>
+                    <field name="expedient_total_expected"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_purchase_costingdetalle_line_tree" model="ir.ui.view">
+            <field name="name">purchase.costing.detalle.line.tree</field>
+            <field name="model">purchase.costing.detalle.line</field>
+            <field name="arch" type="xml">
+                <tree editable="top" create="0" delete="0">
+                    <field name="expedient_number" readonly="1" invisible="1"/>
+                    <field name="lot_number"/>
+                    <field name="gold_expected"/>
+                    <field name="product"/>
+                    <field name="tn_amount"/>
+                    <field name="percentage_expenses"/>
+                    <field name="invoice_value" sum=""/>
+                    <field name="expedient_value" sum=""/>
+                    <field name="no_expedient_expenses" sum=""/>
+                    <field name="total_value" sum=""/>
+                    <field name="new_cu"/>
+                </tree>
+            </field>
+        </record>
+      
+        <record id="action_purchase_costingdetalle" model="ir.actions.act_window">
+            <field name="name">Gastos Acopio</field>
+            <field name="res_model">purchase.costing.detalle</field>
+            <field name="view_type">form</field>
+        	<field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem 
+            id="submenu_purchase_costing" 
+            name="Gastos Acopio" 
+            parent="previous_requirements_joya.submenu_production_joya"
+            action="action_purchase_costingdetalle" 
+            sequence="2"
+        />
+
+
+
+        <record id="view_purchase_costing_unico_form" model="ir.ui.view">
+            <field name="name">purchase.costing.form</field>
+            <field name="model">purchase.costing</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <h1>
+                            <label string="Expediente" />
+                            <field name="name" class="oe_inline" readonly="1"/>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="periodo"/>
+                                <field name="date"/>
+                            </group>
+                            <group>
+                                <field name="acopiador"/>
+                                <field name="zona"/>
+                                <field name="location_id" domain="[('usage','=','internal')]" />
+                            </group>
+                        </group>
+                        <group>
+                            <field name="lineas" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="nro_lote" />
+                                    <field name="expectativa_oro" readonly="1"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_purchase_costing_unico_tree" model="ir.ui.view">
+            <field name="name">purchase.costing.tree</field>
+            <field name="model">purchase.costing</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="periodo"/>
+                    <field name="date"/>
+                                <field name="acopiador"/>
+                                <field name="zona"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_purchase_costing_unico" model="ir.actions.act_window">
+            <field name="name">Expediente</field>
+            <field name="res_model">purchase.costing</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem 
+            id="submenu_expedien_costing" 
+            name="Expediente" 
+            parent="previous_requirements_joya.submenu_expediente_joya"
+            action="action_purchase_costing_unico" 
+            sequence="2"
+        />
+
+
+        <record id="view_production_parameter_form" model="ir.ui.view">
+            <field name="name">production.parameter.form</field>
+            <field name="model">production.parameter</field>
+            <field name="inherit_id" ref="parameters_expedient.view_production_parameter_form"/>
+            <field name="arch" type="xml">
+                <field name="top_destino_chancado" position="after">
+                    <field name="account_anal_padre" />
+                </field>
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>

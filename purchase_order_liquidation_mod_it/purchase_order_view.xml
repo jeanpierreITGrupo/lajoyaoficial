@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+        <record id="purchase_order_form" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name="currency_id" position="after">
+                    <field name="centro_costo_id" />
+                </field>
+            </field>
+        </record>
+
+
+        <record id="invoice_supplier_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <field name="payment_term" position="after">
+                    <field name="motivo_reparables_id" />
+                </field>                
+            </field>
+        </record>
+
+
+
+
+
+        <record id="view_centro_costo_joya_it" model="ir.ui.view">
+            <field name="name">centro.costo.joya.tree</field>
+            <field name="model">centro.costo.joya</field>
+            <field name="arch" type="xml">
+                <tree string="Centro de Costo">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_centro_costo_joya_form">
+            <field name="name">centro.costo.joya.form</field>
+            <field name="model">centro.costo.joya</field>
+            <field name="arch" type="xml">
+                <form string="Centro de Costo" version="8.0">
+                        <group>
+                            <group>
+                                <field name="name" required="1"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="centro_costo_joya_action" model="ir.actions.act_window">
+            <field name="name">Centro de Costo</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">centro.costo.joya</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+ <menuitem id="menu_centro_costo_joya" name="Centro de Costo" parent="account.menu_configuration_misc" sequence="105" action="centro_costo_joya_action" />
+
+
+
+
+        <record id="view_motivo_reparables_it" model="ir.ui.view">
+            <field name="name">motivo.reparables.tree</field>
+            <field name="model">motivo.reparables</field>
+            <field name="arch" type="xml">
+                <tree string="Motivo Reparables">
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_motivo_reparables_form">
+            <field name="name">motivo.reparables.form</field>
+            <field name="model">motivo.reparables</field>
+            <field name="arch" type="xml">
+                <form string="Motivo Reparables" version="8.0">
+                        <group>
+                            <group>
+                                <field name="name" required="1"/>
+                            </group>
+                            <group>
+                                <field name="code" required="1"/>
+                            </group>
+                        </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="motivo_reparables_action" model="ir.actions.act_window">
+            <field name="name">Motivo Reparables</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">motivo.reparables</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+ <menuitem id="menu_motivo_reparable" name="Motivo Reparable" parent="account.menu_configuration_misc" sequence="105" action="motivo_reparables_action" />
+
+<record id="invoice_supplier_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+
+                <field name="user_id" position="before">
+                    <field name="motivo_reparables_id" />
+                </field>
+                
+                <field name="product_id" position="before">
+                    <field name="nro_lote" />
+                </field>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

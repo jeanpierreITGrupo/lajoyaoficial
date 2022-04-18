@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+        <record id="view_table_adjust_factor_tree" model="ir.ui.view">
+            <field name="name">table.adjust.factor.tree</field>
+            <field name="model">table.adjust.factor</field>
+            <field name="arch" type="xml">
+                <tree create="1" editable="top" delete="1">
+                    <field name="employee"/>
+                    <field name="date"/>
+                    <field name="factor"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_table_adjust_factor_oro_view" model="ir.actions.act_window">
+            <field name="name">F_Ajuste</field>
+            <field name="res_model">table.adjust.factor</field>
+            <field name="domain">[('mineral_type','=','oro')]</field>
+            <field name="context">{'default_mineral_type':'oro'}</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+        <record id="action_table_adjust_factor_plata_view" model="ir.actions.act_window">
+            <field name="name">F_Ajuste</field>
+            <field name="res_model">table.adjust.factor</field>
+            <field name="domain">[('mineral_type','=','plata')]</field>
+            <field name="context">{'default_mineral_type':'plata'}</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem 
+            id="menu_table_adjust_factor_oro" 
+            name="F_Ajuste" 
+            parent="menu_config_tables_oro" 
+            action="action_table_adjust_factor_oro_view"
+            sequence="8"
+        />
+        <menuitem 
+            id="menu_table_adjust_factor_plata" 
+            name="F_Ajuste" 
+            parent="menu_config_tables_plata" 
+            action="action_table_adjust_factor_plata_view"
+            sequence="8"
+        />
+	</data>
+</openerp>

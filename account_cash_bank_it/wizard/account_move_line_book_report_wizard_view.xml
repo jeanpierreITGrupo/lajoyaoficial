@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+		<record model="ir.ui.view" id="view_account_move_line_book_report_wizard_form">
+			<field name="name">account.move.line.book.report.wizard.form</field>
+			<field name="model">account.move.line.book.report.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Libro Diario" version="8.0">
+						<group>
+								<field name="period_ini" />
+								<field name="period_end" />
+								<field name="moneda" />
+								
+						</group>
+
+						<footer>
+							<button string="Mostrar" name="do_rebuild" type="object" class="oe_highlight"/>
+							or
+							<button string="Cancel" class="oe_link" special="cancel"/>
+						</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="account_move_line_rep_asiento_report_wizard_action" model="ir.actions.act_window">
+			<field name="name">Libro Diario</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">account.move.line.book.report.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<menuitem id="menu_finance_books_reports" name="Libros Contables" parent="account.menu_finance_reports" sequence="14" groups="account.group_account_user,account.group_account_manager"/>
+
+        <menuitem name="Libro Diario"
+            action="account_move_line_rep_asiento_report_wizard_action"
+            id="menu_action_account_moves_all_it_report"
+            parent="menu_finance_books_reports"
+            sequence="11"
+        />
+
+
+	</data>
+</openerp>

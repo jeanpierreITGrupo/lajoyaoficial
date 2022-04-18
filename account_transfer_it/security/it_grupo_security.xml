@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data noupdate="1">
+		<record id="account_transfer_group" model="res.groups">
+			<field name="name">Transferencias</field>
+			<field name="comment">Modulo de Transferencias entre Cajas</field>
+			<field name="category_id" ref="res_users_it.module_category_it_grupo"/>
+		</record>
+	</data>
+</openerp>

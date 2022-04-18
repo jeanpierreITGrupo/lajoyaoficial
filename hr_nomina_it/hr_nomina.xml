@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+
+        <!--Vista Form-->
+        <record model="ir.ui.view" id="view_hr_nomina_form">
+            <field name="name">hr.nomina.form</field>
+            <field name="model">hr.nomina</field>
+            <field name="arch" type="xml">
+                <form string="Nómina" create="0" delete="0" edit="0">
+                    <sheet>
+                        <group string="Nómina">
+                            <field name="periodo"/>
+                        </group>
+                        <notebook>
+                            <page>
+                                <field name="detalle">
+                                    <tree create="0" delete="0" editable="0">
+                                        <field name="dni"/>
+                                        <field name="afiliacion"/>
+                                        <field name="cusspp"/>
+                                        <field name="c_mixta"/>
+                                        <field name="fecha_cese"/>
+                                        <field name="basica"/>
+                                        <field name="dist_c"/>
+                                        <field name="banco_cts"/>
+                                        <field name="banco_rem"/>
+                                        <field name="cta_cts"/>
+                                        <field name="cta_rem"/>
+                                        <button name="open_wizard" type="object" string="Icon"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record> 
+
+        <!--Vista Tree-->
+        <record model="ir.ui.view" id="tree">
+            <field name="name">hr.nomina.tree</field>
+            <field name="model">hr.nomina</field>
+            <field name="arch" type="xml">
+                <tree string="Nómina" eliminate="false" edit="false">
+                    <field name="periodo"/>
+                </tree>
+            </field>
+        </record>  
+
+
+        <!--Action en el menú mas-->
+        <record id="action_newnline_wizard_view" model="ir.actions.act_window">
+            <field name="name">Nuevo Detalle</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.nomina.line</field>
+            <field name="view_id" ref="view_hr_nomina_line_form"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>            
+
+        <record model="ir.values" id="new_nomina_line_wizard">
+            <field name="name">Nueva Nómina</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' +str(ref('human_resources.action_newnline_wizard_view'))" />
+            <field name="key">action</field>
+            <field name="model">hr.nomina</field>
+        </record>
+
+	</data>
+</openerp>
